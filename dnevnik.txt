@@ -1,0 +1,14 @@
+1. sastanak
+Datum: 17. listopada 2024.
+Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip, Z. Luka
+Teme sastanka:
+-Upoznavanje članova tima
+-Raspodjela u članova u timove prema vrsti posla (frontend, backend, dokumentacija)
+-Odabir tehnologija i alata koji će se koristiti na projektu
+
+2. sastanak
+Datum: 21. listopada 2024.
+Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip, Z. Luka
+Teme sastanka:
+-Zajedničko definiranje funkcionalnih zahtjeva
+-Podjela rada za izradu obrazaca oporabe

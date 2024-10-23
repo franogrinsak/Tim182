@@ -16,7 +16,32 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 > Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
 
 # Funkcijski zahtjevi
-> Navedite ključne zahtjeve Vašeg projekta.
+> Visoki prioritet:
+
+F-1 Prijava u sustav: Anonimni korisnik mora imati mogućnost prijave u sustav kao administrator, igrač ili vlasnik.\
+F-2 Registracija: Anonimni korisnik mora moći izvršiti registraciju kao igrač ili vlasnik.
+
+
+> Srednji prioritet:
+
+F-3 Postavljanje terena: Vlasnici moraju imati mogućnost dodavanja novih terena te uređivanja podataka o terenu.\
+F-4 Organizacija termina: Sustav mora omogućiti vlasnicima definiranje termina.\
+F-5 Rezervacija termina: Igrači moraju imati mogućnost rezerviranja i pregleda svojih rezervacija.\
+F-6 Otkazivanje rezervacija: Igrači moraju moći otkazati vlastite rezervacije.\
+F-7 Dodavanje turnira: Vlasnici moraju moći dodati nove turnire.\
+F-8 Unos podataka o turniru: Vlasnici moraju imati mogućnost određivanja završetka turnira te unosa potrebnih podataka.\
+F-9 Pregled turnira: Prijavljeni korisnici moraju moći pregledati prošle i otvorene turnire.\
+F-10 Profil vlasnika: Vlasnici moraju imati mogućnost pregleda i uređivanja svojih profila.
+
+> Niski prioritet:
+
+F-11 Plaćanje termina: Igrači moraju imati mogućnost plaćanja termina.\
+F-12 Plaćanje članstva: Igrači moraju imati mogućnost plaćanja članstva.\
+F-13 Prijave na turnir: Igrači se moraju moći prijaviti na otvorene turnire.\
+F-14 Podsustav obavještavanja: Igrači moraju moći dobiti obavijest kada je novi turnir objavljen, ako žele.\
+F-15 Postavljanje cijene članstva: Administratori moraju moći podešavati cijenu članstva za vlasnike.\
+F-16 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, uređivanje i dodavanje korisnika.
+
 
 
 # Tehnologije

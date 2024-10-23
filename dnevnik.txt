@@ -11,4 +11,4 @@ Datum: 21. listopada 2024.
 Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip, Z. Luka
 Teme sastanka:
 -Zajedničko definiranje funkcionalnih zahtjeva
--Podjela rada za izradu obrazaca oporabe
+-Podjela rada za izradu obrazaca uporabe

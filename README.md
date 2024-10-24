@@ -54,7 +54,7 @@ Frontend: React\
 Backend: SpringBoot\
 Baza podataka: Postgres\
 Depoly: Render\
-Dokumentacija: Github wiki\
+Dokumentacija: Github wiki
 
 # Članovi tima 
 Fran Ogrinšak\

@@ -45,7 +45,7 @@ F-16 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, 
 # Nefunkcionalni zahtjevi
 Autentifikacija i autorizacija: Korisnici moraju biti autentificirani putem sigurnih metoda (lozinke moraju biti šifrirane) i autorizirani za pristup specifičnim funkcionalnostima.\
 Sigurnost transakcija: Plaćanja putem PayPala ili kreditnih kartica moraju biti zaštićena kroz sigurne vanjske servise.\
-Sustav za povrat rezervacije: Igrači moraju biti u mogućnosti otkazati rezervaciju najkasnije 24 sata prije termina bez grešaka u sustavu.
+Integracija s vanjskim sustavima: Sustav mora podržavati besprijekornu integraciju s vanjskim kalendarima (Google Calendar, Calendar.online) bez smanjenja performansi.\
 
 # Tehnologije
 Komunikacija: WhatsApp i Microsoft Teams\

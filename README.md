@@ -53,7 +53,7 @@ UML dijagrami: Astah i Visual Paradigm\
 Frontend: React\
 Backend: SpringBoot\
 Baza podataka: Postgres\
-Depoly: Render\
+Deploy: Render\
 Dokumentacija: Github wiki
 
 # Članovi tima 

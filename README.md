@@ -54,7 +54,8 @@ Frontend: React\
 Backend: Spring Boot\
 Baza podataka: Postgres\
 Deploy: Render\
-Dokumentacija: Github wiki
+Dokumentacija: Github wiki\
+Vanjski servis za kalendare\
 
 # Članovi tima 
 Fran Ogrinšak\

@@ -61,7 +61,7 @@ Fran Ogrinšak\
 Patrik Pašić\
 Lovro Matić\
 Luka Zorčić\
-Filip Šturlić\
+Filip Šturlić
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md

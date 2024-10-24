@@ -15,7 +15,7 @@ Kratko opisati cilj Vašeg projekta. Vaša motivacija?  (Napomena: odgovor nije 
 
 > Dobro izrađen opis omogućuje vam da pokažete svoj rad drugim programerima, kao i potencijalnim poslodavcima. Ne samo da prvi dojam na stranici opisa često razlikuje dobar projekt od lošeg projekta već i predstavlja dobru praksu koju morate savladati.
 
-# Funkcijski zahtjevi
+# Funkcionalni zahtjevi
 > Visoki prioritet:
 
 F-1 Prijava u sustav: Anonimni korisnik mora imati mogućnost prijave u sustav kao administrator, igrač ili vlasnik.\
@@ -42,14 +42,26 @@ F-14 Podsustav obavještavanja: Igrači moraju moći dobiti obavijest kada je no
 F-15 Postavljanje cijene članstva: Administratori moraju moći podešavati cijenu članstva za vlasnike.\
 F-16 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, uređivanje i dodavanje korisnika.
 
-
+# Nefunkcionalni zahtjevi
+Autentifikacija i autorizacija: Korisnici moraju biti autentificirani putem sigurnih metoda (lozinke moraju biti šifrirane) i autorizirani za pristup specifičnim funkcionalnostima.\
+Sigurnost transakcija: Plaćanja putem PayPala ili kreditnih kartica moraju biti zaštićena kroz sigurne vanjske servise.\
+Sustav za povrat rezervacije: Igrači moraju biti u mogućnosti otkazati rezervaciju najkasnije 24 sata prije termina bez grešaka u sustavu.\
 
 # Tehnologije
+Komunikacija: WhatsApp i Microsoft Teams\
+UML dijagrami: Astah i Visual Paradigm\
+Frontend: React\
+Backend: SpringBoot\
+Baza podataka: Postgres\
+Depoly: Render\
+Dokumentacija: Github wiki\
 
-#Instalcija
 # Članovi tima 
-> Popis članova tima/linkovi/ glavni doprinos
->
+Fran Ogrinšak\
+Patrik Pašić\
+Lovro Matić\
+Luka Zorčić\
+Filip Šturlić\
 
 # Kontribucije
 >Pravila ovise o organizaciji tima i su često izdvojena u CONTRIBUTING.md

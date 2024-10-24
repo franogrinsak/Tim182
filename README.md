@@ -51,7 +51,7 @@ Sustav za povrat rezervacije: Igrači moraju biti u mogućnosti otkazati rezerva
 Komunikacija: WhatsApp i Microsoft Teams\
 UML dijagrami: Astah i Visual Paradigm\
 Frontend: React\
-Backend: SpringBoot\
+Backend: Spring Boot\
 Baza podataka: Postgres\
 Deploy: Render\
 Dokumentacija: Github wiki

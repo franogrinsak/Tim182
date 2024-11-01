@@ -16,11 +16,16 @@ import java.io.IOException;
 @Component
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepo;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
         String email = token.getPrincipal().getAttribute("email");
+        if(!userRepo.userExist(email)) {
+            User user = new User();
+            user.setEmail(email);
+            userRepo.storeUser(user);
+        }
         response.sendRedirect("/logged");
     }
 

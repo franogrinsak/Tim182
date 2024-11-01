@@ -11,7 +11,7 @@ public class UserRepository {
         this.jdbc = jdbc;
     }
     public void storeUser(User user){
-        String querry="INSERT INTO users VALUES(NULL,?,NULL,NULL,NULL)";
+        String querry="INSERT INTO users(email,firstName,lastName,roleId) VALUES(?,NULL,NULL,NULL)";
         jdbc.update(querry,
                 user.getEmail());
     }

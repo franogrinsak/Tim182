@@ -45,7 +45,7 @@
   <component name="RunManager">
     <configuration name="PrimjerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.primjer.primjer.PrimjerApplication" />
-      <module name="primjer" />
+      <module name="backend" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.primjer.primjer.*" />

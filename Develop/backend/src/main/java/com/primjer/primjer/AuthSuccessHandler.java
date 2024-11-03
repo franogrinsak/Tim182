@@ -10,13 +10,17 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.cli
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
 
 import java.io.IOException;
 @Component
-public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Autowired
     private UserRepository userRepo;
+
+    private String frontendUrl="http://localhost:5137";
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
@@ -26,7 +30,12 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
             user.setEmail(email);
             userRepo.storeUser(user);
         }
-        response.sendRedirect("http://localhost:5137");
+        this.setAlwaysUseDefaultTargetUrl(true);
+        this.setDefaultTargetUrl(frontendUrl);
+        super.onAuthenticationSuccess(request, response, authentication);
+
     }
+
+
 
 }

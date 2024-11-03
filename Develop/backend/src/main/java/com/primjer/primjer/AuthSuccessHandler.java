@@ -26,7 +26,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
             user.setEmail(email);
             userRepo.storeUser(user);
         }
-        response.sendRedirect("http://localhost:5137");
+        response.sendRedirect("/api/logged");
     }
 
 }

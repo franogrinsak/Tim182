@@ -28,18 +28,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> {
-                    auth.anyRequest().authenticated();
-                })
-                .oauth2Login(oath2 -> {
-                    oath2.loginPage("/login").permitAll();
-                    oath2.successHandler(authHandler);
-                })
-                .build();
+        return http.csrf(AbstractHttpConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource())).authorizeHttpRequests(auth->{
+            auth.requestMatchers("/","/login").permitAll();
+            auth.anyRequest().authenticated();
+        }).oauth2Login(oauth2 -> oauth2
+                .successHandler(authHandler)).build();
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

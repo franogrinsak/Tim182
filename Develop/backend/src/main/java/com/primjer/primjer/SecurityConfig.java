@@ -31,11 +31,9 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource())).authorizeHttpRequests(auth->{
             auth.requestMatchers("/","/login").permitAll();
             auth.anyRequest().authenticated();
-        }).oauth2Login(oauth2 -> oauth2
-                .successHandler(authHandler)).exceptionHandling(eh -> eh
-                .authenticationEntryPoint((req, res, authException) -> {
-                    res.sendRedirect("/login");
-                })).build();
+        }).oauth2Login(oauth2 -> oauth2.loginPage("/login")
+                .successHandler(authHandler))
+                .build();
     }
 
     @Bean

@@ -39,4 +39,8 @@ public class User{
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
+
+    public void setUserId(int id) {
+        this.userId =id;
+    }
 }

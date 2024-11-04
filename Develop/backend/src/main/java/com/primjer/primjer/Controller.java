@@ -6,14 +6,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Controller {
+    private UserRepository userRepo;
+
+    public Controller(UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @GetMapping("/")
     public String home(){
         return "Home";
     }
     @GetMapping("/logged")
-    public String logged(OAuth2AuthenticationToken token){
+    public User logged(OAuth2AuthenticationToken token){
         String email=token.getPrincipal().getAttribute("email");
-        return email;
+        User user= userRepo.getUser(email);
+        return user;
     }
 
 }

@@ -29,12 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http.csrf(AbstractHttpConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource())).authorizeHttpRequests(auth->{
-            auth.requestMatchers("/","/api/login").permitAll();
+            auth.requestMatchers("/","/login").permitAll();
             auth.anyRequest().authenticated();
         }).oauth2Login(oauth2 -> oauth2
                 .successHandler(authHandler)).exceptionHandling(eh -> eh
                 .authenticationEntryPoint((req, res, authException) -> {
-                    res.sendRedirect("/api/login?error=unauthenticated");
+                    res.sendRedirect("/login");
                 })).build();
     }
 

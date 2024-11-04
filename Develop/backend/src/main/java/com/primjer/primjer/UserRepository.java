@@ -33,6 +33,6 @@ public class UserRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper).get(0);
+        return jdbc.query(querry, purchaseRowMapper,email).get(0);
     }
 }

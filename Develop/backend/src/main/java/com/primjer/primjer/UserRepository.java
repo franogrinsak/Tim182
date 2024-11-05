@@ -29,10 +29,14 @@ public class UserRepository {
             rowObject.setEmail(r.getString("email"));
             rowObject.setFirstName(r.getString("firstname"));
             rowObject.setLastName(r.getString("lastname"));
-            rowObject.setRoleId(r.getInt("lastname"));
+            rowObject.setRoleId(r.getInt("roleid"));
             return rowObject;
         };
 
         return jdbc.query(querry, purchaseRowMapper,email).get(0);
+    }
+    public void updateUser(User user){
+        String querry = "UPDATE users SET firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
+        jdbc.update(querry, user.getFirstName(), user.getLastName(), user.getRoleId(),user.getUserId());
     }
 }

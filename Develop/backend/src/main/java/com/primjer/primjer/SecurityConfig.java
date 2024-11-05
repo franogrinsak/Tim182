@@ -32,10 +32,8 @@ public class SecurityConfig {
             auth.requestMatchers("/","/login").permitAll();
             auth.anyRequest().authenticated();
         }).oauth2Login(oauth2 -> oauth2
-                .successHandler(authHandler)).exceptionHandling(eh -> eh
-                .authenticationEntryPoint((req, res, authException) -> {
-                    res.sendRedirect("https://playpaddle.onrender.com/api/login");
-                })).build();
+                .successHandler(authHandler))
+                .build();
     }
 
     @Bean

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
+import { resolveBackendPath } from "../../util/paths";
 
 export default function Header() {
   const { user } = useUser();
@@ -17,6 +18,7 @@ export default function Header() {
       <nav className="header-nav">
         <Link to="/login">Login</Link>
         <Link to="/dashboard/logged">Logged</Link>
+        {user && <a href={resolveBackendPath("/logout")}>Logout</a>}
         <div className="user-name">{name}</div>
       </nav>
     </header>

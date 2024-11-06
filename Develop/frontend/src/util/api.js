@@ -7,6 +7,10 @@ export async function postRegisterData(data) {
     method: "POST",
     body: JSON.stringify(data),
     credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
   });
   console.log(response);
   if (!response.ok) {

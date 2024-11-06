@@ -17,11 +17,13 @@ export default function Main() {
         });
         if (response.ok) {
           let data = await response.json();
-          data = { ...data, firstName: "Lorem", lastName: "Ipsum" };
+          if (!data.firstName || !data.lastName) {
+            data = { ...data, firstName: "Lorem", lastName: "Ipsum" };
+          }
           setUser(data);
 
           // User signed in for the first time
-          //if (data.roleId === USER_ROLES.NONE) navigate("/register");
+          //if (data.roleId === USER_ROLES.NONE) navigate("/dashboard/register");
         } else {
           setUser(null);
         }

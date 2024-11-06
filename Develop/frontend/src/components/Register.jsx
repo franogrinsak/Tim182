@@ -15,7 +15,8 @@ export async function action({ request }) {
   };
   try {
     const newUser = await postRegisterData(data);
-    return { success: true, newUser: newUser };
+
+    return redirect("/dashboard");
   } catch (err) {
     console.log(err);
     return {

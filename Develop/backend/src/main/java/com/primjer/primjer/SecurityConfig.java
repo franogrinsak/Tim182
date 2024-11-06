@@ -20,7 +20,8 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final AuthSuccessHandler authHandler;
-    private String frontendUrl="http://localhost:5137";
+    @Value("${frontendUrl}")
+    private String frontendUrl;
     public SecurityConfig(AuthSuccessHandler authHandler) {
         this.authHandler = authHandler;
     }

@@ -6,12 +6,11 @@ public class User{
     private String firstName;
     private String lastName;
     private int roleId;
-    public String getEmail() {
 
+    public String getEmail() {
         return email;
     }
     public void setEmail(String email) {
-
         this.email = email;
     }
     public int getUserId() {

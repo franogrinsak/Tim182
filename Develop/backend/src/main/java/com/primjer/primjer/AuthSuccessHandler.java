@@ -5,12 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +14,13 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 @Component
 public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
     @Autowired
     private UserRepository userRepo;
-    @Value("${frontendUrl}")
-    private String frontendUrl;
+
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
@@ -32,11 +31,8 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
             userRepo.storeUser(user);
         }
         this.setAlwaysUseDefaultTargetUrl(true);
-        this.setDefaultTargetUrl(frontendUrl);
+        this.setDefaultTargetUrl(FRONTEND_URL);
         super.onAuthenticationSuccess(request, response, authentication);
 
     }
-
-
-
 }

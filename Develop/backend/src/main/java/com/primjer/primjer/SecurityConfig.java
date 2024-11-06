@@ -1,6 +1,5 @@
 package com.primjer.primjer;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +19,10 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final AuthSuccessHandler authHandler;
-    @Value("${frontendUrl}")
-    private String frontendUrl;
+
+    // Only domain of the frontend with the scheme, does not contain the path
+    @Value("${frontend.domain}")
+    private String FRONTEND_DOMAIN;
     public SecurityConfig(AuthSuccessHandler authHandler) {
         this.authHandler = authHandler;
     }
@@ -35,7 +36,7 @@ public class SecurityConfig {
         }).oauth2Login(oauth2 -> oauth2
                 .successHandler(authHandler)).logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl(frontendUrl)
+                        .logoutSuccessUrl(FRONTEND_DOMAIN)
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
@@ -46,7 +47,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedOrigins(List.of(FRONTEND_DOMAIN));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

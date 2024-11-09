@@ -3,6 +3,8 @@ import { Form, useActionData, redirect, useNavigation } from "react-router-dom";
 import { USER_ROLES } from "../util/constants";
 import { postRegisterData } from "../util/api";
 import { useUser } from "./auth/UserContext";
+import sleep from "../util/sleep";
+import { DASHBOARD } from "../util/paths";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -14,32 +16,21 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    const newUser = await postRegisterData(data);
-
-    return redirect("/dashboard");
+    // Sleep is here to test the register button changing while doing a post request
+    sleep(5000);
+    await postRegisterData(data);
+    return redirect(DASHBOARD);
   } catch (err) {
     console.log(err);
-    return {
-      success: false,
-      message: "Failed to register, reason: " + `${err.status} ${err.message}`,
-    };
+    return "Failed to register, reason: " + `${err.status} ${err.message}`;
   }
 }
 
 export default function Register() {
   const [isOwner, setIsOwner] = React.useState(false);
   const { user } = useUser();
-  const status = useActionData();
+  const message = useActionData();
   const navigation = useNavigation();
-
-  let message;
-  if (status) {
-    if (status.success) {
-      redirect("/dashboard");
-    } else {
-      message = status.message;
-    }
-  }
 
   // Function to change the visibility of phone number imput
   // Should only be visible when owner is the select option
@@ -158,10 +149,12 @@ export default function Register() {
               </div>
             </div>
             <button
-              disabled={user && navigation.state === "submitting"}
+              disabled={user && navigation.state !== "idle"}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              {navigation.state === "idle" ? "Register" : "Registering..."}
+              {navigation.state === "submitting"
+                ? "Registering..."
+                : "Register"}
             </button>
           </Form>
         </div>

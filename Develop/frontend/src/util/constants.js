@@ -1,4 +1,12 @@
-export const DEV_LOGS = false;
+import {
+  OWNER_COURTS,
+  OWNER_TOURNAMENT,
+  PLAYER_COURTS,
+  PLAYER_TOURNAMENT,
+  ADMINISTRATOR_USERS,
+} from "../components/FeatureCard";
+
+export const DEV_MODE = true;
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const USER_ROLES = {
@@ -8,4 +16,10 @@ export const USER_ROLES = {
   UNPAID_OWNER: 3,
   OWNER: 4,
   ADMIN: 5,
+};
+
+export const FEATURE_CARDS_BY_ROLES = {
+  [USER_ROLES.PLAYER]: [PLAYER_COURTS, PLAYER_TOURNAMENT],
+  [USER_ROLES.OWNER]: [OWNER_COURTS, OWNER_TOURNAMENT],
+  [USER_ROLES.ADMIN]: [ADMINISTRATOR_USERS],
 };

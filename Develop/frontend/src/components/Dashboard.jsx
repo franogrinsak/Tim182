@@ -1,10 +1,15 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import { resolveBackendPath } from "../util/paths";
+import { useUser } from "./auth/UserContext";
+import { DEV_MODE, FEATURE_CARDS_BY_ROLES } from "../util/constants";
+import { PLAYER_COURTS, PLAYER_TOURNAMENT } from "./FeatureCard";
 
 export default function Dashboard() {
+  const { user } = useUser();
+
+  /*
   const [variable, setVariable] = React.useState(true);
-  const [output, setOutput] = React.useState("");
+   const [output, setOutput] = React.useState("");
+
 
   const change = () => {
     setVariable((old) => !old);
@@ -24,11 +29,17 @@ export default function Dashboard() {
     getEmail();
   }, [variable]);
 
+  */
+
   return (
     <>
+      <section className="flex justify-center feature-cards-container">
+        {user && FEATURE_CARDS_BY_ROLES[user.roleId]}
+      </section>
+      {/*
       <button onClick={change}>Call /</button>
       {output && <h2>{output}</h2>}
-      <Outlet />
+      */}
     </>
   );
 }

@@ -1,9 +1,9 @@
 import { requireAuth } from "./auth";
-import { resolveBackendPath } from "./paths";
+import { BACKEND_LOGGED, resolveBackendPath } from "./paths";
 
 export async function postRegisterData(data) {
   //requireAuth();
-  const response = await fetch(resolveBackendPath("/logged"), {
+  const response = await fetch(resolveBackendPath(BACKEND_LOGGED), {
     method: "POST",
     body: JSON.stringify(data),
     credentials: "include",
@@ -16,6 +16,5 @@ export async function postRegisterData(data) {
   if (!response.ok) {
     throw { status: response.status, message: response.statusText };
   }
-  //const result = await response.json();
-  return data;
+  //return await response.json();
 }

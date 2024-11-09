@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { resolveBackendPath } from "../../util/paths";
+import {
+  APP,
+  LOGGED,
+  LOGIN,
+  LOGOUT,
+  resolveBackendPath,
+} from "../../util/paths";
 
 export default function Header() {
   const { user } = useUser();
@@ -12,13 +18,13 @@ export default function Header() {
   }
   return (
     <header>
-      <Link to="/dashboard">
+      <Link to={APP}>
         <h1 className="header-text">PlayPadel</h1>
       </Link>
       <nav className="header-nav">
-        <Link to="/login">Login</Link>
-        <Link to="/dashboard/logged">Logged</Link>
-        {user && <a href={resolveBackendPath("/logout")}>Logout</a>}
+        <Link to={LOGIN}>Login</Link>
+        <Link to={LOGGED}>Logged</Link>
+        {user && <a href={resolveBackendPath(LOGOUT)}>Logout</a>}
         <div className="user-name">{name}</div>
       </nav>
     </header>

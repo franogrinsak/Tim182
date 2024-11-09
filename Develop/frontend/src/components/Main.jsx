@@ -1,41 +1,26 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import Footer from "./pageLayout/Footer";
 import Header from "./pageLayout/DashboardHeader";
 import { useUser } from "./auth/UserContext";
-import { resolveBackendPath } from "../util/paths";
 import { USER_ROLES } from "../util/constants";
+import { REGISTER } from "../util/paths";
 
 export default function Main() {
   const { setUser } = useUser();
+  const userData = useLoaderData();
   const navigate = useNavigate();
+
+  // Call the use effect when user data from backend is updated.
   React.useEffect(() => {
-    const checkUserSession = async () => {
-      try {
-        const response = await fetch(resolveBackendPath("/logged"), {
-          credentials: "include",
-        });
-        if (response.ok) {
-          let data = await response.json();
-          if (!data.firstName || !data.lastName) {
-            data = { ...data, firstName: "Lorem", lastName: "Ipsum" };
-          }
-          setUser(data);
+    setUser(userData);
+    if (
+      userData.roleId === USER_ROLES.NONE ||
+      userData.roleId === USER_ROLES.NEW_USER
+    )
+      navigate(REGISTER);
+  }, [JSON.stringify(userData)]);
 
-          // User signed in for the first time
-          //if (data.roleId === USER_ROLES.NONE) navigate("/dashboard/register");
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setUser(null);
-        navigate("/login?message=Login to access this resource");
-      }
-    };
-
-    checkUserSession();
-  }, []);
   return (
     <>
       <Header />

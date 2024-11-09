@@ -15,22 +15,34 @@ import Logged from "./components/Logged";
 import NotFound from "./components/pageLayout/NotFound";
 import Register from "./components/Register";
 import { action as registerAction } from "./components/Register";
+import { requireAuth } from "./util/auth";
+import { APP, DASHBOARD, HOME, LOGGED, REGISTER } from "./util/paths";
+import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Main />}>
-          <Route index element={<Dashboard />} />
-          <Route path="logged" element={<Logged />} />
+        <Route path={HOME} element={<LandingPageLayout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route
-            path="register"
+            path="*"
+            element={<NotFound path={HOME} returnText={"homepage"} />}
+          />
+        </Route>
+        <Route path={APP} loader={async () => requireAuth()} element={<Main />}>
+          <Route index element={<Dashboard />} />
+          <Route path={LOGGED} element={<Logged />} />
+          <Route
+            path={REGISTER}
             element={<Register />}
             action={registerAction}
           />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="*"
+            element={<NotFound path={APP} returnText={"dashboard"} />}
+          />
         </Route>
       </>
     )

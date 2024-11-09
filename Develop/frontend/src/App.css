@@ -101,3 +101,28 @@ footer {
 .landing-text {
   padding: 0;
 }
+
+.feature-cards-container a:link,
+.feature-cards-container a:visited {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+.feature-card {
+  padding: 40px 30px;
+  box-shadow: 0px 0 30px rgba(0, 0, 0, 0.1);
+  width: 20rem;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: scale(1.1);
+}
+
+.feature-card h3 {
+  font-size: 1.75rem;
+}
+
+.feature-card-image {
+  width: 50px;
+}

@@ -33,7 +33,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <section className="flex justify-center feature-cards-container">
+      <section className="flex flex-wrap justify-center feature-cards-container">
         {user && FEATURE_CARDS_BY_ROLES[user.roleId]}
       </section>
       {/*

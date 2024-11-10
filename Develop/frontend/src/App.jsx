@@ -15,9 +15,23 @@ import Logged from "./components/Logged";
 import NotFound from "./components/pageLayout/NotFound";
 import Register from "./components/Register";
 import { action as registerAction } from "./components/Register";
+import { action as addCourtAction } from "./components/courts/AddCourt";
 import { requireAuth } from "./util/auth";
-import { APP, DASHBOARD, HOME, LOGGED, REGISTER } from "./util/paths";
+import {
+  ADD_COURT,
+  APP,
+  COURT_DETAIL,
+  COURTS,
+  DASHBOARD,
+  HOME,
+  LOGGED,
+  REGISTER,
+} from "./util/paths";
 import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
+import Courts from "./components/courts/Courts";
+import CourtDetail from "./components/courts/CourtDetails";
+import CourtsLayout from "./components/courts/CourtsLayout";
+import AddCourt from "./components/courts/AddCourt";
 
 function App() {
   const router = createBrowserRouter(
@@ -39,6 +53,15 @@ function App() {
             element={<Register />}
             action={registerAction}
           />
+          <Route path={COURTS} element={<CourtsLayout />}>
+            <Route index element={<Courts />} />
+            <Route path={COURT_DETAIL} element={<CourtDetail />} />
+            <Route
+              path={ADD_COURT}
+              element={<AddCourt />}
+              action={addCourtAction}
+            />
+          </Route>
           <Route
             path="*"
             element={<NotFound path={APP} returnText={"dashboard"} />}

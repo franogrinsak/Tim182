@@ -25,7 +25,7 @@ public class Controller {
     public void logged(@RequestBody User user){
         userRepo.updateUser(user);
     }
-    @PostMapping("/owner")
+    @GetMapping("/owner")
     public User owner(@RequestParam int userId){
         return userRepo.getOwner(userId);
     }

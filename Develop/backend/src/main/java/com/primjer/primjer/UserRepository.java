@@ -49,7 +49,7 @@ public class UserRepository {
     }
 
     public User getOwner(int userId) {
-        String querry="SELECT * FROM users WHERE userid = ?";
+        String querry="SELECT * FROM users natural left join owners WHERE userid = ?";
         RowMapper<User> purchaseRowMapper = (r, i) -> {
             User rowObject = new User();
             rowObject.setUserId(r.getInt("userid"));

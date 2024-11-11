@@ -1,10 +1,7 @@
 package com.primjer.primjer;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
@@ -27,6 +24,10 @@ public class Controller {
     @PostMapping("/logged")
     public void logged(@RequestBody User user){
         userRepo.updateUser(user);
+    }
+    @PostMapping("/owner")
+    public User owner(@RequestParam int userId){
+        return userRepo.getOwner(userId);
     }
 
 }

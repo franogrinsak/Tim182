@@ -1,14 +1,23 @@
 import React from "react";
 import TabNavigation from "./TabNavigation";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Navigate } from "react-router-dom";
 import { COURTS } from "../../util/test/courts";
+import { tempCorts } from "../../util/paths";
+import ReturnButton from "../ReturnButton";
 
 export default function CourtDetail() {
   const { courtId } = useParams();
+
   const court = COURTS.find((court) => court.courtId == courtId);
+
+  // User tries to find a non existent court
+  if (!court) {
+    return <Navigate to="not-found" replace />;
+  }
 
   return (
     <div className="flex flex-col items-center">
+      <ReturnButton link={tempCorts} text="Return to courts" />
       <div className="">
         <img
           alt={court.imageAlt}
@@ -45,8 +54,10 @@ export default function CourtDetail() {
           </dl>
         </div>
       </div>
-      <Link>
-        <button>Edit</button>
+      <Link to="edit">
+        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          Edit
+        </button>
       </Link>
     </div>
   );

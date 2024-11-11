@@ -21,10 +21,13 @@ import {
   ADD_COURT,
   APP,
   COURT_DETAIL,
+  COURT_NOT_FOUND,
   COURTS,
   DASHBOARD,
+  EDIT_COURT,
   HOME,
   LOGGED,
+  OWNER_PROFILE,
   REGISTER,
 } from "./util/paths";
 import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
@@ -32,6 +35,8 @@ import Courts from "./components/courts/Courts";
 import CourtDetail from "./components/courts/CourtDetails";
 import CourtsLayout from "./components/courts/CourtsLayout";
 import AddCourt from "./components/courts/AddCourt";
+import EditCourt from "./components/courts/EditCourt";
+import OwnerProfile from "./components/courts/OwnerProfile";
 
 function App() {
   const router = createBrowserRouter(
@@ -42,7 +47,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route
             path="*"
-            element={<NotFound path={HOME} returnText={"homepage"} />}
+            element={<NotFound link={HOME} returnText={"homepage"} />}
           />
         </Route>
         <Route path={APP} loader={async () => requireAuth()} element={<Main />}>
@@ -61,10 +66,16 @@ function App() {
               element={<AddCourt />}
               action={addCourtAction}
             />
+            <Route path={EDIT_COURT} element={<EditCourt />} />
+            <Route path={OWNER_PROFILE} element={<OwnerProfile />} />
+            <Route
+              path="*"
+              element={<NotFound link={COURTS} returnText={"courts"} />}
+            />
           </Route>
           <Route
             path="*"
-            element={<NotFound path={APP} returnText={"dashboard"} />}
+            element={<NotFound link={APP} returnText={"dashboard"} />}
           />
         </Route>
       </>

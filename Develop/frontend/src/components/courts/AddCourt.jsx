@@ -2,9 +2,28 @@ import React from "react";
 import { Form, useActionData } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
+import sleep from "../../util/sleep";
 
-export async function action() {
-  return null;
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = {
+    userId: formData.get("userId"),
+    courtName: formData.get("courtName"),
+    location: formData.get("location"),
+    isIndoor: formData.get("isIndoor"),
+    image: formData.get("image"),
+  };
+  console.log(data);
+  try {
+    // Sleep is here to test the register button changing while doing a post request
+    sleep(5000);
+    return null;
+    //await postRegisterData(data);
+    //return redirect(DASHBOARD);
+  } catch (err) {
+    console.log(err);
+    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+  }
 }
 
 export default function AddCourt() {
@@ -107,6 +126,7 @@ export default function AddCourt() {
                   <input
                     id="dropzone-file"
                     type="file"
+                    name="image"
                     className="hidden"
                     accept="image/png, image/jpeg"
                     onChange={handleImageChange}
@@ -185,10 +205,7 @@ export default function AddCourt() {
                 </div>
               </div>
             </div>
-            <button
-              disabled={user && navigation.state !== "idle"}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
+            <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               {navigation.state === "submitting" ? "Adding..." : "Add"}
             </button>
           </Form>

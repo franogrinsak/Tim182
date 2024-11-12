@@ -28,11 +28,11 @@ public class Court {
     public void setLocation(String location) {
         this.location = location;
     }
-    public boolean isIndoor() {
+    public boolean getisIndoor() {
         return isIndoor;
     }
 
-    public void setIndoor(boolean indoor) {
+    public void setisIndoor(boolean indoor) {
         isIndoor = indoor;
     }
     public String getImage() {

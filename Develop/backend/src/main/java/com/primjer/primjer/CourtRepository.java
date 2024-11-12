@@ -17,7 +17,7 @@ public class CourtRepository {
     public void addCourt(Court court) {
         String querry="INSERT INTO courts(courtname,location,isindoor,image,userid) VALUES(?,?,?,?,?)";
         jdbc.update(querry,
-                court.getCourtName(),court.getLocation(),court.isIndoor(),court.getImage(),court.getUserId());
+                court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUserId());
     }
 
     public List<Court> getCourts(int userId) {
@@ -27,7 +27,7 @@ public class CourtRepository {
             rowObject.setUserId(r.getInt("userid"));
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
-            rowObject.setIndoor(r.getBoolean("isindoor"));
+            rowObject.setisIndoor(r.getBoolean("isindoor"));
             rowObject.setCourtName(r.getString("courtname"));
             rowObject.setLocation(r.getString("location"));
             return rowObject;
@@ -43,7 +43,7 @@ public class CourtRepository {
             rowObject.setUserId(r.getInt("userid"));
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
-            rowObject.setIndoor(r.getBoolean("isindoor"));
+            rowObject.setisIndoor(r.getBoolean("isindoor"));
             rowObject.setCourtName(r.getString("courtname"));
             rowObject.setLocation(r.getString("location"));
             return rowObject;
@@ -59,7 +59,7 @@ public class CourtRepository {
             rowObject.setUserId(r.getInt("userid"));
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
-            rowObject.setIndoor(r.getBoolean("isindoor"));
+            rowObject.setisIndoor(r.getBoolean("isindoor"));
             rowObject.setCourtName(r.getString("courtname"));
             rowObject.setLocation(r.getString("location"));
             return rowObject;
@@ -70,6 +70,6 @@ public class CourtRepository {
 
     public void editCourt(Court court) {
         String querry="UPDATE courts SET courtName= ?,location= ?,isIndoor= ?,image= ?,userId= ? WHERE courtid = ?";
-        jdbc.update(querry,court.getCourtName(),court.getLocation(),court.isIndoor(),court.getImage(),court.getUserId(),court.getCourtId());
+        jdbc.update(querry,court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUserId(),court.getCourtId());
     }
 }

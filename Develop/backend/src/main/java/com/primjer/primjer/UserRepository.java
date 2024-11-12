@@ -63,4 +63,11 @@ public class UserRepository {
 
         return jdbc.query(querry, purchaseRowMapper,userId).get(0);
     }
+
+    public void updateOwner(User user) {
+        String querry = "UPDATE users SET firstname = ?, lastname = ? WHERE userid = ?";
+        jdbc.update(querry, user.getFirstName(), user.getLastName(),user.getUserId());
+        querry = "UPDATE owners SET phonenumber=? WHERE userid = ?";
+        jdbc.update(querry, user.getPhoneNumber(),user.getUserId());
+    }
 }

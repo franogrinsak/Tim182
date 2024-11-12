@@ -29,5 +29,9 @@ public class Controller {
     public User owner(@RequestParam int userId){
         return userRepo.getOwner(userId);
     }
+    @PostMapping("/owner/edit")
+    public void editOwner(@RequestBody User user){
+        userRepo.updateOwner(user);
+    }
 
 }

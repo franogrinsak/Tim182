@@ -19,7 +19,9 @@ export default function OwnerProfile() {
     <div className="flex flex-col items-center">
       <div>
         <div className="px-4 sm:px-0">
-          <p className="mt-1 max-w-2xl text-3xl text-neutral-950">Your data</p>
+          <p className="mt-1 max-w-2xl text-3xl text-neutral-950">
+            {liquidUser?.user.roleId === USER_ROLES.OWNER ? "Your data" : ""}
+          </p>
         </div>
         <div className="mt-6 border-t border-gray-100">
           <dl className="divide-y divide-gray-100">

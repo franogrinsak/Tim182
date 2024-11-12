@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import NewCourtCard from "./NewCourtCard";
-import { getCourtsForOwners } from "../../util/api";
+import { getCourtsForOwners, getOwnerProfileData } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
 
@@ -9,17 +9,21 @@ export async function loader({ params }) {
   const { ownerId } = params;
   const data = new URLSearchParams();
   data.append("userId", ownerId);
-  return await getCourtsForOwners(data.toString());
+  const ownerData = await getOwnerProfileData(data.toString());
+  const courts = await getCourtsForOwners(data.toString());
+  return { ownerData: ownerData, courts: courts };
 }
 
 export default function Courts() {
   const { user } = useUser();
-  let courts = useLoaderData();
+  let { courts, ownerData } = useLoaderData();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-        Your courts
+        {user?.roleId === USER_ROLES.PLAYER
+          ? "Courts owned by " + `${ownerData.firstName} ${ownerData.lastName}`
+          : "Your courts"}
       </h2>
       <div className="min-h-72 min-w-72 mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
         {user.roleId === USER_ROLES.OWNER && <NewCourtCard />}

@@ -17,14 +17,18 @@ public class CourtRepository {
     public void addCourt(Court court) {
         String querry="INSERT INTO courts(courtname,location,isindoor,image,userid) VALUES(?,?,?,?,?)";
         jdbc.update(querry,
-                court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUserId());
+                court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUser().getUserId());
     }
 
     public List<Court> getCourts(int userId) {
-        String querry="SELECT * FROM courts WHERE userid = ?";
+        String querry="SELECT * FROM courts natural join users WHERE userid = ?";
         RowMapper<Court> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
             Court rowObject = new Court();
-            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setUser(user);
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
             rowObject.setisIndoor(r.getBoolean("isindoor"));
@@ -37,10 +41,14 @@ public class CourtRepository {
     }
 
     public List<Court> getAllCourts() {
-        String querry="SELECT * FROM courts";
+        String querry="SELECT * FROM courts natural join users";
         RowMapper<Court> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
             Court rowObject = new Court();
-            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setUser(user);
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
             rowObject.setisIndoor(r.getBoolean("isindoor"));
@@ -53,10 +61,14 @@ public class CourtRepository {
     }
 
     public Court getCourt(int courtId) {
-        String querry="SELECT * FROM courts WHERE courtid = ?";
+        String querry="SELECT * FROM courts natural join users WHERE courtid = ?";
         RowMapper<Court> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
             Court rowObject = new Court();
-            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setUser(user);
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setImage(r.getString("image"));
             rowObject.setisIndoor(r.getBoolean("isindoor"));
@@ -70,6 +82,6 @@ public class CourtRepository {
 
     public void editCourt(Court court) {
         String querry="UPDATE courts SET courtName= ?,location= ?,isIndoor= ?,image= ?,userId= ? WHERE courtid = ?";
-        jdbc.update(querry,court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUserId(),court.getCourtId());
+        jdbc.update(querry,court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUser().getUserId(),court.getCourtId());
     }
 }

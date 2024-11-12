@@ -6,7 +6,7 @@ public class Court {
     private String location;
     private boolean isIndoor;
     private String image;
-    private int userId;
+    private User user;
     public int getCourtId() {
         return courtId;
     }
@@ -42,12 +42,12 @@ public class Court {
     public void setImage(String image) {
         this.image = image;
     }
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

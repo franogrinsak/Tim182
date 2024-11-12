@@ -144,3 +144,11 @@ footer {
 .court-nav-text span {
   color: #5cb874;
 }
+
+.users-table-container td {
+  text-align: left;
+}
+
+.users-table-container th {
+  background-color: #f9fafb;
+}

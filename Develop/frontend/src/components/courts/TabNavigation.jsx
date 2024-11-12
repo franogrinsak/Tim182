@@ -34,7 +34,7 @@ export default function TabNavigation() {
         </NavLink>
         {user?.roleId === USER_ROLES.OWNER && (
           <NavLink
-            to={ADD_COURT}
+            to="add"
             className={({ isActive }) =>
               isActive ? ACTIVE_STYLE : INACTIVE_STYLE
             }

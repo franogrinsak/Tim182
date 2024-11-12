@@ -12,7 +12,7 @@ export async function action({ request }) {
     userId: formData.get("userId"),
     firstName: formData.get("firstName"),
     lastName: formData.get("lastName"),
-    //phoneNumber: formData.get("phoneNumber"),
+    phoneNumber: formData.get("phoneNumber"),
     roleId: formData.get("roleId"),
   };
   try {

@@ -1,13 +1,24 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { COURTS } from "../../util/test/courts";
 import { ADD_COURT } from "../../util/paths";
 import NewCourtCard from "./NewCourtCard";
+import { getCourtsForOwners } from "../../util/api";
+
+export async function loader({ params }) {
+  const { ownerId } = params;
+  const data = new URLSearchParams();
+  data.append("userId", ownerId);
+  return await getCourtsForOwners(data.toString());
+}
 
 export default function Courts() {
   const { user } = useUser();
-  const courts = COURTS;
+  const data = useLoaderData();
+  console.log(data);
+  let courts = []; // COURTS;
+  courts = [...courts, ...data];
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -21,7 +32,7 @@ export default function Courts() {
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
               <img
                 alt={court.imageAlt}
-                src={court.imageSrc}
+                src={court.imageSrc || court.image}
                 className="h-full w-full object-cover object-center lg:h-full lg:w-full"
               />
             </div>

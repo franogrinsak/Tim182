@@ -1,9 +1,17 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { getOwnerProfileData } from "../../util/api";
+
+export async function loader({ params }) {
+  const { ownerId } = params;
+  const data = new URLSearchParams();
+  data.append("userId", ownerId);
+  return await getOwnerProfileData(data.toString());
+}
 
 export default function OwnerProfile() {
-  const { user } = useUser();
+  const user = useLoaderData();
 
   return (
     <div className="flex flex-col items-center">

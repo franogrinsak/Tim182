@@ -1,8 +1,10 @@
 import React from "react";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, redirect } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
 import sleep from "../../util/sleep";
+import { postNewCourt } from "../../util/api";
+import { COURTS, OWNER_COURTS } from "../../util/paths";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -11,15 +13,14 @@ export async function action({ request }) {
     courtName: formData.get("courtName"),
     location: formData.get("location"),
     isIndoor: formData.get("isIndoor"),
-    image: formData.get("image"),
+    image: formData.get("imageText"),
   };
   console.log(data);
   try {
     // Sleep is here to test the register button changing while doing a post request
     sleep(5000);
-    return null;
-    //await postRegisterData(data);
-    //return redirect(DASHBOARD);
+    await postNewCourt(data);
+    return redirect("/app/courts/" + data.userId);
   } catch (err) {
     console.log(err);
     return "Failed to register, reason: " + `${err.status} ${err.message}`;
@@ -44,7 +45,6 @@ export default function AddCourt() {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
@@ -82,6 +82,7 @@ export default function AddCourt() {
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           >
             <input type="hidden" name="userId" value={user?.userId || ""} />
+            <input type="hidden" name="imageText" value={previewImage || ""} />
             <div className="flex items-center justify-center w-full mb-4">
               {previewImage && (
                 <div className="mt-4 w-full flex justify-center">

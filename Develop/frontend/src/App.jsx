@@ -22,23 +22,38 @@ import {
   APP,
   COURT_DETAIL,
   COURT_NOT_FOUND,
+  COURT_OWNER_ADD,
+  COURT_OWNER_DETAIL,
+  COURT_OWNER_PROFILE,
   COURTS,
   DASHBOARD,
   EDIT_COURT,
   HOME,
   LOGGED,
+  OWNER_COURTS,
   OWNER_PROFILE,
   REGISTER,
+  USERS,
 } from "./util/paths";
 import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
-import Courts from "./components/courts/Courts";
-import CourtDetail from "./components/courts/CourtDetails";
+import Courts, {
+  loader as ownerCourtsLoader,
+} from "./components/courts/Courts";
+import CourtDetail, {
+  loader as courtDetailLoader,
+} from "./components/courts/CourtDetails";
 import CourtsLayout from "./components/courts/CourtsLayout";
 import AddCourt from "./components/courts/AddCourt";
-import EditCourt from "./components/courts/EditCourt";
-import OwnerProfile from "./components/courts/OwnerProfile";
+import EditCourt, {
+  action as editCourtAction,
+} from "./components/courts/EditCourt";
+import OwnerProfile, {
+  loader as ownerProfileLoader,
+} from "./components/courts/OwnerProfile";
+import Users from "./components/users/Users";
 
 function App() {
+  console.log(COURT_OWNER_DETAIL);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -50,29 +65,53 @@ function App() {
             element={<NotFound link={HOME} returnText={"homepage"} />}
           />
         </Route>
+
         <Route path={APP} loader={async () => requireAuth()} element={<Main />}>
+          {/* Dashboard */}
           <Route index element={<Dashboard />} />
+
           <Route path={LOGGED} element={<Logged />} />
+
+          {/* Register page */}
           <Route
             path={REGISTER}
             element={<Register />}
             action={registerAction}
           />
-          <Route path={COURTS} element={<CourtsLayout />}>
-            <Route index element={<Courts />} />
-            <Route path={COURT_DETAIL} element={<CourtDetail />} />
+
+          {/* Courts UI */}
+          <Route path={COURTS}>
+            <Route path={OWNER_COURTS} element={<CourtsLayout />}>
+              <Route index element={<Courts />} loader={ownerCourtsLoader} />
+              <Route
+                path={COURT_OWNER_PROFILE}
+                element={<OwnerProfile />}
+                loader={ownerProfileLoader}
+              />
+              <Route
+                path={COURT_OWNER_ADD}
+                element={<AddCourt />}
+                action={addCourtAction}
+              />
+            </Route>
             <Route
-              path={ADD_COURT}
-              element={<AddCourt />}
-              action={addCourtAction}
+              path={COURT_OWNER_DETAIL}
+              element={<CourtDetail />}
+              loader={courtDetailLoader}
             />
-            <Route path={EDIT_COURT} element={<EditCourt />} />
-            <Route path={OWNER_PROFILE} element={<OwnerProfile />} />
+            <Route index element={<Courts />} />
             <Route
-              path="*"
-              element={<NotFound link={COURTS} returnText={"courts"} />}
+              path={EDIT_COURT}
+              element={<EditCourt />}
+              loader={courtDetailLoader}
+              action={editCourtAction}
             />
           </Route>
+
+          <Route path={USERS}>
+            <Route index element={<Users />} />
+          </Route>
+
           <Route
             path="*"
             element={<NotFound link={APP} returnText={"dashboard"} />}

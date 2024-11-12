@@ -20,7 +20,7 @@ export function getOwnerCourtsCard(ownerId) {
 export const PLAYER_COURTS = (
   <FeatureCard
     key={1}
-    link="courts"
+    link="courts/all"
     imageUrl={padelRacketImage}
     title="Courts"
     text="Find nearby padel courts and book the perfect time to play with friends. Join the fun, improve your game, and connect."

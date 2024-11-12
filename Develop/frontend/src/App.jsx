@@ -28,6 +28,7 @@ import {
   COURTS,
   DASHBOARD,
   EDIT_COURT,
+  EDIT_COURT_OWNER_PROFILE,
   HOME,
   LOGGED,
   OWNER_COURTS,
@@ -51,6 +52,12 @@ import OwnerProfile, {
   loader as ownerProfileLoader,
 } from "./components/courts/OwnerProfile";
 import Users from "./components/users/Users";
+import AllCourts, {
+  loader as allCourtsLoader,
+} from "./components/courts/AllCourts";
+import EditOwnerProfile, {
+  action as editOwnerProfileAction,
+} from "./components/courts/EditOwnerProfile";
 
 function App() {
   console.log(COURT_OWNER_DETAIL);
@@ -99,7 +106,12 @@ function App() {
               element={<CourtDetail />}
               loader={courtDetailLoader}
             />
-            <Route index element={<Courts />} />
+            <Route
+              path={EDIT_COURT_OWNER_PROFILE}
+              element={<EditOwnerProfile />}
+              loader={ownerProfileLoader}
+              action={editOwnerProfileAction}
+            />
             <Route
               path={EDIT_COURT}
               element={<EditCourt />}
@@ -107,6 +119,12 @@ function App() {
               action={editCourtAction}
             />
           </Route>
+
+          <Route
+            path="/app/courts/all"
+            element={<AllCourts />}
+            loader={allCourtsLoader}
+          />
 
           <Route path={USERS}>
             <Route index element={<Users />} />

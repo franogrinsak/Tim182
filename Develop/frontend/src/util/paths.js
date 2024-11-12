@@ -21,6 +21,7 @@ export const EDIT_COURT = COURT_OWNER_DETAIL + "/edit/court";
 export const COURT_NOT_FOUND = COURTS + NOT_FOUND;
 export const OWNER_PROFILE = COURTS + "/profile";
 export const COURT_OWNER_PROFILE = OWNER_COURTS + "/profile";
+export const EDIT_COURT_OWNER_PROFILE = COURT_OWNER_PROFILE + "/edit";
 
 export const USERS = APP + "/users";
 

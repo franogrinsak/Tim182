@@ -2,7 +2,6 @@ import { requireAuth } from "./auth";
 import { BACKEND_ADD_COURT, BACKEND_LOGGED, resolveBackendPath } from "./paths";
 
 export async function postRegisterData(data) {
-  //requireAuth();
   const response = await fetch(resolveBackendPath(BACKEND_LOGGED), {
     method: "POST",
     body: JSON.stringify(data),
@@ -55,6 +54,31 @@ export async function postUpdateCourt(data) {
 
 export async function getOwnerProfileData(data) {
   const response = await fetch(resolveBackendPath("/owner?" + data), {
+    method: "GET",
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+export async function postUpdateOwnerProfileData(data) {
+  console.log(data);
+  const response = await fetch(resolveBackendPath("/owner/edit"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(response);
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}
+
+export async function getAllCourts() {
+  const response = await fetch(resolveBackendPath("/courts/all"), {
     method: "GET",
     credentials: "include",
   });

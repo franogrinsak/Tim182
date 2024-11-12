@@ -15,7 +15,7 @@ import sleep from "../../util/sleep";
 export async function action({ request }) {
   const formData = await request.formData();
   const data = {
-    userId: formData.get("userId"),
+    user: { userId: formData.get("userId") },
     courtName: formData.get("courtName"),
     location: formData.get("location"),
     isIndoor: formData.get("isIndoor"),
@@ -27,7 +27,7 @@ export async function action({ request }) {
     // Sleep is here to test the register button changing while doing a post request
     sleep(5000);
     await postUpdateCourt(data);
-    return redirect("/app/courts/" + data.userId + "/" + data.courtId);
+    return redirect("/app/courts/" + data.user.userId + "/" + data.courtId);
   } catch (err) {
     console.log(err);
     return "Failed to register, reason: " + `${err.status} ${err.message}`;

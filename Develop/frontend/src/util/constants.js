@@ -38,10 +38,10 @@ export function getFeatureCards(user) {
   if (!user) return [];
 
   switch (user.roleId) {
+    case USER_ROLES.PLAYER:
+      return [PLAYER_COURTS, PLAYER_TOURNAMENT];
     case USER_ROLES.OWNER:
       return [getOwnerCourtsCard(user.userId), OWNER_TOURNAMENT];
-    case USER_ROLES.PLAYER:
-      return [OWNER_COURTS, OWNER_TOURNAMENT];
     case USER_ROLES.ADMIN:
       return [ADMINISTRATOR_USERS];
     default:

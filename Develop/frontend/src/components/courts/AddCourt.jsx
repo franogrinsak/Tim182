@@ -9,7 +9,7 @@ import { COURTS, OWNER_COURTS } from "../../util/paths";
 export async function action({ request }) {
   const formData = await request.formData();
   const data = {
-    userId: formData.get("userId"),
+    user: { userId: formData.get("userId") },
     courtName: formData.get("courtName"),
     location: formData.get("location"),
     isIndoor: formData.get("isIndoor"),
@@ -20,7 +20,7 @@ export async function action({ request }) {
     // Sleep is here to test the register button changing while doing a post request
     sleep(5000);
     await postNewCourt(data);
-    return redirect("/app/courts/" + data.userId);
+    return redirect("/app/courts/" + data.user.userId);
   } catch (err) {
     console.log(err);
     return "Failed to register, reason: " + `${err.status} ${err.message}`;

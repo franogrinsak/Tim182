@@ -2,6 +2,7 @@ import React from "react";
 import { useUser } from "../auth/UserContext";
 import { Link, useLoaderData } from "react-router-dom";
 import { getOwnerProfileData } from "../../util/api";
+import { USER_ROLES } from "../../util/constants";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -12,6 +13,7 @@ export async function loader({ params }) {
 
 export default function OwnerProfile() {
   const user = useLoaderData();
+  const liquidUser = useUser();
 
   return (
     <div className="flex flex-col items-center">
@@ -38,11 +40,13 @@ export default function OwnerProfile() {
           </dl>
         </div>
       </div>
-      <Link to="edit">
-        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-          Edit
-        </button>
-      </Link>
+      {liquidUser?.user.roleId === USER_ROLES.OWNER && (
+        <Link to="edit">
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            Edit
+          </button>
+        </Link>
+      )}
     </div>
   );
 }

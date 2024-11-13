@@ -4,6 +4,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserRepository {
     private final JdbcTemplate jdbc;
@@ -69,5 +71,22 @@ public class UserRepository {
         jdbc.update(querry, user.getFirstName(), user.getLastName(),user.getUserId());
         querry = "UPDATE owners SET phonenumber=? WHERE userid = ?";
         jdbc.update(querry, user.getPhoneNumber(),user.getUserId());
+    }
+
+    public List<User> getAllUsers() {
+        String querry="SELECT * FROM users natural left join owners";
+        RowMapper<User> purchaseRowMapper = (r, i) -> {
+            User rowObject = new User();
+            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setEmail(r.getString("email"));
+            rowObject.setFirstName(r.getString("firstname"));
+            rowObject.setLastName(r.getString("lastname"));
+            rowObject.setRoleId(r.getInt("roleid"));
+            rowObject.setPhoneNumber(r.getString("phonenumber"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper);
+
     }
 }

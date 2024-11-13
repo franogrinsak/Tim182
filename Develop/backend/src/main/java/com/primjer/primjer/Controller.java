@@ -3,6 +3,8 @@ package com.primjer.primjer;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class Controller {
     private UserRepository userRepo;
@@ -34,4 +36,8 @@ public class Controller {
         userRepo.updateOwner(user);
     }
 
+    @GetMapping("/users/all")
+    public List<User> getAllUsers(@RequestParam int userId){
+        return userRepo.getAllUsers();
+    }
 }

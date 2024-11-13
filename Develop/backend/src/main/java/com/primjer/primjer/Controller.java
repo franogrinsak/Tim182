@@ -44,4 +44,9 @@ public class Controller {
     public void addUser(@RequestBody User user){
         userRepo.addUser(user);
     }
+
+    @PostMapping("/users/edit")
+    public void editUser(@RequestBody User user){
+        userRepo.editUser(user);
+    }
 }

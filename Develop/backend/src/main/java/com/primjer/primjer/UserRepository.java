@@ -109,4 +109,13 @@ public class UserRepository {
             jdbc.update(querry,userId,user.getPhoneNumber());
         }
     }
+
+    public void editUser(User user) {
+        String querry = "UPDATE users SET email=?, firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
+        jdbc.update(querry,user.getEmail(),user.getFirstName(), user.getLastName(), user.getRoleId(),user.getUserId());
+        if(user.getRoleId()==4){
+            querry ="UPDATE owners SET phonenumber=? WHERE userid = ?";
+            jdbc.update(querry,user.getPhoneNumber(),user.getUserId());
+        }
+    }
 }

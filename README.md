@@ -35,7 +35,8 @@ F-12 Plaćanje članstva: Igrači moraju imati mogućnost plaćanja članstva.\
 F-13 Prijave na turnir: Igrači se moraju moći prijaviti na otvorene turnire.\
 F-14 Podsustav obavještavanja: Igrači moraju moći dobiti obavijest kada je novi turnir objavljen, ako žele.\
 F-15 Postavljanje cijene članstva: Administratori moraju moći podešavati cijenu članstva za vlasnike.\
-F-16 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, uređivanje i dodavanje korisnika.
+F-16 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, uređivanje i dodavanje korisnika.\
+F-17	Postavljanje slika i komentara: Igrači moraju imati mogućnost postavljanja slika i komentara za odigrane mečeve turnira.
 
 # Nefunkcionalni zahtjevi
 * Visoki prioritet\

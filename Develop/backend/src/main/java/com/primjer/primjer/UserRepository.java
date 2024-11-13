@@ -89,4 +89,24 @@ public class UserRepository {
         return jdbc.query(querry, purchaseRowMapper);
 
     }
+
+    public void addUser(User user) {
+        String querry="INSERT INTO users(email,firstName,lastName,roleId) VALUES(?,?,?,?)";
+        jdbc.update(querry,
+                user.getEmail(),user.getFirstName(),user.getLastName(),user.getRoleId());
+
+        querry="SELECT userid FROM users where email=?";
+        RowMapper<Integer> purchaseRowMapper = (r, i) -> {
+            return r.getInt("userid");
+        };
+        int userId=jdbc.query(querry, purchaseRowMapper,user.getEmail()).get(0);
+        if(user.getRoleId()==2){
+            querry ="INSERT INTO players(userid) VALUES(?)";
+            jdbc.update(querry,userId);
+        }
+        else if(user.getRoleId()==4){
+            querry ="INSERT INTO owners(userid,phonenumber) VALUES(?,?)";
+            jdbc.update(querry,userId,user.getPhoneNumber());
+        }
+    }
 }

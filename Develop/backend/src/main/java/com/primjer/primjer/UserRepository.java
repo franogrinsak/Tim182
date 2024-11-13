@@ -38,5 +38,36 @@ public class UserRepository {
     public void updateUser(User user){
         String querry = "UPDATE users SET firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
         jdbc.update(querry, user.getFirstName(), user.getLastName(), user.getRoleId(),user.getUserId());
+        if(user.getRoleId()==2){
+            querry ="INSERT INTO players(userid) VALUES(?)";
+            jdbc.update(querry,user.getUserId());
+        }
+        else if(user.getRoleId()==4){
+            querry ="INSERT INTO owners(userid,phonenumber) VALUES(?,?)";
+            jdbc.update(querry,user.getUserId(),user.getPhoneNumber());
+        }
+    }
+
+    public User getOwner(int userId) {
+        String querry="SELECT * FROM users natural left join owners WHERE userid = ?";
+        RowMapper<User> purchaseRowMapper = (r, i) -> {
+            User rowObject = new User();
+            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setEmail(r.getString("email"));
+            rowObject.setFirstName(r.getString("firstname"));
+            rowObject.setLastName(r.getString("lastname"));
+            rowObject.setRoleId(r.getInt("roleid"));
+            rowObject.setPhoneNumber(r.getString("phonenumber"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper,userId).get(0);
+    }
+
+    public void updateOwner(User user) {
+        String querry = "UPDATE users SET firstname = ?, lastname = ? WHERE userid = ?";
+        jdbc.update(querry, user.getFirstName(), user.getLastName(),user.getUserId());
+        querry = "UPDATE owners SET phonenumber=? WHERE userid = ?";
+        jdbc.update(querry, user.getPhoneNumber(),user.getUserId());
     }
 }

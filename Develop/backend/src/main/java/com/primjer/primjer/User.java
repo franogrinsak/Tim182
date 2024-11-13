@@ -6,6 +6,7 @@ public class User{
     private String firstName;
     private String lastName;
     private int roleId;
+    private String phoneNumber;
 
     public String getEmail() {
         return email;
@@ -41,5 +42,12 @@ public class User{
 
     public void setUserId(int id) {
         this.userId =id;
+    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

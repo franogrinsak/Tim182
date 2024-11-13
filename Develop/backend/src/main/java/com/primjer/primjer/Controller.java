@@ -40,4 +40,8 @@ public class Controller {
     public List<User> getAllUsers(@RequestParam int userId){
         return userRepo.getAllUsers();
     }
+    @PostMapping("/users/add")
+    public void addUser(@RequestBody User user){
+        userRepo.addUser(user);
+    }
 }

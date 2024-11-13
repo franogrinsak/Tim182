@@ -1,6 +1,10 @@
 import React from "react";
 import { useUser } from "./auth/UserContext";
-import { DEV_MODE, FEATURE_CARDS_BY_ROLES } from "../util/constants";
+import {
+  DEV_MODE,
+  FEATURE_CARDS_BY_ROLES,
+  getFeatureCards,
+} from "../util/constants";
 import { PLAYER_COURTS, PLAYER_TOURNAMENT } from "./FeatureCard";
 
 export default function Dashboard() {
@@ -33,8 +37,8 @@ export default function Dashboard() {
 
   return (
     <>
-      <section className="flex justify-center feature-cards-container">
-        {user && FEATURE_CARDS_BY_ROLES[user.roleId]}
+      <section className="flex flex-wrap justify-center feature-cards-container">
+        {user && getFeatureCards(user)}
       </section>
       {/*
       <button onClick={change}>Call /</button>

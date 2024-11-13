@@ -5,10 +5,22 @@ import trophyImage from "../assets/trophy.png";
 import usersImage from "../assets/users.png";
 import { Link } from "react-router-dom";
 
+export function getOwnerCourtsCard(ownerId) {
+  return (
+    <FeatureCard
+      key={3}
+      link={`courts/${ownerId}`}
+      imageUrl={courtImage}
+      title="Your courts"
+      text="Register your courts to attract clients, manage bookings, and showcase available playtimes directly on your profile."
+    />
+  );
+}
+
 export const PLAYER_COURTS = (
   <FeatureCard
     key={1}
-    link="courts"
+    link="courts/all"
     imageUrl={padelRacketImage}
     title="Courts"
     text="Find nearby padel courts and book the perfect time to play with friends. Join the fun, improve your game, and connect."

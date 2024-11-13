@@ -1,10 +1,15 @@
 import React from "react";
-import { Form, useActionData, redirect, useNavigation } from "react-router-dom";
-import { USER_ROLES } from "../util/constants";
-import { postRegisterData } from "../util/api";
-import { useUser } from "./auth/UserContext";
-import sleep from "../util/sleep";
-import { DASHBOARD } from "../util/paths";
+import { useUser } from "../auth/UserContext";
+import {
+  Form,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
+import ReturnButton from "../ReturnButton";
+import { postUpdateOwnerProfileData } from "../../util/api";
+import sleep from "../../util/sleep";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -18,31 +23,27 @@ export async function action({ request }) {
   try {
     // Sleep is here to test the register button changing while doing a post request
     sleep(5000);
-    await postRegisterData(data);
-    return redirect(DASHBOARD);
+    await postUpdateOwnerProfileData(data);
+    return redirect("/app/courts/" + data.userId + "/profile");
   } catch (err) {
     console.log(err);
     return "Failed to register, reason: " + `${err.status} ${err.message}`;
   }
 }
 
-export default function Register() {
-  const [isOwner, setIsOwner] = React.useState(false);
+export default function EditOwnerProfile() {
   const { user } = useUser();
   const message = useActionData();
+  const owner = useLoaderData();
   const navigation = useNavigation();
-
-  // Function to change the visibility of phone number imput
-  // Should only be visible when owner is the select option
-  function userTypeChanged(event) {
-    event.preventDefault();
-    setIsOwner(event.target.value == USER_ROLES.OWNER);
-  }
-
+  console.log(owner);
   return (
     <>
-      <h1>Welcome</h1>
-      <h2>Fill in the form to complete your registration</h2>
+      <ReturnButton
+        link={"/app/courts/" + owner.userId + "/profile"}
+        text="Return to profile"
+      />
+      <h2>Edit profile data</h2>
       <div className="register-form-container">
         <div className="w-full register-size">
           {message && (
@@ -74,6 +75,7 @@ export default function Register() {
                   name="firstName"
                   type="text"
                   placeholder="First name"
+                  defaultValue={owner?.firstName}
                   required
                 />
               </div>
@@ -93,68 +95,38 @@ export default function Register() {
                   name="lastName"
                   type="text"
                   placeholder="Last name"
+                  defaultValue={owner?.lastName}
                   required
                 />
               </div>
             </div>
-            {isOwner && (
-              <div className="-mx-3 mb-6">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2 text-left"
-                  htmlFor="phoneNumber"
-                >
-                  Phone number
-                </label>
-                <input
-                  minLength="1"
-                  maxLength="50"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  type="text"
-                  title="Only digits and spaces are allowed"
-                  placeholder="Phone number"
-                  required
-                />
-              </div>
-            )}
 
             <div className="-mx-3 mb-6">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 text-left"
-                htmlFor="roleId"
+                htmlFor="phoneNumber"
               >
-                Register as
+                Phone number
               </label>
-              <div className="flex flex-column items-start">
-                <div className="inline-block relative w-28">
-                  <select
-                    onChange={userTypeChanged}
-                    name="roleId"
-                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    <option value={USER_ROLES.PLAYER}>Player</option>
-                    <option value={USER_ROLES.OWNER}>Owner</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg
-                      className="fill-current h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              <input
+                minLength="1"
+                maxLength="50"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="phoneNumber"
+                name="phoneNumber"
+                type="text"
+                title="Only digits and spaces are allowed"
+                placeholder="Phone number"
+                defaultValue={owner.phoneNumber}
+                required
+              />
             </div>
+
             <button
               disabled={user && navigation.state !== "idle"}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
-              {navigation.state === "submitting"
-                ? "Registering..."
-                : "Register"}
+              {navigation.state === "submitting" ? "Editing..." : "Edit"}
             </button>
           </Form>
         </div>

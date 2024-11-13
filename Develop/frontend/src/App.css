@@ -108,6 +108,12 @@ footer {
   color: inherit;
 }
 
+.remove-link-style:link,
+.remove-link-style:visited {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 .feature-card {
   padding: 40px 30px;
   box-shadow: 0px 0 30px rgba(0, 0, 0, 0.1);
@@ -119,10 +125,30 @@ footer {
   transform: scale(1.1);
 }
 
+.zoom-animation {
+  transition: transform 0.3s;
+}
+
+.zoom-animation:hover {
+  transform: scale(1.1);
+}
+
 .feature-card h3 {
   font-size: 1.75rem;
 }
 
 .feature-card-image {
   width: 50px;
+}
+
+.court-nav-text span {
+  color: #5cb874;
+}
+
+.users-table-container td {
+  text-align: left;
+}
+
+.users-table-container th {
+  background-color: #f9fafb;
 }

@@ -21,12 +21,12 @@ export default function Courts() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-        {user?.roleId === USER_ROLES.PLAYER
+        {user?.roleId == USER_ROLES.PLAYER
           ? "Courts owned by " + `${ownerData.firstName} ${ownerData.lastName}`
           : "Your courts"}
       </h2>
       <div className="min-h-72 min-w-72 mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-        {user.roleId === USER_ROLES.OWNER && <NewCourtCard />}
+        {user?.roleId == USER_ROLES.OWNER && <NewCourtCard />}
         {courts.map((court) => (
           <div key={court.courtId} className="group relative zoom-animation">
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">

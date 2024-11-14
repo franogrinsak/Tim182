@@ -100,3 +100,45 @@ export async function getCourtDetails(data) {
   });
   return await response.json();
 }
+
+export async function getAllUsers() {
+  const response = await fetch(resolveBackendPath("/users/all?userId=1"), {
+    method: "GET",
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+export async function postAddUser(data) {
+  console.log(data);
+  const response = await fetch(resolveBackendPath("/users/add"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(response);
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}
+
+export async function postUpdateUserData(data) {
+  console.log(data);
+  const response = await fetch(resolveBackendPath("/users/edit"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(response);
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}

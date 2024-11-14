@@ -51,13 +51,18 @@ import EditCourt, {
 import OwnerProfile, {
   loader as ownerProfileLoader,
 } from "./components/courts/OwnerProfile";
-import Users from "./components/users/Users";
+import Users, { loader as usersLoader } from "./components/users/Users";
 import AllCourts, {
   loader as allCourtsLoader,
 } from "./components/courts/AllCourts";
 import EditOwnerProfile, {
   action as editOwnerProfileAction,
 } from "./components/courts/EditOwnerProfile";
+import EditUser, {
+  action as editUserAction,
+  loader as editUserLoader,
+} from "./components/users/EditUser";
+import AddUser, { action as addUserAction } from "./components/users/AddUser";
 
 function App() {
   console.log(COURT_OWNER_DETAIL);
@@ -127,8 +132,16 @@ function App() {
           />
 
           <Route path={USERS}>
-            <Route index element={<Users />} />
+            <Route index element={<Users />} loader={usersLoader} />
+            <Route path="add" element={<AddUser />} action={addUserAction} />
           </Route>
+
+          <Route
+            path="users/edit/:userId"
+            element={<EditUser />}
+            loader={editUserLoader}
+            action={editUserAction}
+          />
 
           <Route
             path="*"

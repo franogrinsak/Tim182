@@ -36,17 +36,17 @@ F-18	Postavljanje slika i komentara: Igrači moraju imati mogućnost postavljanj
 
 > Visoki prioritet: 
 > 
-NF-1.1 - Autentifikacija i autorizacija: Korisnici moraju biti autentificirani sigurnim metodama; lozinke su šifrirane, a autorizacija je potrebna za specifične funkcionalnosti\
-NF-1.2 - Sigurnost transakcija: Plaćanja putem PayPala ili kreditnih kartica moraju biti zaštićena kroz sigurne vanjske servise\
+NF-1.1 - Autentifikacija i autorizacija: Korisnici moraju biti autentificirani sigurnim metodama; lozinke su šifrirane, a autorizacija je potrebna za specifične funkcionalnosti (Google Auth)\
+NF-1.2 - Sigurnost transakcija: Plaćanja putem PayPala ili kreditnih kartica moraju biti zaštićena kroz sigurne vanjske servise (Stripe)\
 NF-3.1 - Zaštita podataka: Sve osjetljive informacije moraju biti pohranjene u skladu s GDPR zahtjevima i pravilima privatnosti\
 NF-3.2 - Komunikacijski protokoli: Komunikacija između klijentskog sučelja i poslužitelja mora koristiti HTTPS protokol za sigurnost\
-NF-6.1 - Održavanje: Sustav treba biti dizajniran na način koji omogućuje lako održavanje i ažuriranje koda te baze podataka\
-NF-6.2 - Dokumentacija: Sustav mora biti popraćen tehničkom dokumentacijom koja uključuje opise sustava i vodiče za implementaciju i održavanje\
-NF-6.3 - Testiranje: Sustav treba biti razvijen u skladu s metodama automatiziranog testiranja, uključujući funkcionalna, sigurnosna i integracijska testiranja
+NF-6.1 - Održavanje: Sustav treba biti dizajniran na način koji omogućuje lako održavanje i ažuriranje koda te baze podataka (MVC arhitektura)\
+NF-6.2 - Dokumentacija: Sustav mora biti popraćen tehničkom dokumentacijom koja uključuje opise sustava i vodiče za implementaciju i održavanje (Github Wiki)\
+NF-6.3 - Testiranje: Sustav treba biti razvijen u skladu s metodama automatiziranog testiranja, uključujući funkcionalna, sigurnosna i integracijska testiranja (Selenium1)
 > 
 > Srednji prioritet: 
 > 
-NF-1.3 - Integracija s vanjskim sustavima: Sustav mora podržavati besprijekornu integraciju s vanjskim kalendarima (npr., Google Calendar, Calendar.online) bez smanjenja performansi\
+NF-1.3 - Integracija s vanjskim sustavima: Sustav mora podržavati besprijekornu integraciju s vanjskim kalendarima (npr., Google Calendar, Stripe) bez smanjenja performansi\
 NF-4.1 - Skalabilnost: Sustav treba biti dizajniran modularno kako bi omogućio jednostavno proširenje funkcionalnosti bez većih promjena postojeće infrastrukture\
 NF-4.2 - Dostupnost: Sustav treba imati najmanje 99.5% dostupnost na godišnjoj razini, uključujući planirane prekide
 

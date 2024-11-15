@@ -1,5 +1,7 @@
 # PlayPadel
 
+Adresa: playpadel.tech
+
 # Opis projekta
 Ovaj projekt je rezultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu. \
 Cilj ovog projekta je razviti integriranu aplikaciju koja pojednostavljuje rezervaciju termina za padel, olakšava organizaciju i sudjelovanje na turnirima, te promovira sport kroz centralizirani sustav obavijesti i praćenja rezultata.

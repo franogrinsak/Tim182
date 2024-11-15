@@ -33,7 +33,9 @@ F-17 Upravljanje korisnicima: Sustav mora omogućiti administratorima brisanje, 
 F-18	Postavljanje slika i komentara: Igrači moraju imati mogućnost postavljanja slika i komentara za odigrane mečeve turnira.
 
 # Nefunkcionalni zahtjevi
-* Visoki prioritet\
+
+> Visoki prioritet: 
+> 
 NF-1.1 - Autentifikacija i autorizacija: Korisnici moraju biti autentificirani sigurnim metodama; lozinke su šifrirane, a autorizacija je potrebna za specifične funkcionalnosti\
 NF-1.2 - Sigurnost transakcija: Plaćanja putem PayPala ili kreditnih kartica moraju biti zaštićena kroz sigurne vanjske servise\
 NF-3.1 - Zaštita podataka: Sve osjetljive informacije moraju biti pohranjene u skladu s GDPR zahtjevima i pravilima privatnosti\
@@ -41,7 +43,9 @@ NF-3.2 - Komunikacijski protokoli: Komunikacija između klijentskog sučelja i p
 NF-6.1 - Održavanje: Sustav treba biti dizajniran na način koji omogućuje lako održavanje i ažuriranje koda te baze podataka\
 NF-6.2 - Dokumentacija: Sustav mora biti popraćen tehničkom dokumentacijom koja uključuje opise sustava i vodiče za implementaciju i održavanje\
 NF-6.3 - Testiranje: Sustav treba biti razvijen u skladu s metodama automatiziranog testiranja, uključujući funkcionalna, sigurnosna i integracijska testiranja
-* Srednji prioritet\
+> 
+> Srednji prioritet: 
+> 
 NF-1.3 - Integracija s vanjskim sustavima: Sustav mora podržavati besprijekornu integraciju s vanjskim kalendarima (npr., Google Calendar, Calendar.online) bez smanjenja performansi\
 NF-4.1 - Skalabilnost: Sustav treba biti dizajniran modularno kako bi omogućio jednostavno proširenje funkcionalnosti bez većih promjena postojeće infrastrukture\
 NF-4.2 - Dostupnost: Sustav treba imati najmanje 99.5% dostupnost na godišnjoj razini, uključujući planirane prekide

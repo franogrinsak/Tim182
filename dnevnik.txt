@@ -12,3 +12,31 @@ Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip, Z. Luka
 Teme sastanka:
 -Zajedničko definiranje funkcionalnih zahtjeva
 -Podjela rada za izradu obrazaca uporabe
+
+3. sastanak
+Datum: 24. listopada 2024.
+Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip, Z. Luka
+Teme sastanka:
+-Prezentacija funkcionalnih zahtjeva
+-Provjera izrađenih obrazaca uporabe
+
+4. sastanak
+Datum: 28. listopada 2024.
+Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip
+Teme sastanka:
+-Sastavljanje napravljenih obrazaca uporabe i rad na bazi podataka
+-Raspodjela poslova za implementaciju registracije i prijave
+
+5. sastanak
+Datum: 7. studenog 2024.
+Prisustvovali: F. Ogrinšak, P. Pašić, Z. Luka
+Teme sastanka:
+-Predstavljanje logina i registracije
+-Raspodjela posla za stvaranje terena i administratorske funkcionalnosti
+
+6. sastanak
+Datum: 14. studenog 2024.
+Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip
+Teme sastanka:
+-Predstavljanje implementacije pregleda terena i administratorskih funkcionalnosti
+-Provjera dokumentacije te raspodjela zadataka za ispravak pogrešaka u dokumentaciji

@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "./pageLayout/Header";
-import Footer from "./pageLayout/Footer";
 import { APP } from "../util/paths";
 
 export default function LandingPage() {

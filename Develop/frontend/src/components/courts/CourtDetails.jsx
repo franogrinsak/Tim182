@@ -4,6 +4,7 @@ import ReturnButton from "../ReturnButton";
 import { getCourtDetails } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
+import OwnerCalendar from "../time-slots/OwnerCalendar";
 
 export async function loader({ params }) {
   const { courtId } = params;
@@ -77,6 +78,7 @@ export default function CourtDetail() {
           </button>
         </Link>
       )}
+      <OwnerCalendar />
     </div>
   );
 }

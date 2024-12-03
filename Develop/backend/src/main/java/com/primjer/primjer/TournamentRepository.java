@@ -19,6 +19,8 @@ public class TournamentRepository {
         jdbc.update(querry,
                 tournament.getTournamentName(),tournament.getDate(),tournament.getRegistrationFee(),tournament.getReward(),tournament.getPlayerLevel(),tournament.getDescription(),tournament.isOpen(),tournament.getUser().getUserId(),tournament.getCourt().getCourtId());
     }
-
+private void test() {
+    System.out.println("testiranje");
+}
 
 }

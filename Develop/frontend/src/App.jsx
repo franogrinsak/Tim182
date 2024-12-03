@@ -31,9 +31,11 @@ import {
   EDIT_COURT_OWNER_PROFILE,
   HOME,
   LOGGED,
+  ORGANIZE_TOURNAMENT,
   OWNER_COURTS,
   OWNER_PROFILE,
   REGISTER,
+  TOURNAMENTS,
   USERS,
 } from "./util/paths";
 import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
@@ -63,6 +65,8 @@ import EditUser, {
   loader as editUserLoader,
 } from "./components/users/EditUser";
 import AddUser, { action as addUserAction } from "./components/users/AddUser";
+import Tournaments from "./components/tournaments/Tournaments";
+import OrganizeTournament from "./components/tournaments/OrganizeTournament";
 
 function App() {
   console.log(COURT_OWNER_DETAIL);
@@ -130,6 +134,14 @@ function App() {
             element={<AllCourts />}
             loader={allCourtsLoader}
           />
+
+          <Route path={TOURNAMENTS}>
+            <Route index element={<Tournaments />} />
+            <Route
+              path={ORGANIZE_TOURNAMENT}
+              element={<OrganizeTournament />}
+            />
+          </Route>
 
           <Route path={USERS}>
             <Route index element={<Users />} loader={usersLoader} />

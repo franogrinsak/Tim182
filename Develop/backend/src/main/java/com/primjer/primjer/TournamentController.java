@@ -13,17 +13,21 @@ public class TournamentController {
     public TournamentController(TournamentRepository tournamentRepo) {
         this.tournamentRepo = tournamentRepo;
     }
+
     @PostMapping("/tournaments/add")
-    public void tournamentAdd(@RequestBody Tournament tournament){
+    public void tournamentAdd(@RequestBody Tournament tournament) {
         tournamentRepo.addTournament(tournament);
     }
 
     @GetMapping("/tournaments/all")
-    public List<Tournament> getAllTournaments(){
+    public List<Tournament> getAllTournaments() {
         return tournamentRepo.getAllTournaments();
     }
 
+    @GetMapping("/tournaments/owners")
+    public List<Tournament> getOwnersTournaments(@RequestParam int userId) {
+        return tournamentRepo.getOwnersTournaments(userId);
 
 
-
+    }
 }

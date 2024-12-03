@@ -50,4 +50,35 @@ public class TournamentRepository {
         return jdbc.query(querry, purchaseRowMapper);
     }
 
+    public List<Tournament> getOwnersTournaments(int userId) {
+        String querry="SELECT * FROM tournaments natural join courts natural join users WHERE userid = ?";
+        RowMapper<Tournament> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            Court court = new Court();
+            court.setCourtId(r.getInt("courtid"));
+            court.setImage(r.getString("image"));
+            court.setisIndoor(r.getBoolean("isindoor"));
+            court.setCourtName(r.getString("courtname"));
+            court.setLocation(r.getString("location"));
+            Tournament rowObject= new Tournament();
+            rowObject.setUser(user);
+            rowObject.setCourt(court);
+            rowObject.setTournamentName(r.getString("tournamentname"));
+            rowObject.setTournamentId(r.getInt("tournamentid"));
+            rowObject.setDate(r.getDate("date").toLocalDate());
+            rowObject.setRegistrationFee(r.getFloat("registrationfee"));
+            rowObject.setReward(r.getFloat("reward"));
+            rowObject.setDescription(r.getString("description"));
+            rowObject.setOpen(r.getBoolean("isopen"));
+            rowObject.setPlayerLevel(r.getString("playerlevel"));
+
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper, userId);
+    }
+
 }

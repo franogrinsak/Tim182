@@ -17,6 +17,13 @@ public class TournamentController {
     public void tournamentAdd(@RequestBody Tournament tournament){
         tournamentRepo.addTournament(tournament);
     }
-    
+
+    @GetMapping("/tournaments/all")
+    public List<Tournament> getAllTournaments(){
+        return tournamentRepo.getAllTournaments();
+    }
+
+
+
 
 }

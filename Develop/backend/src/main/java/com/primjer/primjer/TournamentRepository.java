@@ -15,12 +15,13 @@ public class TournamentRepository {
     }
 
     public void addTournament(Tournament tournament) {
-        String querry="INSERT INTO tournaments(tournamentname,date,registrationfee,reward,playerlevel,description,isopen,userid,courtid) VALUES(?,?,?,?,?,?,?,?,?)";
+        String querry = "INSERT INTO tournaments(tournamentname,date,registrationfee,reward,playerlevel,description,isopen,userid,courtid) VALUES(?,?,?,?,?,?,?,?,?)";
         jdbc.update(querry,
-                tournament.getTournamentName(),tournament.getDate(),tournament.getRegistrationFee(),tournament.getReward(),tournament.getPlayerLevel(),tournament.getDescription(),tournament.isOpen(),tournament.getUser().getUserId(),tournament.getCourt().getCourtId());
+                tournament.getTournamentName(), tournament.getDate(), tournament.getRegistrationFee(), tournament.getReward(), tournament.getPlayerLevel(), tournament.getDescription(), tournament.isOpen(), tournament.getUser().getUserId(), tournament.getCourt().getCourtId());
     }
+
     public List<Tournament> getAllTournaments() {
-        String querry="SELECT * FROM tournaments natural join courts natural join users";
+        String querry = "SELECT * FROM tournaments natural join courts natural join users";
         RowMapper<Tournament> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -32,7 +33,7 @@ public class TournamentRepository {
             court.setisIndoor(r.getBoolean("isindoor"));
             court.setCourtName(r.getString("courtname"));
             court.setLocation(r.getString("location"));
-            Tournament rowObject= new Tournament();
+            Tournament rowObject = new Tournament();
             rowObject.setUser(user);
             rowObject.setCourt(court);
             rowObject.setTournamentName(r.getString("tournamentname"));
@@ -51,7 +52,7 @@ public class TournamentRepository {
     }
 
     public List<Tournament> getOwnersTournaments(int userId) {
-        String querry="SELECT * FROM tournaments natural join courts natural join users WHERE userid = ?";
+        String querry = "SELECT * FROM tournaments natural join courts natural join users WHERE userid = ?";
         RowMapper<Tournament> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -63,7 +64,7 @@ public class TournamentRepository {
             court.setisIndoor(r.getBoolean("isindoor"));
             court.setCourtName(r.getString("courtname"));
             court.setLocation(r.getString("location"));
-            Tournament rowObject= new Tournament();
+            Tournament rowObject = new Tournament();
             rowObject.setUser(user);
             rowObject.setCourt(court);
             rowObject.setTournamentName(r.getString("tournamentname"));
@@ -81,4 +82,8 @@ public class TournamentRepository {
         return jdbc.query(querry, purchaseRowMapper, userId);
     }
 
+    public void finishTournament(Tournament tournament) {
+        String querry="UPDATE tournaments SET  isOpen=false, results = ? WHERE tournamentId = ?";
+        jdbc.update(querry,tournament.getResults(),tournament.getTournamentId());
+    }
 }

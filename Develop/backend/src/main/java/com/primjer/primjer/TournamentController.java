@@ -30,4 +30,10 @@ public class TournamentController {
 
 
     }
+
+    @PostMapping("/tournaments/finish")
+    public void finishTournament(@RequestBody Tournament tournament) {
+        tournamentRepo.finishTournament(tournament);
+    }
+
 }

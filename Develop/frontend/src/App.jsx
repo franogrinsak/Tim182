@@ -68,6 +68,7 @@ import EditUser, {
 import AddUser, { action as addUserAction } from "./components/users/AddUser";
 import Tournaments, {
   loader as ownerTournamentsLoader,
+  allLoader as allTournamentsLoader,
 } from "./components/tournaments/Tournaments";
 import OrganizeTournament, {
   loader as organizeTournamentLoader,
@@ -142,6 +143,11 @@ function App() {
           />
 
           <Route path={TOURNAMENTS}>
+            <Route
+              index
+              element={<Tournaments />}
+              loader={allTournamentsLoader}
+            />
             <Route
               path={OWNER_TOURNAMENTS}
               element={<Tournaments />}

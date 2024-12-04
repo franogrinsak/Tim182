@@ -173,3 +173,11 @@ export async function postNewTournament(data) {
     throw { status: response.status, message: response.statusText };
   }
 }
+
+export async function getAllTournaments() {
+  const response = await fetch(resolveBackendPath("/tournaments/all"), {
+    method: "GET",
+    credentials: "include",
+  });
+  return await response.json();
+}

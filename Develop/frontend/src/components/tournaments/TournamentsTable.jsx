@@ -10,8 +10,6 @@ import { FilterMatchMode } from "primereact/api";
 import "primereact/resources/themes/lara-light-blue/theme.css"; // Theme (use any theme you like)
 import "primereact/resources/primereact.min.css"; // PrimeReact core styles
 
-export async function loader() {}
-
 export default function TournamentsTable(props) {
   const { tournaments } = props;
   const [products, setProducts] = useState([]);

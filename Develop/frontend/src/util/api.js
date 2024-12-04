@@ -1,5 +1,10 @@
 import { requireAuth } from "./auth";
-import { BACKEND_ADD_COURT, BACKEND_LOGGED, resolveBackendPath } from "./paths";
+import {
+  BACKEND_ADD_COURT,
+  BACKEND_ADD_TOURNAMENT,
+  BACKEND_LOGGED,
+  resolveBackendPath,
+} from "./paths";
 
 export async function postRegisterData(data) {
   const response = await fetch(resolveBackendPath(BACKEND_LOGGED), {
@@ -152,4 +157,19 @@ export async function getTournamentsForOwners(data) {
     }
   );
   return await response.json();
+}
+
+export async function postNewTournament(data) {
+  const response = await fetch(resolveBackendPath(BACKEND_ADD_TOURNAMENT), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
 }

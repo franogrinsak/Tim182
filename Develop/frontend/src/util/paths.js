@@ -36,6 +36,9 @@ export const BACKEND_COURTS = "/courts";
 export const BACKEND_ADD_COURT = BACKEND_COURTS + "/add";
 export const BACKEND_COURT_OWNER = "/owner";
 
+export const BACKEND_TOURNAMENTS = "/tournaments";
+export const BACKEND_ADD_TOURNAMENT = BACKEND_TOURNAMENTS + "/add";
+
 export function resolveBackendPath(path) {
   return BACKEND_URL + path;
 }

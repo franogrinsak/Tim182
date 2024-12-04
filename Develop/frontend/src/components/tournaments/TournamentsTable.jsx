@@ -10,7 +10,10 @@ import { FilterMatchMode } from "primereact/api";
 import "primereact/resources/themes/lara-light-blue/theme.css"; // Theme (use any theme you like)
 import "primereact/resources/primereact.min.css"; // PrimeReact core styles
 
+export async function loader() {}
+
 export default function TournamentsTable(props) {
+  const { tournaments } = props;
   const [products, setProducts] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -54,7 +57,7 @@ export default function TournamentsTable(props) {
     <div className="card max-w-screen-xl mx-auto my-0 shadow-md rounded-lg p-8">
       <DataTable
         size="small"
-        value={products}
+        value={tournaments}
         paginator
         rows={5}
         rowsPerPageOptions={[5, 10, 25, 50]}

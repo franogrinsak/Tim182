@@ -142,3 +142,14 @@ export async function postUpdateUserData(data) {
     throw { status: response.status, message: response.statusText };
   }
 }
+
+export async function getTournamentsForOwners(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/owners?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}

@@ -17,6 +17,18 @@ export function getOwnerCourtsCard(ownerId) {
   );
 }
 
+export function getOwnerTournamentsCard(ownerId) {
+  return (
+    <FeatureCard
+      key={4}
+      link={`tournaments/${ownerId}`}
+      imageUrl={trophyImage}
+      title="Your tournaments"
+      text="Host exciting tournaments on your courts, allowing players to join, compete, and enjoy a professionally organized event."
+    />
+  );
+}
+
 export const PLAYER_COURTS = (
   <FeatureCard
     key={1}

@@ -24,7 +24,8 @@ export const COURT_OWNER_PROFILE = OWNER_COURTS + "/profile";
 export const EDIT_COURT_OWNER_PROFILE = COURT_OWNER_PROFILE + "/edit";
 
 export const TOURNAMENTS = APP + "/tournaments";
-export const ORGANIZE_TOURNAMENT = TOURNAMENTS + "/organize";
+export const OWNER_TOURNAMENTS = TOURNAMENTS + "/:ownerId";
+export const ORGANIZE_TOURNAMENT = OWNER_TOURNAMENTS + "/organize";
 
 export const USERS = APP + "/users";
 

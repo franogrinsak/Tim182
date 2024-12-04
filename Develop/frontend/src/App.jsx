@@ -34,6 +34,7 @@ import {
   ORGANIZE_TOURNAMENT,
   OWNER_COURTS,
   OWNER_PROFILE,
+  OWNER_TOURNAMENTS,
   REGISTER,
   TOURNAMENTS,
   USERS,
@@ -65,7 +66,9 @@ import EditUser, {
   loader as editUserLoader,
 } from "./components/users/EditUser";
 import AddUser, { action as addUserAction } from "./components/users/AddUser";
-import Tournaments from "./components/tournaments/Tournaments";
+import Tournaments, {
+  loader as ownerTournamentsLoader,
+} from "./components/tournaments/Tournaments";
 import OrganizeTournament from "./components/tournaments/OrganizeTournament";
 
 function App() {
@@ -136,7 +139,11 @@ function App() {
           />
 
           <Route path={TOURNAMENTS}>
-            <Route index element={<Tournaments />} />
+            <Route
+              path={OWNER_TOURNAMENTS}
+              element={<Tournaments />}
+              loader={ownerTournamentsLoader}
+            />
             <Route
               path={ORGANIZE_TOURNAMENT}
               element={<OrganizeTournament />}

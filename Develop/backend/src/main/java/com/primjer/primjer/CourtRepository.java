@@ -84,4 +84,24 @@ public class CourtRepository {
         String querry="UPDATE courts SET courtName= ?,location= ?,isIndoor= ?,image= ?,userId= ? WHERE courtid = ?";
         jdbc.update(querry,court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUser().getUserId(),court.getCourtId());
     }
+
+    public List<Court> getCourtsImageless(int userId) {
+        String querry="SELECT * FROM courts natural join users WHERE userid = ?";
+        RowMapper<Court> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            Court rowObject = new Court();
+            rowObject.setUser(user);
+            rowObject.setCourtId(r.getInt("courtid"));
+            rowObject.setisIndoor(r.getBoolean("isindoor"));
+            rowObject.setCourtName(r.getString("courtname"));
+            rowObject.setLocation(r.getString("location"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper,userId);
+    }
+
 }

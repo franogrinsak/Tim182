@@ -21,7 +21,7 @@ public class TournamentRepository {
     }
 
     public List<Tournament> getAllTournaments() {
-        String querry = "SELECT * FROM tournaments natural join courts natural join users";
+        String querry = "SELECT * FROM tournaments join courts on tournaments.courtId = courts.courtId join users on tournaments.userId = users.userId";
         RowMapper<Tournament> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -29,7 +29,6 @@ public class TournamentRepository {
             user.setLastName(r.getString("lastname"));
             Court court = new Court();
             court.setCourtId(r.getInt("courtid"));
-            court.setImage(r.getString("image"));
             court.setisIndoor(r.getBoolean("isindoor"));
             court.setCourtName(r.getString("courtname"));
             court.setLocation(r.getString("location"));
@@ -41,7 +40,6 @@ public class TournamentRepository {
             rowObject.setDate(r.getDate("date").toLocalDate());
             rowObject.setRegistrationFee(r.getFloat("registrationfee"));
             rowObject.setReward(r.getFloat("reward"));
-            rowObject.setDescription(r.getString("description"));
             rowObject.setOpen(r.getBoolean("isopen"));
             rowObject.setPlayerLevel(r.getString("playerlevel"));
 
@@ -52,7 +50,7 @@ public class TournamentRepository {
     }
 
     public List<Tournament> getOwnersTournaments(int userId) {
-        String querry = "SELECT * FROM tournaments natural join courts natural join users WHERE userid = ?";
+        String querry = "SELECT * FROM tournaments join courts on tournaments.courtId = courts.courtId join users on tournaments.userId = users.userId WHERE courts.userId = ?";
         RowMapper<Tournament> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -60,7 +58,6 @@ public class TournamentRepository {
             user.setLastName(r.getString("lastname"));
             Court court = new Court();
             court.setCourtId(r.getInt("courtid"));
-            court.setImage(r.getString("image"));
             court.setisIndoor(r.getBoolean("isindoor"));
             court.setCourtName(r.getString("courtname"));
             court.setLocation(r.getString("location"));
@@ -72,7 +69,6 @@ public class TournamentRepository {
             rowObject.setDate(r.getDate("date").toLocalDate());
             rowObject.setRegistrationFee(r.getFloat("registrationfee"));
             rowObject.setReward(r.getFloat("reward"));
-            rowObject.setDescription(r.getString("description"));
             rowObject.setOpen(r.getBoolean("isopen"));
             rowObject.setPlayerLevel(r.getString("playerlevel"));
 

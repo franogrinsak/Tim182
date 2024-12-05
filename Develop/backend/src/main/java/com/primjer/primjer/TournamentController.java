@@ -36,4 +36,9 @@ public class TournamentController {
         tournamentRepo.finishTournament(tournament);
     }
 
+    @GetMapping("/tournaments/get")
+    public Tournament getTournaments(@RequestParam int tournamentId) {
+        return tournamentRepo.getTournaments(tournamentId);
+    }
+
 }

@@ -33,5 +33,9 @@ public class CourtController {
     public void courtEdit(@RequestBody Court court){
         courtRepo.editCourt(court);
     }
+    @GetMapping("/courts/imageless")
+    public List<Court> getCourtsImageless(@RequestParam int userId){
+        return courtRepo.getCourtsImageless(userId);
+    }
 
 }

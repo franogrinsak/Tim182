@@ -105,7 +105,7 @@ public class TournamentRepository {
             rowObject.setReward(r.getFloat("reward"));
             rowObject.setOpen(r.getBoolean("isopen"));
             rowObject.setPlayerLevel(r.getString("playerlevel"));
-
+            rowObject.setDescription((r.getString("description")));
             return rowObject;
         };
 

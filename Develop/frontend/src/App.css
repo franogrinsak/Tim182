@@ -152,3 +152,8 @@ footer {
 .users-table-container th {
   background-color: #f9fafb;
 }
+
+.p-datatable tr:hover {
+  background-color: #f0f0f0; /* Light gray background */
+  cursor: pointer;
+}

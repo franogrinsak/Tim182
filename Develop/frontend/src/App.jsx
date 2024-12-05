@@ -36,6 +36,7 @@ import {
   OWNER_PROFILE,
   OWNER_TOURNAMENTS,
   REGISTER,
+  TOURNAMENT_DETAIL,
   TOURNAMENTS,
   USERS,
 } from "./util/paths";
@@ -74,6 +75,9 @@ import OrganizeTournament, {
   loader as organizeTournamentLoader,
   action as organizeTournamentAction,
 } from "./components/tournaments/OrganizeTournament";
+import TournamentDetails, {
+  loader as tournamentDetailsLoader,
+} from "./components/tournaments/TournamentDetails";
 
 function App() {
   console.log(COURT_OWNER_DETAIL);
@@ -158,6 +162,11 @@ function App() {
               element={<OrganizeTournament />}
               loader={organizeTournamentLoader}
               action={organizeTournamentAction}
+            />
+            <Route
+              path={TOURNAMENT_DETAIL}
+              element={<TournamentDetails />}
+              loader={tournamentDetailsLoader}
             />
           </Route>
 

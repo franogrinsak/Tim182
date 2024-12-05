@@ -9,10 +9,11 @@ import { FilterMatchMode } from "primereact/api";
 
 import "primereact/resources/themes/lara-light-blue/theme.css"; // Theme (use any theme you like)
 import "primereact/resources/primereact.min.css"; // PrimeReact core styles
+import { useNavigate } from "react-router-dom";
 
 export default function TournamentsTable(props) {
   const { tournaments } = props;
-  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -44,11 +45,6 @@ export default function TournamentsTable(props) {
       </div>
     );
   };
-
-  useEffect(() => {
-    setProducts(TEST_TOURNAMENTS);
-  }, []);
-
   const header = renderHeader();
 
   return (
@@ -58,6 +54,11 @@ export default function TournamentsTable(props) {
         value={tournaments}
         paginator
         rows={5}
+        onRowClick={(row) =>
+          navigate(
+            `/app/tournaments/${row.data.user.userId}/${row.data.tournamentId}`
+          )
+        }
         rowsPerPageOptions={[5, 10, 25, 50]}
         tableStyle={{ minWidth: "50rem" }}
         header={header}

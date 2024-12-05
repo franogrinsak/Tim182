@@ -98,6 +98,17 @@ export async function getCourtsForOwners(data) {
   return await response.json();
 }
 
+export async function getCourtsForOwnersImageless(data) {
+  const response = await fetch(
+    resolveBackendPath("/courts/imageless?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
 export async function getCourtDetails(data) {
   const response = await fetch(resolveBackendPath("/courts/court?" + data), {
     method: "GET",
@@ -176,6 +187,14 @@ export async function postNewTournament(data) {
 
 export async function getAllTournaments() {
   const response = await fetch(resolveBackendPath("/tournaments/all"), {
+    method: "GET",
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+export async function getTournamentDetails(data) {
+  const response = await fetch(resolveBackendPath("/tournaments/get?" + data), {
     method: "GET",
     credentials: "include",
   });

@@ -7,13 +7,13 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { getCourtsForOwners, postNewTournament } from "../../util/api";
+import { getCourtsForOwnersImageless, postNewTournament } from "../../util/api";
 
 export async function loader({ params }) {
   const { ownerId } = params;
   const data = new URLSearchParams();
   data.append("userId", ownerId);
-  return await getCourtsForOwners(data.toString());
+  return await getCourtsForOwnersImageless(data.toString());
 }
 
 export async function action({ request }) {

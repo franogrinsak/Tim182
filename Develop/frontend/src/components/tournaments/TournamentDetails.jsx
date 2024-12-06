@@ -1,7 +1,8 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
 import { Link, useLoaderData } from "react-router-dom";
-import { getTournamentDetails } from "../../util/api";
+import { getTournamentDetails, postCompleteTournament } from "../../util/api";
+import CompleteTournament from "./CompleteTournament";
 
 export async function loader({ params }) {
   const { tournamentId } = params;
@@ -10,11 +11,31 @@ export async function loader({ params }) {
   return await getTournamentDetails(data.toString());
 }
 
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = {
+    userId: formData.get("userId"),
+    tournamentId: formData.get("tournamentId"),
+    results: formData.get("results"),
+  };
+  try {
+    await postCompleteTournament(data);
+    return redirect(
+      "/app/tournaments/" + data.userId + "/" + data.tournamentId
+    );
+  } catch (err) {
+    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+  }
+}
+
 export default function TournamentDetails() {
   const { user } = useUser();
   const tournament = useLoaderData();
   const ownerProfilePath = "/app/courts/" + tournament?.user?.userId;
   const courtProfilePath = ownerProfilePath + "/" + tournament?.court?.courtId;
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
   return (
     <section className="flex flex-col items-center">
       <div>
@@ -36,7 +57,7 @@ export default function TournamentDetails() {
               <dt className="text-sm/6 font-medium text-gray-900">Organizer</dt>
 
               <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-                <Link to={ownerProfilePath}>
+                <Link to={ownerProfilePath + "/profile"}>
                   {`${tournament?.user?.firstName} ${tournament?.user?.lastName}`}
                 </Link>
               </dd>
@@ -85,8 +106,22 @@ export default function TournamentDetails() {
                 {tournament.description}
               </dd>
             </div>
+            {tournament.results && (
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm/6 font-medium text-gray-900">Results</dt>
+                <dd className="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 max-w-lg">
+                  {tournament.results}
+                </dd>
+              </div>
+            )}
           </dl>
         </div>
+        {tournament.open && (
+          <CompleteTournament
+            tournamentId={tournament.tournamentId}
+            userId={tournament?.user?.userId}
+          />
+        )}
       </div>
     </section>
   );

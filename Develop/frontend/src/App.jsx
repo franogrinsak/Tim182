@@ -77,6 +77,7 @@ import OrganizeTournament, {
 } from "./components/tournaments/OrganizeTournament";
 import TournamentDetails, {
   loader as tournamentDetailsLoader,
+  action as completeTournamentAction,
 } from "./components/tournaments/TournamentDetails";
 
 function App() {
@@ -167,6 +168,7 @@ function App() {
               path={TOURNAMENT_DETAIL}
               element={<TournamentDetails />}
               loader={tournamentDetailsLoader}
+              action={completeTournamentAction}
             />
           </Route>
 

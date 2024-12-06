@@ -200,3 +200,18 @@ export async function getTournamentDetails(data) {
   });
   return await response.json();
 }
+
+export async function postCompleteTournament(data) {
+  const response = await fetch(resolveBackendPath("/tournaments/finish"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}

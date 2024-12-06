@@ -3,7 +3,7 @@ package com.primjer.primjer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -14,13 +14,13 @@ public class SlotsRepository {
         this.jdbc = jdbc;
     }
     public List<Slot> addSlot(Slot slot) {
-        String querry="SELECT * FROM slots WHERE courtid = ? and starttimestamp between (?,?) and endtimestamp between (?,?)";
+        String querry = "SELECT * FROM time_slots WHERE courtid = ? AND ( (starttimestamp < ? AND ? < endtimestamp) OR (starttimestamp < ? AND ? < endtimestamp) OR (? < starttimestamp AND endtimestamp < ?) OR (? < starttimestamp AND endtimestamp > ?) OR (? < starttimestamp AND ? < endtimestamp) OR (? < endtimestamp AND ? < starttimestamp) )";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
             Slot rowObject = new Slot();
             rowObject.setCourtId(r.getInt("courtid"));
-            rowObject.setPrice(r.getString("price"));
-            rowObject.setStartTimestamp(r.getTimestamp("starttimestamp"));
-            rowObject.setEndTimestamp(r.getTimestamp("endtimestamp"));
+            rowObject.setPrice(String.valueOf(r.getFloat("price")));
+            rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
+            rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
             /*rowObject.setUserId(r.getInt("userid"));
             rowObject.setEmail(r.getString("email"));
             rowObject.setFirstName(r.getString("firstname"));
@@ -29,14 +29,28 @@ public class SlotsRepository {
             rowObject.setPhoneNumber(r.getString("phonenumber"));*/
             return rowObject;
         };
-        List<Slot> lista=jdbc.query(querry, purchaseRowMapper,slot.getCourtId(),slot.getStartTimestamp(),slot.getEndTimestamp(),slot.getStartTimestamp(),slot.getEndTimestamp());
+        List<Slot> lista=jdbc.query(querry, purchaseRowMapper,
+                slot.getCourtId(),
+                slot.getStartTimestamp(),
+                slot.getStartTimestamp(),
+                slot.getEndTimestamp(),
+                slot.getEndTimestamp(),
+                slot.getStartTimestamp(),
+                slot.getEndTimestamp(),
+                slot.getStartTimestamp(),
+                slot.getEndTimestamp(),
+                slot.getStartTimestamp(),
+                slot.getStartTimestamp(),
+                slot.getEndTimestamp(),
+                slot.getEndTimestamp()             
+        );
         if(!lista.isEmpty()){
             return lista;
         }
         else{
             querry="INSERT INTO time_slots(starttimestamp,endtimestamp,price,courtid) VALUES(?,?,?,?)";
             jdbc.update(querry,
-                    slot.getStartTimestamp(),slot.getEndTimestamp(),slot.getPrice(),slot.getCourtId());
+                    slot.getStartTimestamp(),slot.getEndTimestamp(),Float.valueOf(slot.getPrice()),slot.getCourtId());
         }
         return null;
     }

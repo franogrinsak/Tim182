@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 
 public class Slot {
     private int courtId;
-    private Timestamp startTimestamp;
-    private Timestamp endTimestamp;
+    private LocalDateTime startTimestamp;
+    private LocalDateTime endTimestamp;
     private String price;
     public int getCourtId() {
         return courtId;
@@ -15,18 +15,18 @@ public class Slot {
     public void setCourtId(int courtId) {
         this.courtId = courtId;
     }
-    public Timestamp getStartTimestamp() {
+    public LocalDateTime getStartTimestamp() {
         return startTimestamp;
     }
 
-    public void setStartTimestamp(Timestamp startTimestamp) {
+    public void setStartTimestamp(LocalDateTime startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
-    public Timestamp getEndTimestamp() {
+    public LocalDateTime getEndTimestamp() {
         return endTimestamp;
     }
 
-    public void setEndTimestamp(Timestamp endTimestamp) {
+    public void setEndTimestamp(LocalDateTime endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
     public String getPrice() {

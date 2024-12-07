@@ -3,7 +3,7 @@ package com.primjer.primjer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Repository
@@ -61,5 +61,19 @@ public class SlotsRepository {
         String querry="UPDATE time_slots SET isbooked=TRUE WHERE timeslotid=?";
         jdbc.update(querry,
                 timeSlotId);
+    }
+
+    public boolean cancel(int timeSlotId) {
+        String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND starttimestamp < NOW() - INTERVAL '1 day' AND endtimestamp < NOW() - INTERVAL '1 day'";
+        Integer number = jdbc.queryForObject(querry, Integer.class, timeSlotId);
+        if(number>0){
+            return false;
+        }
+        else{
+            querry="UPDATE time_slots SET isbooked=FALSE WHERE timeslotid=?";
+            jdbc.update(querry,
+                    timeSlotId);
+        }
+        return true;
     }
 }

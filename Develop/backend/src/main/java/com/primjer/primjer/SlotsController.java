@@ -34,4 +34,12 @@ public class SlotsController {
     public void bookSlots(@RequestParam int timeSlotId){
         slotsRepo.book(timeSlotId);
     }
+    @PostMapping("slots/cancel")
+    public ResponseEntity<Boolean> cancelSlots(@RequestParam int timeSlotId){
+        boolean bool=slotsRepo.cancel(timeSlotId);
+        if(!bool){
+            return ResponseEntity.badRequest().body(bool);
+        }
+        return ResponseEntity.ok().body(bool);
+    }
 }

@@ -44,7 +44,7 @@ public class SlotsRepository {
             return lista;
         }
         else{
-            querry="INSERT INTO time_slots(starttimestamp,endtimestamp,price,courtid) VALUES(?,?,?,?)";
+            querry="INSERT INTO time_slots(starttimestamp,endtimestamp,price,courtid,isBooked) VALUES(?,?,?,?,FALSE)";
             jdbc.update(querry,
                     slot.getStartTimestamp(),slot.getEndTimestamp(),Float.valueOf(slot.getPrice()),slot.getCourtId());
         }
@@ -53,6 +53,12 @@ public class SlotsRepository {
 
     public void delete(int timeSlotId) {
         String querry="DELETE FROM time_slots WHERE timeslotid=?";
+        jdbc.update(querry,
+                timeSlotId);
+    }
+
+    public void book(int timeSlotId) {
+        String querry="UPDATE time_slots SET isbooked=TRUE WHERE timeslotid=?";
         jdbc.update(querry,
                 timeSlotId);
     }

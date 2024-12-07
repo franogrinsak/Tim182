@@ -10,6 +10,9 @@ public class Slot {
     private LocalDateTime endTimestamp;
     private String price;
     private int userId;
+
+    private boolean isBooked;
+
     public int getCourtId() {
         return courtId;
     }
@@ -51,5 +54,12 @@ public class Slot {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+    public boolean getisBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
     }
 }

@@ -30,4 +30,8 @@ public class SlotsController {
     public void deleteSlots(@RequestParam int timeSlotId){
         slotsRepo.delete(timeSlotId);
     }
+    @PostMapping("slots/book")
+    public void bookSlots(@RequestParam int timeSlotId){
+        slotsRepo.book(timeSlotId);
+    }
 }

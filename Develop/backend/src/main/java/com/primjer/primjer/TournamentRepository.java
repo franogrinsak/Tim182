@@ -120,5 +120,10 @@ public class TournamentRepository {
                 participations.getUser().getUserId(),participations.getTournament().getTournamentId(),participations.isApproved());
     }
 
+    public void approveTournament(Participations participations) {
+        String querry="UPDATE participations SET  isApproved=true WHERE userId=? AND tournamentId = ?";
+        jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
+    }
+
 
 }

@@ -46,4 +46,9 @@ public class TournamentController {
         tournamentRepo.TournamentSignUp(participations);
     }
 
+    @PostMapping("/tournaments/approve")
+    public void approveTournament(@RequestBody Participations participations) {
+        tournamentRepo.approveTournament(participations);
+    }
+
 }

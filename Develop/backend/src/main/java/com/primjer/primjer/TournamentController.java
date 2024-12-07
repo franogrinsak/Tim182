@@ -51,4 +51,8 @@ public class TournamentController {
         tournamentRepo.approveTournament(participations);
     }
 
+    @PostMapping("/tournaments/deny")
+    public void denyTournament(@RequestBody Participations participations) {
+        tournamentRepo.denyTournament(participations);
+    }
 }

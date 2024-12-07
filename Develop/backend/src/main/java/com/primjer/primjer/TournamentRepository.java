@@ -125,5 +125,10 @@ public class TournamentRepository {
         jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
     }
 
+    public void denyTournament(Participations participations) {
+        String querry="DELETE FROM participations WHERE userId = ? AND tournamentId = ?";
+        jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
+    }
+
 
 }

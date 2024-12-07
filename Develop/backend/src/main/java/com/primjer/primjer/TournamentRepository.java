@@ -111,4 +111,10 @@ public class TournamentRepository {
 
         return jdbc.query(querry, purchaseRowMapper, tournamentId).get(0);
     }
+
+    public void TournamentSignUp(Participations participations) {
+        String querry = "INSERT INTO participations(userid,tournamentid,isapproved) VALUES(?,?,?)";
+        jdbc.update(querry,
+                     participations.getUser().getUserId(),participations.getTournament().getTournamentId(),participations.isApproved());
+    }
 }

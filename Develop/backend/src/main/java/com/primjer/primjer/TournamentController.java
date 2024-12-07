@@ -41,4 +41,8 @@ public class TournamentController {
         return tournamentRepo.getTournaments(tournamentId);
     }
 
+    @PostMapping("/tournaments/signup")
+    public void tournamentSignUp(@RequestBody Participations participations) {
+        tournamentRepo.TournamentSignUp(participations);
+    }
 }

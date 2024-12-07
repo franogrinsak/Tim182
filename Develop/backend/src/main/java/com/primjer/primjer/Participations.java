@@ -29,4 +29,5 @@ public class Participations {
     public void setApproved(boolean approved) {
         isApproved = approved;
     }
+
 }

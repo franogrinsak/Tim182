@@ -45,4 +45,5 @@ public class TournamentController {
     public void tournamentSignUp(@RequestBody Participations participations) {
         tournamentRepo.TournamentSignUp(participations);
     }
+
 }

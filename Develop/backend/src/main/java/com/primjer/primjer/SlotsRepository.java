@@ -50,4 +50,10 @@ public class SlotsRepository {
         }
         return null;
     }
+
+    public void delete(int timeSlotId) {
+        String querry="DELETE FROM time_slots WHERE timeslotid=?";
+        jdbc.update(querry,
+                timeSlotId);
+    }
 }

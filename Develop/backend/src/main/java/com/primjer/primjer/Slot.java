@@ -4,10 +4,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Slot {
+    private int timeSlotId;
     private int courtId;
     private LocalDateTime startTimestamp;
     private LocalDateTime endTimestamp;
     private String price;
+    private int userId;
     public int getCourtId() {
         return courtId;
     }
@@ -36,5 +38,18 @@ public class Slot {
     public void setPrice(String price) {
         this.price = price;
     }
+    public int getTimeSlotId() {
+        return timeSlotId;
+    }
 
+    public void setTimeSlotId(int timeSlotId) {
+        this.timeSlotId = timeSlotId;
+    }
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }

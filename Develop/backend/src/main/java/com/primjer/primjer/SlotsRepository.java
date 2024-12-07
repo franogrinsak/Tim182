@@ -14,13 +14,15 @@ public class SlotsRepository {
         this.jdbc = jdbc;
     }
     public List<Slot> addSlot(Slot slot) {
-        String querry = "SELECT * FROM time_slots WHERE courtid = ? AND ( (starttimestamp < ? AND ? < endtimestamp) OR (starttimestamp < ? AND ? < endtimestamp) OR (? < starttimestamp AND endtimestamp < ?) OR (? < starttimestamp AND endtimestamp > ?) OR (? < starttimestamp AND ? < endtimestamp) OR (? < endtimestamp AND ? < starttimestamp) )";
+        String querry = "SELECT * FROM time_slots WHERE courtid = ? AND ((starttimestamp=? AND endtimestamp=?) OR (starttimestamp<? AND endtimestamp>?) OR (starttimestamp<? AND endtimestamp>?) OR (starttimestamp>? AND starttimestamp<?) OR (endtimestamp>? AND endtimestamp<?) OR (starttimestamp=? AND endtimestamp<?) OR (starttimestamp>? AND endtimestamp=?))";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
             Slot rowObject = new Slot();
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setPrice(String.valueOf(r.getFloat("price")));
             rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
             rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
+            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setTimeSlotId(r.getInt("timeslotid"));
             /*rowObject.setUserId(r.getInt("userid"));
             rowObject.setEmail(r.getString("email"));
             rowObject.setFirstName(r.getString("firstname"));
@@ -30,19 +32,13 @@ public class SlotsRepository {
             return rowObject;
         };
         List<Slot> lista=jdbc.query(querry, purchaseRowMapper,
-                slot.getCourtId(),
-                slot.getStartTimestamp(),
-                slot.getStartTimestamp(),
-                slot.getEndTimestamp(),
-                slot.getEndTimestamp(),
-                slot.getStartTimestamp(),
-                slot.getEndTimestamp(),
-                slot.getStartTimestamp(),
-                slot.getEndTimestamp(),
-                slot.getStartTimestamp(),
-                slot.getStartTimestamp(),
-                slot.getEndTimestamp(),
-                slot.getEndTimestamp()             
+                slot.getCourtId(),slot.getStartTimestamp(),slot.getEndTimestamp(),
+                slot.getStartTimestamp(),slot.getStartTimestamp(),
+                slot.getEndTimestamp(),slot.getEndTimestamp(),
+                slot.getStartTimestamp(),slot.getEndTimestamp(),
+                slot.getStartTimestamp(),slot.getEndTimestamp(),
+                slot.getStartTimestamp(),slot.getEndTimestamp(),
+                slot.getStartTimestamp(),slot.getEndTimestamp()
         );
         if(!lista.isEmpty()){
             return lista;

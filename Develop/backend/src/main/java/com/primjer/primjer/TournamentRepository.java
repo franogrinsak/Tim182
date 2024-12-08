@@ -115,9 +115,9 @@ public class TournamentRepository {
 
 
     public void TournamentSignUp(Participations participations) {
-        String querry = "INSERT INTO participations(userid,tournamentid,isapproved) VALUES(?,?,?)";
+        String querry = "INSERT INTO participations(userid,tournamentid,isapproved,signuptime) VALUES(?,?,?,?)";
         jdbc.update(querry,
-                participations.getUser().getUserId(),participations.getTournament().getTournamentId(),participations.isApproved());
+                participations.getUser().getUserId(),participations.getTournament().getTournamentId(),participations.isApproved(),participations.getSignUpTime());
     }
 
     public void approveTournament(Participations participations) {
@@ -129,6 +129,31 @@ public class TournamentRepository {
         String querry="DELETE FROM participations WHERE userId = ? AND tournamentId = ?";
         jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
     }
+
+    public List<Participations> applicationsTournaments(int tournamentId) {
+        String querry = "SELECT * FROM participations JOIN users ON participations.userId= users.userId  WHERE tournamentId = ?";
+        RowMapper<Participations> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Participations rowObject = new Participations();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper, tournamentId);
+
+    }
+
+
+
+
 
 
 }

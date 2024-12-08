@@ -1,9 +1,13 @@
 package com.primjer.primjer;
 
+import java.sql.Timestamp;
+
 public class Participations {
     private Tournament tournament;
     private User user;
     private boolean isApproved;
+    private Timestamp signUpTime;
+
 
 
     public Tournament getTournament() {
@@ -30,4 +34,12 @@ public class Participations {
         isApproved = approved;
     }
 
+
+    public Timestamp getSignUpTime() {
+        return signUpTime;
+    }
+
+    public void setSignUpTime(Timestamp signUpTime) {
+        this.signUpTime = signUpTime;
+    }
 }

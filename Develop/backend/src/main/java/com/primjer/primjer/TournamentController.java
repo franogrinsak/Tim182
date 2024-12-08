@@ -55,4 +55,11 @@ public class TournamentController {
     public void denyTournament(@RequestBody Participations participations) {
         tournamentRepo.denyTournament(participations);
     }
+
+    @GetMapping("/tournaments/applications")
+    public List<Participations> applicationsTournaments(@RequestParam int tournamentId) {
+        return tournamentRepo.applicationsTournaments(tournamentId);
+    }
+
+   
 }

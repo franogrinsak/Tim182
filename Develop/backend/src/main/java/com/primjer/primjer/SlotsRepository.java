@@ -64,7 +64,7 @@ public class SlotsRepository {
     }
 
     public boolean cancel(int timeSlotId) {
-        String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND starttimestamp < NOW() - INTERVAL '1 day' AND endtimestamp < NOW() - INTERVAL '1 day'";
+        String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND (starttimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp  OR endtimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp )";
         Integer number = jdbc.queryForObject(querry, Integer.class, timeSlotId);
         if(number>0){
             return false;

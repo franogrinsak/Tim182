@@ -57,9 +57,9 @@ public class SlotsRepository {
                 timeSlotId);
     }
 
-    public void book(int timeSlotId) {
-        String querry="UPDATE time_slots SET isbooked=TRUE WHERE timeslotid=?";
-        jdbc.update(querry,
+    public void book(int timeSlotId, int userId) {
+        String querry="UPDATE time_slots SET isbooked=TRUE,userid=? WHERE timeslotid=?";
+        jdbc.update(querry,userId,
                 timeSlotId);
     }
 
@@ -70,7 +70,7 @@ public class SlotsRepository {
             return false;
         }
         else{
-            querry="UPDATE time_slots SET isbooked=FALSE WHERE timeslotid=?";
+            querry="UPDATE time_slots SET isbooked=FALSE,userid=NULL WHERE timeslotid=?";
             jdbc.update(querry,
                     timeSlotId);
         }

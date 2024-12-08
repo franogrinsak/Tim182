@@ -171,6 +171,25 @@ public class TournamentRepository {
 
     }
 
+    public List<Participations> applicationsplayerTournaments(int userId) {
+        String querry = "SELECT * FROM participations WHERE userId = ?";
+        RowMapper<Participations> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Participations rowObject = new Participations();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper, userId);
+
+    }
+
 
 
 

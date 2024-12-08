@@ -2,10 +2,7 @@ package com.primjer.primjer;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -41,5 +38,13 @@ public class SlotsController {
             return ResponseEntity.badRequest().body(bool);
         }
         return ResponseEntity.ok().body(bool);
+    }
+    @GetMapping("slots/get/owners")
+    public List<Slot> getOSlots(@RequestParam int courtId,@RequestParam int userId){
+        return slotsRepo.getO(courtId,userId);
+    }
+    @GetMapping("slots/get/players")
+    public List<Slot> getPSlots(@RequestParam int courtId,@RequestParam int userId){
+        return slotsRepo.getP(courtId,userId);
     }
 }

@@ -81,12 +81,16 @@ public class SlotsRepository {
     public List<Slot> getO(int courtId, int userId) {
         String querry="SELECT * FROM time_slots natural join users WHERE courtid = ? and userid=?";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
             Slot rowObject = new Slot();
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setPrice(String.valueOf(r.getFloat("price")));
             rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
             rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
-            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setUser(user);
             rowObject.setTimeSlotId(r.getInt("timeslotid"));
             rowObject.setBooked(r.getBoolean("isbooked"));
             return rowObject;
@@ -97,12 +101,16 @@ public class SlotsRepository {
     public List<Slot> getP(int courtId, int userId) {
         String querry="SELECT * FROM time_slots natural join users WHERE courtid = ? and userid=?";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
             Slot rowObject = new Slot();
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setPrice(String.valueOf(r.getFloat("price")));
             rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
             rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
-            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setUser(user);
             rowObject.setTimeSlotId(r.getInt("timeslotid"));
             rowObject.setBooked(r.getBoolean("isbooked"));
             return rowObject;

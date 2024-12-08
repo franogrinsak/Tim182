@@ -61,5 +61,9 @@ public class TournamentController {
         return tournamentRepo.applicationsTournaments(tournamentId);
     }
 
-   
+    @GetMapping("/tournaments/application")
+    public Participations applicationTournaments(@RequestParam int tournamentId, @RequestParam int userId) {
+        return tournamentRepo.applicationTournaments(tournamentId, userId);
+    }
+
 }

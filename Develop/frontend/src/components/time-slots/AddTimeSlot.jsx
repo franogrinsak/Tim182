@@ -11,6 +11,8 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Select from "react-select";
+import { postNewTimeSlot } from "../../util/api";
+import { redirect, useNavigate, useParams } from "react-router-dom";
 
 const daysOfTheWeek = [
   { value: "mon", label: "Monday" },
@@ -23,6 +25,8 @@ const daysOfTheWeek = [
 ];
 
 export default function AddTimeSlot(props) {
+  const navigate = useNavigate();
+  const { courtId } = useParams();
   const [formData, setFormData] = React.useState({
     startDate: "",
     startTime: "",
@@ -61,8 +65,16 @@ export default function AddTimeSlot(props) {
   const handleOpen = () => props.setOpen(!props.open);
 
   async function submitSlot() {
-    console.log(formData);
-    handleOpen();
+    const data = {
+      courtId: courtId,
+      startTimestamp: `${formData.startDate}T${formData.startTime}`,
+      endTimestamp: `${formData.endDate}T${formData.endTime}`,
+      price: formData.price,
+    };
+
+    const success = await postNewTimeSlot(data);
+    console.log(success);
+    if (success) window.location.reload();
   }
 
   return (

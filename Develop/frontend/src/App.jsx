@@ -81,7 +81,6 @@ import TournamentDetails, {
 } from "./components/tournaments/TournamentDetails";
 
 function App() {
-  console.log(COURT_OWNER_DETAIL);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>

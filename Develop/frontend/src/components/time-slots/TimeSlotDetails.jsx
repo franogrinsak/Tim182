@@ -11,6 +11,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
+import { postDeleteTimeSlot } from "../../util/api";
 
 export default function TimeSlotDetails(props) {
   const { user } = useUser();
@@ -25,6 +26,7 @@ export default function TimeSlotDetails(props) {
   React.useEffect(() => {
     setFormData({
       ...formData,
+      timeSlotId: props.initialSlot?.id,
       startDate: props.initialSlot?.startDate || "",
       startTime: props.initialSlot?.startTime || "",
       endDate: props.initialSlot?.endDate || "",
@@ -49,6 +51,14 @@ export default function TimeSlotDetails(props) {
     handleOpen();
   }
   async function bookSlot() {}
+
+  async function deleteSlot() {
+    const data = new URLSearchParams();
+    data.append("timeSlotId", formData.timeSlotId);
+
+    const success = await postDeleteTimeSlot(data);
+    if (success) window.location.reload();
+  }
 
   return (
     <>
@@ -156,7 +166,7 @@ export default function TimeSlotDetails(props) {
         </DialogBody>
         <DialogFooter>
           {isOwner(user) && (
-            <Button className="ml-auto" color="red" onClick={submitSlot}>
+            <Button className="ml-auto" color="red" onClick={deleteSlot}>
               Delete slot
             </Button>
           )}
@@ -166,7 +176,7 @@ export default function TimeSlotDetails(props) {
             </Button>
           )}
           {isPlayer(user) && formData.userId && (
-            <Button className="ml-auto" color="red" onClick={bookSlot}>
+            <Button className="ml-auto" color="red" onClick={cancelBookedSlot}>
               Cancel booking
             </Button>
           )}

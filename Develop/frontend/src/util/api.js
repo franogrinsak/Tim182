@@ -3,8 +3,51 @@ import {
   BACKEND_ADD_COURT,
   BACKEND_ADD_TOURNAMENT,
   BACKEND_LOGGED,
+  LOGIN,
   resolveBackendPath,
 } from "./paths";
+
+function isUnauthorized(response) {
+  return response.ok && response.status === 401;
+}
+
+async function postData(path) {
+  const response = await fetch(resolveBackendPath(path), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (isUnauthorized(response)) {
+    return redirect(LOGIN);
+  }
+  return response;
+}
+
+async function get(path) {
+  await fetch(resolveBackendPath(path), {
+    method: "GET",
+    credentials: "include",
+  });
+  if (isUnauthorized(response)) {
+    return redirect(LOGIN);
+  }
+  return response;
+}
+
+async function getWithData(path, data) {
+  await fetch(resolveBackendPath(path + "?" + data), {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (isUnauthorized(response)) {
+    return redirect(LOGIN);
+  }
+}
 
 export async function postRegisterData(data) {
   const response = await fetch(resolveBackendPath(BACKEND_LOGGED), {
@@ -20,7 +63,6 @@ export async function postRegisterData(data) {
   if (!response.ok) {
     throw { status: response.status, message: response.statusText };
   }
-  //return await response.json();
 }
 
 export async function postNewCourt(data) {
@@ -213,5 +255,65 @@ export async function postCompleteTournament(data) {
   });
   if (!response.ok) {
     throw { status: response.status, message: response.statusText };
+  }
+}
+
+export async function postNewTimeSlot(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/slots/add"), {
+      method: "POST", // HTTP method
+      headers: {
+        "Content-Type": "application/json", // Specify content type
+      },
+      body: JSON.stringify(data), // Convert data to JSON string
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
+export async function getTimeSlotsOwners(data) {
+  const response = await fetch(
+    resolveBackendPath("/slots/get/owners?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function getTimeSlotsPlayers(data) {
+  const response = await fetch(
+    resolveBackendPath("/slots/get/players?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function postDeleteTimeSlot(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/slots/delete?" + data), {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
   }
 }

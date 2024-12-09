@@ -8,12 +8,67 @@ import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
 import { TEST_SLOTS } from "../../util/test/time-slots";
 import TimeSlotDetails from "./TimeSlotDetails";
+import { getTimeSlotsOwners, getTimeSlotsPlayers } from "../../util/api";
+import { useParams } from "react-router-dom";
+import { USER_ROLES } from "../../util/constants";
+
+function mapSlotForPlayers(slot) {
+  const tmp = {
+    id: slot.timeSlotId,
+    start: slot.startTimestamp,
+    end: slot.endTimestamp,
+    title: "Available",
+    extendedProps: {
+      price: slot.price,
+      userId: slot.user.userID,
+      isBooked: slot.isBooked,
+    },
+  };
+  if (slot.isBooked) {
+    tmp.backgroundColor = "grey";
+    tmp.title = "Booked";
+  }
+  if (slot.user.userId != 0) {
+    tmp.backgroundColor = "green";
+    tmp.title = "Your booking";
+  }
+  return tmp;
+}
+
+function mapSlotForOwners(slot) {
+  return {
+    id: slot.timeSlotId,
+    start: slot.startTimestamp,
+    end: slot.endTimestamp,
+    extendedProps: {
+      price: slot.price,
+      userId: slot.user.userId,
+      firstName: slot.user.firstName,
+      lastName: slot.user.lastName,
+    },
+  };
+}
+
+async function getTimeSlots(ownerId, courtId, user) {
+  const data = new URLSearchParams();
+  data.append("courtId", courtId);
+  data.append("userId", ownerId);
+
+  let slots;
+  if (user.roleId == USER_ROLES.OWNER) slots = await getTimeSlotsOwners(data);
+  if (user.roleId == USER_ROLES.PLAYER) slots = await getTimeSlotsPlayers(data);
+  return slots.map((slot) => {
+    if (user.roleId == USER_ROLES.PLAYER) return mapSlotForPlayers(slot);
+    if (user.roleId == USER_ROLES.OWNER) return mapSlotForOwners(slot);
+  });
+}
 
 export default function OwnerCalendar() {
   const { user } = useUser();
+  const [slots, setSlots] = React.useState([]);
+  const [loadingSlots, setLoadingSlots] = React.useState(true);
+  const { ownerId, courtId } = useParams();
   const calendarRef = useRef(null);
-
-  const slots = TEST_SLOTS;
 
   const [open, setOpen] = React.useState(false);
   const [openDetails, setOpenDetails] = React.useState(false);
@@ -24,6 +79,16 @@ export default function OwnerCalendar() {
     endTime: "",
   });
 
+  React.useEffect(() => {
+    async function getTimeSlotsWrapper() {
+      if (user) {
+        const data = await getTimeSlots(ownerId, courtId, user);
+        setSlots(data);
+      }
+    }
+    getTimeSlotsWrapper();
+  }, [JSON.stringify(user)]);
+
   const [eventSlot, setEventSlot] = React.useState();
 
   const handleDateClick = (info) => {
@@ -32,12 +97,7 @@ export default function OwnerCalendar() {
   };
 
   const handleEventMouseEnter = (mouseEnterInfo) => {
-    if (
-      isPlayer(user) &&
-      mouseEnterInfo.event.extendedProps.userId &&
-      mouseEnterInfo.event.extendedProps.userId != user.userId
-    )
-      return;
+    if (isPlayer(user) && mouseEnterInfo.event.extendedProps.isBooked) return;
 
     mouseEnterInfo.el.style.cursor = "pointer"; // Change cursor to pointer
   };
@@ -49,12 +109,7 @@ export default function OwnerCalendar() {
   function handleEventClick(info) {
     info.jsEvent.preventDefault();
 
-    if (
-      isPlayer(user) &&
-      info.event.extendedProps.userId &&
-      info.event.extendedProps.userId != user.userId
-    )
-      return;
+    if (isPlayer(user) && info.event.extendedProps.isBooked) return;
 
     const startEnd = info.event.startStr.split("T");
     const endEnd = info.event.endStr.split("T");
@@ -68,7 +123,6 @@ export default function OwnerCalendar() {
       price: info.event.extendedProps.price,
       userId: info.event.extendedProps.userId,
     });
-    console.log(info.event);
     setOpenDetails(true);
   }
 

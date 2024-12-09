@@ -20,7 +20,7 @@ function mapSlotForPlayers(slot) {
     title: "Available",
     extendedProps: {
       price: slot.price,
-      userId: slot.user.userID,
+      userId: slot.user.userId,
       isBooked: slot.isBooked,
     },
   };
@@ -52,7 +52,7 @@ function mapSlotForOwners(slot) {
 async function getTimeSlots(ownerId, courtId, user) {
   const data = new URLSearchParams();
   data.append("courtId", courtId);
-  data.append("userId", ownerId);
+  data.append("userId", user.userId);
 
   let slots;
   if (user.roleId == USER_ROLES.OWNER) slots = await getTimeSlotsOwners(data);

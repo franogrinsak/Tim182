@@ -318,9 +318,26 @@ export async function postDeleteTimeSlot(data) {
   }
 }
 
-export async function postBooTkimeSlot(data) {
+export async function postBookTimeSlot(data) {
   try {
     const response = await fetch(resolveBackendPath("/slots/book?" + data), {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
+export async function postCancelTimeSlot(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/slots/cancel?" + data), {
       method: "POST",
       credentials: "include",
     });

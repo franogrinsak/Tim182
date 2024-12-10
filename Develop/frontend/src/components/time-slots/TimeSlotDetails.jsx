@@ -11,7 +11,12 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
-import { postBooTkimeSlot, postDeleteTimeSlot } from "../../util/api";
+import {
+  postBookTimeSlot,
+  postCancelTimeSlot,
+  postDeleteTimeSlot,
+} from "../../util/api";
+import { isEarlierThan24Hours } from "../../util/date";
 
 export default function TimeSlotDetails(props) {
   const { user } = useUser();
@@ -47,14 +52,18 @@ export default function TimeSlotDetails(props) {
   const handleOpen = () => props.setOpen(!props.open);
 
   async function cancelBookedSlot() {
-    console.log(formData);
+    const data = new URLSearchParams();
+    data.append("timeSlotId", formData.timeSlotId);
+
+    const success = await postCancelTimeSlot(data);
+    if (success) window.location.reload();
   }
   async function bookSlot() {
     const data = new URLSearchParams();
     data.append("timeSlotId", formData.timeSlotId);
     data.append("userId", user.userId);
 
-    const success = await postBooTkimeSlot(data);
+    const success = await postBookTimeSlot(data);
     if (success) window.location.reload();
   }
 
@@ -181,11 +190,17 @@ export default function TimeSlotDetails(props) {
               Book slot
             </Button>
           )}
-          {isPlayer(user) && formData.userId != 0 && (
-            <Button className="ml-auto" color="red" onClick={cancelBookedSlot}>
-              Cancel booking
-            </Button>
-          )}
+          {isPlayer(user) &&
+            formData.userId != 0 &&
+            isEarlierThan24Hours(formData.startDate, formData.startTime) && (
+              <Button
+                className="ml-auto"
+                color="red"
+                onClick={cancelBookedSlot}
+              >
+                Cancel booking
+              </Button>
+            )}
         </DialogFooter>
       </Dialog>
     </>

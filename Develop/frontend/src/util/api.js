@@ -351,3 +351,34 @@ export async function postCancelTimeSlot(data) {
     console.error("Network Error:", error);
   }
 }
+
+export async function getAppliction(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/application?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  const contentLength = response.headers.get("content-length");
+  if (contentLength && parseInt(contentLength) == 0) {
+    return null;
+  } else {
+    return await response.json();
+  }
+}
+
+export async function postSignUpToTournament(data) {
+  const response = await fetch(resolveBackendPath("/tournaments/signup"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}

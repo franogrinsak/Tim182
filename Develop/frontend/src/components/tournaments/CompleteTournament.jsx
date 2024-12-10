@@ -10,8 +10,11 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Form, useActionData, useNavigation } from "react-router-dom";
+import { useUser } from "../auth/UserContext";
+import { isOwner } from "../../util/users";
 
 export default function (props) {
+  const { user } = useUser();
   const { tournamentId, userId } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
@@ -19,9 +22,12 @@ export default function (props) {
   const navigation = useNavigation();
   return (
     <>
-      <Button className="ml-auto" onClick={handleOpen}>
-        Enter results and complete the tournament
-      </Button>
+      {user && isOwner(user) && (
+        <Button className="ml-auto" onClick={handleOpen}>
+          Enter results and complete the tournament
+        </Button>
+      )}
+
       <Dialog size="sm" open={open} handler={handleOpen} className="p-4">
         <Form method="post">
           <DialogHeader className="relative m-0 block">

@@ -1,8 +1,15 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
-import { Link, useLoaderData } from "react-router-dom";
-import { getTournamentDetails, postCompleteTournament } from "../../util/api";
+import { Link, useLoaderData, useParams } from "react-router-dom";
+import {
+  getAppliction,
+  getTournamentDetails,
+  postCompleteTournament,
+  postSignUpToTournament,
+} from "../../util/api";
 import CompleteTournament from "./CompleteTournament";
+import { Button } from "@material-tailwind/react";
+import { isPlayer } from "../../util/users";
 
 export async function loader({ params }) {
   const { tournamentId } = params;
@@ -30,17 +37,63 @@ export async function action({ request }) {
 
 export default function TournamentDetails() {
   const { user } = useUser();
+  const { tournamentId } = useParams();
   const tournament = useLoaderData();
   const ownerProfilePath = "/app/courts/" + tournament?.user?.userId;
   const courtProfilePath = ownerProfilePath + "/" + tournament?.court?.courtId;
+  const [application, setApplication] = React.useState();
+  const [signingUp, setSigningUp] = React.useState(false);
+  const [loadingApplication, setLoadingApplication] = React.useState(true);
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(!open);
+  async function getApplication() {
+    const data = new URLSearchParams();
+    data.append("userId", user.userId);
+    data.append("tournamentId", tournamentId);
+    const app = await getAppliction(data);
+    setApplication(app);
+  }
+
+  React.useEffect(() => {
+    setLoadingApplication(true);
+    if (user && isPlayer(user)) getApplication();
+    setLoadingApplication(false);
+  }, [JSON.stringify(user)]);
+
+  async function signUpForTournament() {
+    setSigningUp(true);
+    const data = {
+      tournament: {
+        tournamentId: tournamentId,
+      },
+      user: {
+        userId: user.userId,
+      },
+    };
+    await postSignUpToTournament(data);
+    await getApplication();
+    setSigningUp(false);
+  }
+
   return (
     <section className="flex flex-col items-center">
+      {user &&
+        isPlayer(user) &&
+        !application &&
+        tournament.open &&
+        !loadingApplication && (
+          <Button loading={signingUp} onClick={signUpForTournament}>
+            Apply to tournament
+          </Button>
+        )}
+      {application && application.isApproved && tournament.open && (
+        <h2>Your application is approved</h2>
+      )}
+      {application && !application.isApproved && tournament.open && (
+        <h2>Your application is waiting for approval</h2>
+      )}
       <div>
         <div className="px-4 sm:px-0">
-          <p className="mt-1 max-w-2xl text-3xl text-neutral-950">
+          <p className="mt-1 text-3xl text-neutral-950 text-center w-full">
             {tournament.tournamentName}
           </p>
         </div>

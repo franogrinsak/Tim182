@@ -40,6 +40,11 @@ function mapSlotForOwners(slot) {
     id: slot.timeSlotId,
     start: slot.startTimestamp,
     end: slot.endTimestamp,
+    backgroundColor: slot.user.userId != 0 ? "grey" : "",
+    title:
+      slot.user.userId != 0
+        ? `Booked by ${slot.user.firstName} ${slot.user.lastName}`
+        : "Available",
     extendedProps: {
       price: slot.price,
       userId: slot.user.userId,

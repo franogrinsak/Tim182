@@ -70,7 +70,7 @@ public class SlotsRepository {
             return false;
         }
         else{
-            querry="UPDATE time_slots SET isbooked=FALSE,userid=NULL WHERE timeslotid=?";
+            querry="UPDATE time_slots SET userid = NULL WHERE timeslotid=?";
             jdbc.update(querry,
                     timeSlotId);
         }
@@ -79,7 +79,7 @@ public class SlotsRepository {
 
 
     public List<Slot> getO(int courtId, int userId) {
-        String querry="SELECT * FROM time_slots natural join users WHERE courtid = ? and userid=?";
+        String querry="SELECT * FROM time_slots natural left join users WHERE courtid = ?";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -95,16 +95,19 @@ public class SlotsRepository {
             rowObject.setBooked(r.getBoolean("isbooked"));
             return rowObject;
         };
-        return jdbc.query(querry, purchaseRowMapper,courtId,userId);
+        return jdbc.query(querry, purchaseRowMapper,courtId);
     }
 
     public List<Slot> getP(int courtId, int userId) {
-        String querry="SELECT * FROM time_slots natural join users WHERE courtid = ? and userid=?";
+        String querry="SELECT * FROM time_slots natural left join users WHERE courtid = ?";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
             User user = new User();
-            user.setUserId(r.getInt("userid"));
-            user.setFirstName(r.getString("firstname"));
-            user.setLastName(r.getString("lastname"));
+            int reservedUserId = r.getInt("userid");
+            if (userId == reservedUserId) {
+                user.setUserId(r.getInt("userid"));
+                user.setFirstName(r.getString("firstname"));
+                user.setLastName(r.getString("lastname"));
+            }
             Slot rowObject = new Slot();
             rowObject.setCourtId(r.getInt("courtid"));
             rowObject.setPrice(String.valueOf(r.getFloat("price")));
@@ -112,9 +115,9 @@ public class SlotsRepository {
             rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
             rowObject.setUser(user);
             rowObject.setTimeSlotId(r.getInt("timeslotid"));
-            rowObject.setBooked(r.getBoolean("isbooked"));
+            rowObject.setBooked(reservedUserId != 0 && userId != reservedUserId);
             return rowObject;
         };
-        return jdbc.query(querry, purchaseRowMapper,courtId,userId);
+        return jdbc.query(querry, purchaseRowMapper,courtId);
     }
 }

@@ -41,4 +41,34 @@ public class TournamentController {
         return tournamentRepo.getTournaments(tournamentId);
     }
 
+    @PostMapping("/tournaments/signup")
+    public void tournamentSignUp(@RequestBody Participations participations) {
+        tournamentRepo.TournamentSignUp(participations);
+    }
+
+    @PostMapping("/tournaments/approve")
+    public void approveTournament(@RequestBody Participations participations) {
+        tournamentRepo.approveTournament(participations);
+    }
+
+    @PostMapping("/tournaments/deny")
+    public void denyTournament(@RequestBody Participations participations) {
+        tournamentRepo.denyTournament(participations);
+    }
+
+    @GetMapping("/tournaments/applications")
+    public List<Participations> applicationsTournaments(@RequestParam int tournamentId) {
+        return tournamentRepo.applicationsTournaments(tournamentId);
+    }
+
+    @GetMapping("/tournaments/application")
+    public Participations applicationTournaments(@RequestParam int tournamentId, @RequestParam int userId) {
+        return tournamentRepo.applicationTournaments(tournamentId, userId);
+    }
+
+    @GetMapping("/tournaments/applications/player")
+    public List<Participations> applicationsplayerTournaments(@RequestParam int userId) {
+        return tournamentRepo.applicationsplayerTournaments(userId);
+    }
+
 }

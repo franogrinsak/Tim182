@@ -1,5 +1,6 @@
 package com.primjer.primjer;
 
+import jakarta.servlet.http.Part;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -106,9 +107,89 @@ public class TournamentRepository {
             rowObject.setOpen(r.getBoolean("isopen"));
             rowObject.setPlayerLevel(r.getString("playerlevel"));
             rowObject.setDescription((r.getString("description")));
+            rowObject.setResults((r.getString("results")));
             return rowObject;
         };
 
         return jdbc.query(querry, purchaseRowMapper, tournamentId).get(0);
     }
-}
+
+
+    public void TournamentSignUp(Participations participations) {
+        String querry = "INSERT INTO participations(userid,tournamentid) VALUES(?,?)";
+        jdbc.update(querry, participations.getUser().getUserId(), participations.getTournament().getTournamentId());
+    }
+
+    public void approveTournament(Participations participations) {
+        String querry="UPDATE participations SET  isApproved=true WHERE userId=? AND tournamentId = ?";
+        jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
+    }
+
+    public void denyTournament(Participations participations) {
+        String querry="DELETE FROM participations WHERE userId = ? AND tournamentId = ?";
+        jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
+    }
+
+    public List<Participations> applicationsTournaments(int tournamentId) {
+        String querry = "SELECT * FROM participations JOIN users ON participations.userId= users.userId  WHERE tournamentId = ?";
+        RowMapper<Participations> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Participations rowObject = new Participations();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper, tournamentId);
+
+    }
+
+    public Participations applicationTournaments(int tournamentId,int userId) {
+        String querry = "SELECT * FROM participations WHERE tournamentId = ? AND userId = ?";
+        RowMapper<Participations> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Participations rowObject = new Participations();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
+            return rowObject;
+        };
+
+        List<Participations> participations = jdbc.query(querry, purchaseRowMapper, tournamentId, userId);
+        return participations.isEmpty() ? null : participations.get(0);
+    }
+
+    public List<Participations> applicationsplayerTournaments(int userId) {
+        String querry = "SELECT * FROM participations WHERE userId = ?";
+        RowMapper<Participations> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Participations rowObject = new Participations();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper, userId);
+
+    }
+
+
+
+
+    }

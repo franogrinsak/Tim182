@@ -1,5 +1,6 @@
 package com.primjer.primjer;
 
+import jakarta.servlet.http.Part;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -115,9 +116,8 @@ public class TournamentRepository {
 
 
     public void TournamentSignUp(Participations participations) {
-        String querry = "INSERT INTO participations(userid,tournamentid,isapproved,signuptime) VALUES(?,?,?,?)";
-        jdbc.update(querry,
-                participations.getUser().getUserId(),participations.getTournament().getTournamentId(),participations.isApproved(),participations.getSignUpTime());
+        String querry = "INSERT INTO participations(userid,tournamentid) VALUES(?,?)";
+        jdbc.update(querry, participations.getUser().getUserId(), participations.getTournament().getTournamentId());
     }
 
     public void approveTournament(Participations participations) {
@@ -166,9 +166,8 @@ public class TournamentRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper, tournamentId, userId).get(0);
-
-
+        List<Participations> participations = jdbc.query(querry, purchaseRowMapper, tournamentId, userId);
+        return participations.isEmpty() ? null : participations.get(0);
     }
 
     public List<Participations> applicationsplayerTournaments(int userId) {

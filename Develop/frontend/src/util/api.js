@@ -382,3 +382,58 @@ export async function postSignUpToTournament(data) {
     throw { status: response.status, message: response.statusText };
   }
 }
+
+export async function getTournamentApplictions(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/applications?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function postApproveParticipation(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/tournaments/approve"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
+export async function postDenyParticipation(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/tournaments/deny"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}

@@ -37,6 +37,7 @@ import {
   OWNER_TOURNAMENTS,
   REGISTER,
   TOURNAMENT_DETAIL,
+  TOURNAMENT_PARTICIPATIONS,
   TOURNAMENTS,
   USERS,
 } from "./util/paths";
@@ -79,6 +80,10 @@ import TournamentDetails, {
   loader as tournamentDetailsLoader,
   action as completeTournamentAction,
 } from "./components/tournaments/TournamentDetails";
+import { TournamentDetailsLayout } from "./components/tournaments/TournamentDetailsLayout";
+import Participations, {
+  loader as participationsLoader,
+} from "./components/tournaments/Participations";
 
 function App() {
   const router = createBrowserRouter(
@@ -165,10 +170,20 @@ function App() {
             />
             <Route
               path={TOURNAMENT_DETAIL}
-              element={<TournamentDetails />}
+              element={<TournamentDetailsLayout />}
               loader={tournamentDetailsLoader}
-              action={completeTournamentAction}
-            />
+            >
+              <Route
+                index
+                element={<TournamentDetails />}
+                action={completeTournamentAction}
+              />
+              <Route
+                path={TOURNAMENT_PARTICIPATIONS}
+                element={<Participations />}
+                loader={participationsLoader}
+              />
+            </Route>
           </Route>
 
           <Route path={USERS}>

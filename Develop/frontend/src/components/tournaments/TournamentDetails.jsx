@@ -1,6 +1,11 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import {
   getAppliction,
   getTournamentDetails,
@@ -38,7 +43,7 @@ export async function action({ request }) {
 export default function TournamentDetails() {
   const { user } = useUser();
   const { tournamentId } = useParams();
-  const tournament = useLoaderData();
+  const { tournament } = useOutletContext();
   const ownerProfilePath = "/app/courts/" + tournament?.user?.userId;
   const courtProfilePath = ownerProfilePath + "/" + tournament?.court?.courtId;
   const [application, setApplication] = React.useState();
@@ -85,10 +90,10 @@ export default function TournamentDetails() {
             Apply to tournament
           </Button>
         )}
-      {application && application.isApproved && tournament.open && (
+      {application && application.approved && tournament.open && (
         <h2>Your application is approved</h2>
       )}
-      {application && !application.isApproved && tournament.open && (
+      {application && !application.approved && tournament.open && (
         <h2>Your application is waiting for approval</h2>
       )}
       <div>

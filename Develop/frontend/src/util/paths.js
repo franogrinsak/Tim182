@@ -27,6 +27,7 @@ export const TOURNAMENTS = APP + "/tournaments";
 export const OWNER_TOURNAMENTS = TOURNAMENTS + "/:ownerId";
 export const ORGANIZE_TOURNAMENT = OWNER_TOURNAMENTS + "/organize";
 export const TOURNAMENT_DETAIL = OWNER_TOURNAMENTS + "/:tournamentId";
+export const TOURNAMENT_PARTICIPATIONS = TOURNAMENT_DETAIL + "/applications";
 
 export const USERS = APP + "/users";
 

@@ -44,7 +44,7 @@ public class SlotsRepository {
             return lista;
         }
         else{
-            querry="INSERT INTO time_slots(starttimestamp,endtimestamp,price,courtid,isBooked) VALUES(?,?,?,?,FALSE)";
+            querry="INSERT INTO time_slots(starttimestamp,endtimestamp,price,courtid) VALUES(?,?,?,?)";
             jdbc.update(querry,
                     slot.getStartTimestamp(),slot.getEndTimestamp(),Float.valueOf(slot.getPrice()),slot.getCourtId());
         }
@@ -58,7 +58,7 @@ public class SlotsRepository {
     }
 
     public void book(int timeSlotId, int userId) {
-        String querry="UPDATE time_slots SET isbooked=TRUE,userid=? WHERE timeslotid=?";
+        String querry="UPDATE time_slots SET userid = ? WHERE timeslotid=?";
         jdbc.update(querry,userId,
                 timeSlotId);
     }
@@ -92,7 +92,7 @@ public class SlotsRepository {
             rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
             rowObject.setUser(user);
             rowObject.setTimeSlotId(r.getInt("timeslotid"));
-            rowObject.setBooked(r.getBoolean("isbooked"));
+            rowObject.setBooked(r.getInt("userid") != 0);
             return rowObject;
         };
         return jdbc.query(querry, purchaseRowMapper,courtId);

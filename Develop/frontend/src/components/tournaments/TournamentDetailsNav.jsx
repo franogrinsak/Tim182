@@ -12,7 +12,7 @@ export default function TournamentDetailsNav(props) {
   const { user } = useUser();
   const { tournament } = props;
   return (
-    <nav aria-label="Tabs" className="flex justify-center">
+    <nav aria-label="Tabs" className="flex justify-center mb-4">
       <div className="flex overflow-x-auto overflow-y-hidden border-b border-gray-200 whitespace-nowrap dark:border-gray-700">
         <NavLink
           to="."
@@ -31,6 +31,16 @@ export default function TournamentDetailsNav(props) {
             }
           >
             <span className="mx-1 text-sm sm:text-base">Applications</span>
+          </NavLink>
+        )}
+        {!tournament.open && (
+          <NavLink
+            to="media"
+            className={({ isActive }) =>
+              isActive ? ACTIVE_STYLE : INACTIVE_STYLE
+            }
+          >
+            <span className="mx-1 text-sm sm:text-base">Comments & Images</span>
           </NavLink>
         )}
       </div>

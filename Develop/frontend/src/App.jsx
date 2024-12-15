@@ -37,6 +37,7 @@ import {
   OWNER_TOURNAMENTS,
   REGISTER,
   TOURNAMENT_DETAIL,
+  TOURNAMENT_MEDIA,
   TOURNAMENT_PARTICIPATIONS,
   TOURNAMENTS,
   USERS,
@@ -84,6 +85,7 @@ import { TournamentDetailsLayout } from "./components/tournaments/TournamentDeta
 import Participations, {
   loader as participationsLoader,
 } from "./components/tournaments/Participations";
+import TournamentMedia from "./components/tournaments/TournamentMedia";
 
 function App() {
   const router = createBrowserRouter(
@@ -183,6 +185,7 @@ function App() {
                 element={<Participations />}
                 loader={participationsLoader}
               />
+              <Route path={TOURNAMENT_MEDIA} element={<TournamentMedia />} />
             </Route>
           </Route>
 

@@ -159,3 +159,7 @@ footer {
   background-color: #f0f0f0; /* Light gray background */
   cursor: pointer;
 }
+
+.marked-notification {
+  background-color: rgb(203, 213, 225);
+}

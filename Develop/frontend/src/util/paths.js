@@ -32,6 +32,9 @@ export const TOURNAMENT_MEDIA = TOURNAMENT_DETAIL + "/media";
 
 export const USERS = APP + "/users";
 
+export const NOTIFICATIONS = APP + "/notifications";
+export const PLAYER_NOTIFICATIONS = NOTIFICATIONS + "/:userId";
+
 export const tempCorts = COURTS;
 
 export const BACKEND_LOGGED = "/logged";

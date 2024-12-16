@@ -35,6 +35,7 @@ import {
   OWNER_COURTS,
   OWNER_PROFILE,
   OWNER_TOURNAMENTS,
+  PLAYER_NOTIFICATIONS,
   REGISTER,
   TOURNAMENT_DETAIL,
   TOURNAMENT_MEDIA,
@@ -86,6 +87,9 @@ import Participations, {
   loader as participationsLoader,
 } from "./components/tournaments/Participations";
 import TournamentMedia from "./components/tournaments/TournamentMedia";
+import Notifications, {
+  loader as notificationsLoader,
+} from "./components/notifications/Notifications";
 
 function App() {
   const router = createBrowserRouter(
@@ -153,6 +157,7 @@ function App() {
             loader={allCourtsLoader}
           />
 
+          {/* Tournaments UI */}
           <Route path={TOURNAMENTS}>
             <Route
               index
@@ -188,6 +193,12 @@ function App() {
               <Route path={TOURNAMENT_MEDIA} element={<TournamentMedia />} />
             </Route>
           </Route>
+
+          <Route
+            path={PLAYER_NOTIFICATIONS}
+            element={<Notifications />}
+            loader={notificationsLoader}
+          />
 
           <Route path={USERS}>
             <Route index element={<Users />} loader={usersLoader} />

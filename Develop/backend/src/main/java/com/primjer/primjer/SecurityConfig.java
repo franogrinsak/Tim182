@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         return http.csrf(AbstractHttpConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource())).authorizeHttpRequests(auth->{
-            auth.requestMatchers("/","/login").permitAll();
+            auth.requestMatchers("/","/login","/webhook").permitAll();
             auth.anyRequest().authenticated();
         }).oauth2Login(oauth2 -> oauth2
                 .successHandler(authHandler)).logout(logout -> logout

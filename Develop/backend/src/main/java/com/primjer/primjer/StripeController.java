@@ -26,6 +26,7 @@ public class StripeController {
 
     @PostMapping("/product/v1/checkout")
     public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest) throws StripeException {
+        System.out.println("Daaaaa");
         StripeResponse stripeResponse = stripeService.checkoutProducts(stripeRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -33,10 +34,11 @@ public class StripeController {
     }
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
+        System.out.println("DADadada");
         Stripe.apiKey = secretKey;
         Event event;
 
-        try {
+        /*try {
             event = Webhook.constructEvent(payload, sigHeader, WHKey);
 
             if ("checkout.session.completed".equals(event.getType())) {
@@ -49,6 +51,11 @@ public class StripeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid signature");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Webhook processing failed");
-        }
+        }*/
+        return ResponseEntity.ok("Webhook handled successfully");
+    }
+    @GetMapping("/webhook")
+    public String aaa(){
+        return "aaaa";
     }
 }

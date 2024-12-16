@@ -59,4 +59,20 @@ public class StripeService {
         return sr;
     }
 
+    public void updateDTB(String sessionId) {
+        try {
+            Stripe.apiKey = secretKey;
+            Session session = Session.retrieve(sessionId);
+
+            if ("complete".equals(session.getPaymentStatus())) {
+                // Update your database with reservation details
+                // Example: reservationRepository.updatePaymentStatus(sessionId, "PAID");
+                System.out.println("Payment successful. Updating database...");
+            } else {
+                throw new RuntimeException("Payment not completed. Cannot update database.");
+            }
+        } catch (StripeException e) {
+            throw new RuntimeException("Failed to retrieve session details from Stripe.", e);
+        }
+    }
 }

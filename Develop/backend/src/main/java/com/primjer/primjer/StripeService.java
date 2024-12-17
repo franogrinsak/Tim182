@@ -17,6 +17,8 @@ public class StripeService {
 
     @Value("${stripe.secretKey}")
     private String secretKey;
+    @Value("${frontend.url}")
+    private String FRONTEND_URL;
 
     public StripeService(SlotsRepository slotsRepo, MembershipRepository mr) {
         this.slotsRepo = slotsRepo;
@@ -54,12 +56,12 @@ public class StripeService {
                         .setQuantity(1L)
                         .setPriceData(priceData)
                         .build();
-
+        String redirect_url=FRONTEND_URL+"/app/courts/"+stripeRequest.getUserId()+"/"+slotsRepo.getInt(stripeRequest.getTimeSlotId());
         SessionCreateParams params =
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setSuccessUrl("http://localhost:8080/api")
-                        .setCancelUrl("http://localhost:8080/")
+                        .setSuccessUrl(redirect_url)
+                        .setCancelUrl(redirect_url)
                         .addLineItem(lineItem)
                         .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
                         .putMetadata("timeSlotId", String.valueOf(stripeRequest.getTimeSlotId()))

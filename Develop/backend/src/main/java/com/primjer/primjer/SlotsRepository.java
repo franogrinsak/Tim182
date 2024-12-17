@@ -64,6 +64,14 @@ public class SlotsRepository {
                 timeSlotId
         );
     }
+    public Integer getInt(int timeSlotId) {
+        String query = "SELECT courtid FROM time_slots WHERE timeslotid = ?";
+        return jdbc.queryForObject(
+                query,
+                Integer.class,
+                timeSlotId
+        );
+    }
 
     public void book(int timeSlotId, int userId) {
         String querry="UPDATE time_slots SET userid = ? WHERE timeslotid=?";

@@ -39,9 +39,8 @@ public class StripeController {
         Event event;
         try {
             event = Webhook.constructEvent(payload, sigHeader, WHKey);
-
             if ("checkout.session.completed".equals(event.getType())) {
-                System.out.println("Uso sam");
+
                 Session session = (Session) event.getData().getObject();
                 String userId = session.getMetadata().get("userId");
                 String timeSlotId = session.getMetadata().get("timeSlotId");

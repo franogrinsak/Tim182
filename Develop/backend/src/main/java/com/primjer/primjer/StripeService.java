@@ -5,8 +5,6 @@ import com.stripe.model.checkout.Session;
 
 
 import com.stripe.param.checkout.SessionCreateParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StripeService {
     private SlotsRepository slotsRepo;
+    private MembershipRepository mr;
 
 
     @Value("${stripe.secretKey}")
     private String secretKey;
 
-    public StripeService(SlotsRepository slotsRepo) {
+    public StripeService(SlotsRepository slotsRepo, MembershipRepository mr) {
         this.slotsRepo = slotsRepo;
+        this.mr = mr;
     }
 
 
@@ -32,11 +32,18 @@ public class StripeService {
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                         .setName(stripeRequest.getName())
                         .build();
-
+        Double amount = null;
+        if(stripeRequest.getName().equals("Rezervacija")){
+            amount=slotsRepo.getPrice(stripeRequest.getTimeSlotId());
+        }
+        else if(stripeRequest.getName().equals("Clanarina")){
+            amount=mr.getPrice();
+        }
+        long l = Math.round(amount * 100);
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
-                        .setCurrency(stripeRequest.getCurrency() != null ? stripeRequest.getCurrency() : "USD")
-                        .setUnitAmount(stripeRequest.getAmount())
+                        .setCurrency("EUR")
+                        .setUnitAmount(l)
                         .setProductData(productData)
                         .build();
 
@@ -44,7 +51,7 @@ public class StripeService {
         SessionCreateParams.LineItem lineItem =
                 SessionCreateParams
                         .LineItem.builder()
-                        .setQuantity(stripeRequest.getQuantity())
+                        .setQuantity(1L)
                         .setPriceData(priceData)
                         .build();
 
@@ -75,7 +82,6 @@ public class StripeService {
         try {
             Stripe.apiKey = secretKey;
             Session session = Session.retrieve(sessionId);
-            System.out.println("USo sam 2");
             if ("paid".equals(session.getPaymentStatus())) {
                 slotsRepo.book(timeSlotId,userId);
             } else {

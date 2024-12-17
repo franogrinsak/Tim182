@@ -35,6 +35,8 @@ export const USERS = APP + "/users";
 export const NOTIFICATIONS = APP + "/notifications";
 export const PLAYER_NOTIFICATIONS = NOTIFICATIONS + "/:userId";
 
+export const MEMBERSHIP = APP + "/membership";
+
 export const tempCorts = COURTS;
 
 export const BACKEND_LOGGED = "/logged";

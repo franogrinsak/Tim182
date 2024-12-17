@@ -31,6 +31,7 @@ import {
   EDIT_COURT_OWNER_PROFILE,
   HOME,
   LOGGED,
+  MEMBERSHIP,
   ORGANIZE_TOURNAMENT,
   OWNER_COURTS,
   OWNER_PROFILE,
@@ -90,6 +91,10 @@ import TournamentMedia from "./components/tournaments/TournamentMedia";
 import Notifications, {
   loader as notificationsLoader,
 } from "./components/notifications/Notifications";
+import EditMembership, {
+  loader as editMembershipLoader,
+  action as editMembershipAction,
+} from "./components/membership/EditMembership";
 
 function App() {
   const router = createBrowserRouter(
@@ -210,6 +215,13 @@ function App() {
             element={<EditUser />}
             loader={editUserLoader}
             action={editUserAction}
+          />
+
+          <Route
+            path={MEMBERSHIP}
+            element={<EditMembership />}
+            loader={editMembershipLoader}
+            action={editMembershipAction}
           />
 
           <Route

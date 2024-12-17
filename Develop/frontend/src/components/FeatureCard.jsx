@@ -3,6 +3,7 @@ import courtImage from "../assets/court.png";
 import padelRacketImage from "../assets/padelracket.png";
 import trophyImage from "../assets/trophy.png";
 import usersImage from "../assets/users.png";
+import membershipImage from "../assets/membership.png";
 import { Link } from "react-router-dom";
 
 export function getOwnerCourtsCard(ownerId) {
@@ -72,6 +73,16 @@ export const ADMINISTRATOR_USERS = (
     imageUrl={usersImage}
     title="Manage users"
     text="View, add, edit or remove registered users with ease, managing the complete list of profiles directly from your admin panel."
+  />
+);
+
+export const ADMINISTRATOR_MEMBERSHIP = (
+  <FeatureCard
+    key={5}
+    link="membership"
+    imageUrl={membershipImage}
+    title="Membership"
+    text="View, update, or adjust membership prices for padel court owners effortlessly, managing all pricing details directly from your admin panel."
   />
 );
 

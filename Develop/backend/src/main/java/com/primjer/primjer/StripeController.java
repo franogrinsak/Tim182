@@ -24,7 +24,7 @@ public class StripeController {
         this.stripeService = stripeService;
     }
 
-    @PostMapping("/product/v1/checkout")
+    @PostMapping("/checkout")
     public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest) throws StripeException {
         System.out.println("Daaaaa");
         StripeResponse stripeResponse = stripeService.checkoutProducts(stripeRequest);
@@ -41,6 +41,7 @@ public class StripeController {
             event = Webhook.constructEvent(payload, sigHeader, WHKey);
 
             if ("checkout.session.completed".equals(event.getType())) {
+                System.out.println("Uso sam");
                 Session session = (Session) event.getData().getObject();
                 String userId = session.getMetadata().get("userId");
                 String timeSlotId = session.getMetadata().get("timeSlotId");
@@ -55,8 +56,5 @@ public class StripeController {
         }
 
     }
-    @GetMapping("/webhook")
-    public String aaa(){
-        return "aaaa";
-    }
+
 }

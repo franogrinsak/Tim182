@@ -5,6 +5,8 @@ import com.stripe.model.checkout.Session;
 
 
 import com.stripe.param.checkout.SessionCreateParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StripeService {
     private SlotsRepository slotsRepo;
+
 
     @Value("${stripe.secretKey}")
     private String secretKey;
@@ -72,10 +75,9 @@ public class StripeService {
         try {
             Stripe.apiKey = secretKey;
             Session session = Session.retrieve(sessionId);
-
-            if ("complete".equals(session.getPaymentStatus())) {
+            System.out.println("USo sam 2");
+            if ("paid".equals(session.getPaymentStatus())) {
                 slotsRepo.book(timeSlotId,userId);
-                System.out.println("Payment successful. Updating database...");
             } else {
                 throw new RuntimeException("Payment not completed. Cannot update database.");
             }

@@ -7,11 +7,18 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class StripeService {
+    private SlotsRepository slotsRepo;
 
     @Value("${stripe.secretKey}")
     private String secretKey;
+
+    public StripeService(SlotsRepository slotsRepo) {
+        this.slotsRepo = slotsRepo;
+    }
 
 
     public StripeResponse checkoutProducts(StripeRequest stripeRequest) throws StripeException {
@@ -44,6 +51,8 @@ public class StripeService {
                         .setSuccessUrl("http://localhost:8080/api")
                         .setCancelUrl("http://localhost:8080/")
                         .addLineItem(lineItem)
+                        .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
+                        .putMetadata("timeSlotId", String.valueOf(stripeRequest.getTimeSlotId()))
                         .build();
 
 
@@ -58,15 +67,14 @@ public class StripeService {
         sr.setSessionUrl(session.getUrl());
         return sr;
     }
-
-    public void updateDTB(String sessionId) {
+    @Transactional
+    public void updateDTB(String sessionId, Integer userId, Integer timeSlotId) {
         try {
             Stripe.apiKey = secretKey;
             Session session = Session.retrieve(sessionId);
 
             if ("complete".equals(session.getPaymentStatus())) {
-                // Update your database with reservation details
-                // Example: reservationRepository.updatePaymentStatus(sessionId, "PAID");
+                slotsRepo.book(timeSlotId,userId);
                 System.out.println("Payment successful. Updating database...");
             } else {
                 throw new RuntimeException("Payment not completed. Cannot update database.");

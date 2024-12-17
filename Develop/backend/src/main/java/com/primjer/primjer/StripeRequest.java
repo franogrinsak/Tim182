@@ -4,6 +4,8 @@ public class StripeRequest {
     private Long quantity;
     private String name;
     private String currency;
+    private int timeSlotId;
+    private int userId;
 
     public Long getAmount() {
         return amount;
@@ -35,6 +37,22 @@ public class StripeRequest {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public int getTimeSlotId() {
+        return timeSlotId;
+    }
+
+    public void setTimeSlotId(int timeSlotId) {
+        this.timeSlotId = timeSlotId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
 

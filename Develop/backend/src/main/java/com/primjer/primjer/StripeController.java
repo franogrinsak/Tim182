@@ -37,13 +37,14 @@ public class StripeController {
         System.out.println("DADadada");
         Stripe.apiKey = secretKey;
         Event event;
-
-        /*try {
+        try {
             event = Webhook.constructEvent(payload, sigHeader, WHKey);
 
             if ("checkout.session.completed".equals(event.getType())) {
                 Session session = (Session) event.getData().getObject();
-                stripeService.updateDTB(session.getId());
+                String userId = session.getMetadata().get("userId");
+                String timeSlotId = session.getMetadata().get("timeSlotId");
+                stripeService.updateDTB(session.getId(),Integer.valueOf(userId),Integer.valueOf(timeSlotId));
             }
 
             return ResponseEntity.ok("Webhook handled successfully");
@@ -51,8 +52,8 @@ public class StripeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid signature");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Webhook processing failed");
-        }*/
-        return ResponseEntity.ok("Webhook handled successfully");
+        }
+
     }
     @GetMapping("/webhook")
     public String aaa(){

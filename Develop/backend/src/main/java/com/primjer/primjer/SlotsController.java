@@ -28,7 +28,7 @@ public class SlotsController {
         slotsRepo.delete(timeSlotId);
     }
     @PostMapping("slots/book")
-    public void bookSlots(@RequestParam int timeSlotId,@RequestParam int userId){
+    public void bookSlots(@RequestParam int timeSlotId,@RequestParam int userId, @RequestParam boolean useCash) {
         slotsRepo.book(timeSlotId,userId);
     }
     @PostMapping("slots/cancel")

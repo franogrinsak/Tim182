@@ -10,11 +10,11 @@ public class MembershipRepository {
     public MembershipRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
-    public Double getPrice() {
+    public String getPrice() {
         String query = "SELECT membershipprice FROM membership_price LIMIT 1";
         return jdbc.queryForObject(
                 query,
-                Double.class
+                String.class
         );
     }
 }

@@ -56,11 +56,11 @@ public class SlotsRepository {
         jdbc.update(querry,
                 timeSlotId);
     }
-    public Double getPrice(int timeSlotId) {
+    public String getPrice(int timeSlotId) {
         String query = "SELECT price FROM time_slots WHERE timeslotid = ?";
         return jdbc.queryForObject(
                 query,
-                Double.class,
+                String.class,
                 timeSlotId
         );
     }

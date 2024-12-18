@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 public class StripeService {
     private SlotsRepository slotsRepo;
@@ -34,18 +36,19 @@ public class StripeService {
                 SessionCreateParams.LineItem.PriceData.ProductData.builder()
                         .setName(stripeRequest.getName())
                         .build();
-        Double amount = null;
+        String amount = "0.00";
         if(stripeRequest.getName().equals("Rezervacija")){
             amount=slotsRepo.getPrice(stripeRequest.getTimeSlotId());
         }
         else if(stripeRequest.getName().equals("Clanarina")){
             amount=mr.getPrice();
         }
-        long l = Math.round(amount * 100);
+        BigDecimal price = new BigDecimal(amount);
+        long cents = price.movePointRight(2).longValue();
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
                         .setCurrency("EUR")
-                        .setUnitAmount(l)
+                        .setUnitAmount(cents)
                         .setProductData(productData)
                         .build();
 
@@ -56,7 +59,7 @@ public class StripeService {
                         .setQuantity(1L)
                         .setPriceData(priceData)
                         .build();
-        String redirect_url=FRONTEND_URL+"/app/courts/"+stripeRequest.getUserId()+"/"+slotsRepo.getInt(stripeRequest.getTimeSlotId());
+        String redirect_url=FRONTEND_URL+"/courts/"+stripeRequest.getOwnerId()+"/"+stripeRequest.getCourtId();
         SessionCreateParams params =
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)

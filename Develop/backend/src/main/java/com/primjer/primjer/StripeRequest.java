@@ -4,8 +4,9 @@ public class StripeRequest {
     private String name;
     private int timeSlotId;
     private int userId;
+    private int courtId;
 
-
+    private int ownerId;
 
     public String getName() {
         return name;
@@ -30,6 +31,22 @@ public class StripeRequest {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getCourtId() {
+        return courtId;
+    }
+
+    public void setCourtId(int courtId) {
+        this.courtId = courtId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
     }
 }
 

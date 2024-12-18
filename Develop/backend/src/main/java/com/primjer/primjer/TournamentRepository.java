@@ -195,5 +195,29 @@ public class TournamentRepository {
                 image.getImageId(), image.getUploadTime(), image.getUser().getUserId(), image.getTournament().getTournamentId(), image.getImageContent());
     }
 
+    public List<Image> getImages() {
+        String querry = "SELECT * FROM images join tournaments on images.tournamentId = tournaments.tournamentId join users on images.userId = users.userId order by uploadTime desc";
+        RowMapper<Image> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            user.setRoleId(r.getInt("roleid"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Image rowObject = new Image();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setImageId(r.getInt("imageid"));
+            rowObject.setUploadTime(r.getTimestamp("uploadTime"));
+            rowObject.setImageContent(r.getString("imagecontent"));
+
+
+
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper);
+    }
 
 }

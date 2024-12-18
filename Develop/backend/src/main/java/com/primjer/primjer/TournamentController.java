@@ -76,6 +76,10 @@ public class TournamentController {
         tournamentRepo.imageAdd(image);
     }
 
+    @GetMapping("/tournaments/images")
+    public List<Image> getImages() {
+        return tournamentRepo.getImages();
+    }
 
 
 }

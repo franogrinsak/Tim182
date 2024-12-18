@@ -81,5 +81,10 @@ public class TournamentController {
         return tournamentRepo.getImages();
     }
 
+    @PostMapping("/tournaments/comments/add")
+    public void commentAdd(@RequestBody Comment comment) {
+        tournamentRepo.commentAdd(comment);
+    }
+
 
 }

@@ -220,4 +220,10 @@ public class TournamentRepository {
         return jdbc.query(querry, purchaseRowMapper);
     }
 
+    public void commentAdd(Comment comment) {
+        String querry = "INSERT INTO comments(commentid,uploadtime,userid,tournamentid,commenttext) VALUES(?,?,?,?,?)";
+        jdbc.update(querry,
+                comment.getCommentId(), comment.getUploadTime(), comment.getUser().getUserId(), comment.getTournament().getTournamentId(), comment.getCommentText());
+    }
+
 }

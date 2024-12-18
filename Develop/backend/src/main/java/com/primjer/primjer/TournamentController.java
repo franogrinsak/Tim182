@@ -77,8 +77,8 @@ public class TournamentController {
     }
 
     @GetMapping("/tournaments/images")
-    public List<Image> getImages() {
-        return tournamentRepo.getImages();
+    public List<Image> getImages(@RequestParam int tournamentId) {
+        return tournamentRepo.getImages(tournamentId);
     }
 
     @PostMapping("/tournaments/comments/add")
@@ -87,8 +87,8 @@ public class TournamentController {
     }
 
     @GetMapping("/tournaments/comments")
-    public List<Comment> getComments() {
-        return tournamentRepo.getComments();
+    public List<Comment> getComments(@RequestParam int tournamentId) {
+        return tournamentRepo.getComments(tournamentId);
     }
 
 

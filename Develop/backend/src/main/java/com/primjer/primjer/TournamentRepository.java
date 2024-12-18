@@ -1,6 +1,5 @@
 package com.primjer.primjer;
 
-import jakarta.servlet.http.Part;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -190,13 +189,13 @@ public class TournamentRepository {
     }
 
     public void imageAdd(Image image) {
-        String querry = "INSERT INTO images(imageid,uploadtime,userid,tournamentid,imagecontent) VALUES(?,?,?,?,?)";
+        String querry = "INSERT INTO images(userid,tournamentid,imagecontent) VALUES(?,?,?)";
         jdbc.update(querry,
-                image.getImageId(), image.getUploadTime(), image.getUser().getUserId(), image.getTournament().getTournamentId(), image.getImageContent());
+                image.getUser().getUserId(), image.getTournament().getTournamentId(), image.getImageContent());
     }
 
-    public List<Image> getImages() {
-        String querry = "SELECT * FROM images join tournaments on images.tournamentId = tournaments.tournamentId join users on images.userId = users.userId order by uploadTime desc";
+    public List<Image> getImages(int tournamentId) {
+        String querry = "SELECT * FROM images join tournaments on images.tournamentId = tournaments.tournamentId join users on images.userId = users.userId where images.tournamentId = ? order by uploadTime desc";
         RowMapper<Image> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -217,17 +216,17 @@ public class TournamentRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper);
+        return jdbc.query(querry, purchaseRowMapper, tournamentId);
     }
 
     public void commentAdd(Comment comment) {
-        String querry = "INSERT INTO comments(commentid,uploadtime,userid,tournamentid,commenttext) VALUES(?,?,?,?,?)";
+        String querry = "INSERT INTO comments(userid,tournamentid,commenttext) VALUES(?,?,?)";
         jdbc.update(querry,
-                comment.getCommentId(), comment.getUploadTime(), comment.getUser().getUserId(), comment.getTournament().getTournamentId(), comment.getCommentText());
+                comment.getUser().getUserId(), comment.getTournament().getTournamentId(), comment.getCommentText());
     }
 
-    public List<Comment> getComments() {
-        String querry = "SELECT * FROM comments join tournaments on comments.tournamentId = tournaments.tournamentId join users on comments.userId = users.userId order by uploadTime desc";
+    public List<Comment> getComments(int tournamentId) {
+        String querry = "SELECT * FROM comments join tournaments on comments.tournamentId = tournaments.tournamentId join users on comments.userId = users.userId where comments.tournamentId = ? order by uploadTime desc";
         RowMapper<Comment> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -248,7 +247,7 @@ public class TournamentRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper);
+        return jdbc.query(querry, purchaseRowMapper, tournamentId);
     }
 
 

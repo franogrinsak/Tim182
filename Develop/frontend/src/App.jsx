@@ -87,7 +87,10 @@ import { TournamentDetailsLayout } from "./components/tournaments/TournamentDeta
 import Participations, {
   loader as participationsLoader,
 } from "./components/tournaments/Participations";
-import TournamentMedia from "./components/tournaments/TournamentMedia";
+import TournamentMedia, {
+  loader as torunamentMediaLoader,
+  action as tournamentMediaAction,
+} from "./components/tournaments/TournamentMedia";
 import Notifications, {
   loader as notificationsLoader,
 } from "./components/notifications/Notifications";
@@ -195,7 +198,12 @@ function App() {
                 element={<Participations />}
                 loader={participationsLoader}
               />
-              <Route path={TOURNAMENT_MEDIA} element={<TournamentMedia />} />
+              <Route
+                path={TOURNAMENT_MEDIA}
+                element={<TournamentMedia />}
+                loader={torunamentMediaLoader}
+                action={tournamentMediaAction}
+              />
             </Route>
           </Route>
 

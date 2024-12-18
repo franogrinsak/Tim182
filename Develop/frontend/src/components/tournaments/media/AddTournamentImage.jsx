@@ -9,9 +9,13 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React from "react";
-import { Form } from "react-router-dom";
+import { Form, useNavigation, useParams } from "react-router-dom";
+import { useUser } from "../../auth/UserContext";
 
 export default function AddTournamentImage() {
+  const { user } = useUser();
+  const navigation = useNavigation();
+  const { tournamentId, ownerId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [imageError, setImageError] = React.useState();
   const [previewImage, setPreviewImage] = React.useState();
@@ -73,6 +77,9 @@ export default function AddTournamentImage() {
           <DialogBody className="space-y-4 pb-6"></DialogBody>
           <input type="hidden" name="imageText" value={previewImage || ""} />
           <input type="hidden" name="formId" value="image" />
+          <input name="userId" value={user?.userId} hidden />
+          <input name="tournamentId" value={tournamentId} hidden />
+          <input name="ownerId" value={ownerId} hidden />
           {previewImage && (
             <div className="mt-4 w-full flex justify-center">
               <img
@@ -125,7 +132,12 @@ export default function AddTournamentImage() {
           )}
           {previewImage && <button onClick={removeImage}>Remove image</button>}
           <DialogFooter>
-            <Button type="submit" className="ml-auto" color="blue">
+            <Button
+              loading={navigation.state === "submitting"}
+              type="submit"
+              className="ml-auto"
+              color="blue"
+            >
               Upload image
             </Button>
           </DialogFooter>

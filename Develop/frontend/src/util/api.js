@@ -335,6 +335,35 @@ export async function postBookTimeSlot(data) {
   }
 }
 
+export async function postBookTimeSlotBuy(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/checkout"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log(response);
+    const stripe = await response.json();
+
+    window.location.replace(stripe.sessionUrl);
+
+    return false;
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
 export async function postCancelTimeSlot(data) {
   try {
     const response = await fetch(resolveBackendPath("/slots/cancel?" + data), {
@@ -435,5 +464,60 @@ export async function postDenyParticipation(data) {
     }
   } catch (error) {
     console.error("Network Error:", error);
+  }
+}
+
+export async function getTournamentImages(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/images?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function getTournamentComments(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/comments?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function postUploadComment(data) {
+  const response = await fetch(
+    resolveBackendPath("/tournaments/comments/add"),
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
+  }
+}
+
+export async function postUploadImage(data) {
+  const response = await fetch(resolveBackendPath("/tournaments/images/add"), {
+    method: "POST",
+    body: JSON.stringify(data),
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw { status: response.status, message: response.statusText };
   }
 }

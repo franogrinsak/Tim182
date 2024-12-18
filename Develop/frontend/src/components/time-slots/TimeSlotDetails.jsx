@@ -13,13 +13,16 @@ import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
 import {
   postBookTimeSlot,
+  postBookTimeSlotBuy,
   postCancelTimeSlot,
   postDeleteTimeSlot,
 } from "../../util/api";
 import { isEarlierThan24Hours } from "../../util/date";
+import { useParams } from "react-router-dom";
 
 export default function TimeSlotDetails(props) {
   const { user } = useUser();
+  const { courtId, ownerId } = useParams();
   const [formData, setFormData] = React.useState({
     startDate: "",
     startTime: "",
@@ -59,9 +62,19 @@ export default function TimeSlotDetails(props) {
     if (success) window.location.reload();
   }
   async function bookSlot() {
-    const data = new URLSearchParams();
+    let data = new URLSearchParams();
     data.append("timeSlotId", formData.timeSlotId);
     data.append("userId", user.userId);
+
+    /*
+    data = {
+      timeSlotId: formData.timeSlotId,
+      userId: user.userId,
+      name: "Rezervacija",
+      courtId: courtId,
+      ownerId: ownerId,
+    };
+    */
 
     const success = await postBookTimeSlot(data);
     if (success) window.location.reload();

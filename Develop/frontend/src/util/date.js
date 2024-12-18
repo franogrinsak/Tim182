@@ -15,3 +15,18 @@ export function isEarlierThan24Hours(startDate, startTime) {
 
   return currentTime <= thresholdTime;
 }
+
+export function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return formatter.format(date);
+}

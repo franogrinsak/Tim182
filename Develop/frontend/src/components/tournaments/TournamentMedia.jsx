@@ -2,10 +2,76 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { Galleria } from "primereact/galleria";
 import { classNames } from "primereact/utils";
-import { useOutletContext } from "react-router-dom";
+import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import "../../Media.css";
 import TournamentComments from "./media/TournamentComments";
 import AddTournamentImage from "./media/AddTournamentImage";
+import {
+  getTournamentComments,
+  getTournamentImages,
+  postUploadComment,
+  postUploadImage,
+} from "../../util/api";
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const formId = formData.get("formId");
+
+  if (formId === "comment") {
+    const data = {
+      user: { userId: formData.get("userId") },
+      tournament: { tournamentId: formData.get("tournamentId") },
+      commentText: formData.get("commentText"),
+    };
+    await postUploadComment(data);
+    window.location.reload();
+    /*
+    return redirect(
+      "/app/tournaments/" +
+        formData.get("ownerId") +
+        "/" +
+        data.tournament.tournamentId +
+        "/media"
+    );
+    */
+  } else {
+    const data = {
+      user: { userId: formData.get("userId") },
+      tournament: { tournamentId: formData.get("tournamentId") },
+      imageContent: formData.get("imageText"),
+    };
+    await postUploadImage(data);
+    window.location.reload();
+    /*
+    return redirect(
+      "/app/tournaments/" +
+        formData.get("ownerId") +
+        "/" +
+        data.tournament.tournamentId +
+        "/media"
+    );
+    */
+  }
+}
+
+export async function loader({ params }) {
+  const { tournamentId } = params;
+  const data = new URLSearchParams();
+  data.append("tournamentId", tournamentId);
+  const comments = await getTournamentComments(data.toString());
+  const images = await getTournamentImages(data.toString());
+  return {
+    comments: comments,
+    images: images.map((image) => {
+      return {
+        itemImageSrc: image.imageContent,
+        thumbnailImageSrc: image.imageContent,
+        title: `Uploaded by ${image.user.firstName} ${image.user.lastName}`,
+        alt: `Image by ${image.user.firstName} ${image.user.lastName}`,
+      };
+    }),
+  };
+}
 
 const PhotoService = {
   getData() {
@@ -140,6 +206,7 @@ const PhotoService = {
 
 export default function TournamentMedia() {
   const { tournament } = useOutletContext();
+  const media = useLoaderData();
   const [images, setImages] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showThumbnails, setShowThumbnails] = useState(false);
@@ -175,7 +242,8 @@ export default function TournamentMedia() {
   }, []);
 
   useEffect(() => {
-    setAutoPlayActive(galleria.current.isAutoPlayActive());
+    if (galleria && galleria.current)
+      setAutoPlayActive(galleria.current.isAutoPlayActive());
   }, [isAutoPlayActive]);
 
   const onItemChange = (event) => {
@@ -255,10 +323,10 @@ export default function TournamentMedia() {
 
     return (
       <img
-        className="rounded-t-lg"
+        className="rounded-t-lg image-size object-cover object-center"
         src={item.itemImageSrc}
         alt={item.alt}
-        style={{ width: "100%", display: "block" }}
+        style={{ display: "block" }}
       />
     );
   };
@@ -274,8 +342,10 @@ export default function TournamentMedia() {
       "pi-window-minimize": isFullScreen,
     });
 
+    console.log(media);
     return (
       <div className="custom-galleria-footer rounded-b-lg">
+        {/*
         <Button
           icon="pi pi-list"
           onClick={() => setShowThumbnails((prevState) => !prevState)}
@@ -292,12 +362,13 @@ export default function TournamentMedia() {
             }
           }}
         />
+  */}
         {images && (
           <span className="title-container">
             <span>
-              {activeIndex + 1}/{images.length}
+              {activeIndex + 1}/{media.images.length}
             </span>
-            <span className="title">{images[activeIndex].title}</span>
+            <span className="title">{media.images[activeIndex].title}</span>
           </span>
         )}
         <Button
@@ -309,36 +380,41 @@ export default function TournamentMedia() {
     );
   };
 
-  const footer = renderFooter();
+  let footer;
+  if (media.images.length > 0) footer = renderFooter();
   const galleriaClassName = classNames("custom-galleria", {
     fullscreen: isFullScreen,
   });
 
   return (
     <>
-      <div className="card galleria-demo flex justify-center">
-        <Galleria
-          ref={galleria}
-          value={images}
-          activeIndex={activeIndex}
-          onItemChange={onItemChange}
-          showThumbnails={showThumbnails}
-          showItemNavigators
-          showItemNavigatorsOnHover
-          numVisible={5}
-          circular
-          autoPlay
-          transitionInterval={3000}
-          responsiveOptions={responsiveOptions}
-          item={itemTemplate}
-          thumbnail={thumbnailTemplate}
-          footer={footer}
-          style={{ maxWidth: "640px" }}
-          className={galleriaClassName}
-        />
-      </div>
+      {media && media.images.length == 0 ? (
+        <h2>No images uploaded</h2>
+      ) : (
+        <div className="card galleria-demo flex justify-center">
+          <Galleria
+            ref={galleria}
+            value={media.images}
+            activeIndex={activeIndex}
+            onItemChange={onItemChange}
+            showThumbnails={showThumbnails}
+            showItemNavigators
+            showItemNavigatorsOnHover
+            numVisible={5}
+            circular
+            transitionInterval={3000}
+            responsiveOptions={responsiveOptions}
+            item={itemTemplate}
+            thumbnail={thumbnailTemplate}
+            footer={footer}
+            style={{ maxWidth: "640px" }}
+            className={galleriaClassName}
+          />
+        </div>
+      )}
+
       <AddTournamentImage />
-      <TournamentComments className="text-left" />
+      <TournamentComments comments={media.comments} className="text-left" />
     </>
   );
 }

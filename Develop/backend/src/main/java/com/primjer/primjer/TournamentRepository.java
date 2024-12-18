@@ -226,4 +226,30 @@ public class TournamentRepository {
                 comment.getCommentId(), comment.getUploadTime(), comment.getUser().getUserId(), comment.getTournament().getTournamentId(), comment.getCommentText());
     }
 
+    public List<Comment> getComments() {
+        String querry = "SELECT * FROM comments join tournaments on comments.tournamentId = tournaments.tournamentId join users on comments.userId = users.userId order by uploadTime desc";
+        RowMapper<Comment> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            user.setRoleId(r.getInt("roleid"));
+            Tournament tournament = new Tournament();
+            tournament.setTournamentId(r.getInt("tournamentid"));
+            Comment rowObject = new Comment();
+            rowObject.setUser(user);
+            rowObject.setTournament(tournament);
+            rowObject.setCommentId(r.getInt("commentid"));
+            rowObject.setUploadTime(r.getTimestamp("uploadTime"));
+            rowObject.setCommentText(r.getString("commenttext"));
+
+
+
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper);
+    }
+
+
 }

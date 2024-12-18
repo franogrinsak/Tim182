@@ -86,5 +86,11 @@ public class TournamentController {
         tournamentRepo.commentAdd(comment);
     }
 
+    @GetMapping("/tournaments/comments")
+    public List<Comment> getComments() {
+        return tournamentRepo.getComments();
+    }
+
+
 
 }

@@ -189,7 +189,11 @@ public class TournamentRepository {
 
     }
 
-
-
-
+    public void imageAdd(Image image) {
+        String querry = "INSERT INTO images(imageid,uploadtime,userid,tournamentid,imagecontent) VALUES(?,?,?,?,?)";
+        jdbc.update(querry,
+                image.getImageId(), image.getUploadTime(), image.getUser().getUserId(), image.getTournament().getTournamentId(), image.getImageContent());
     }
+
+
+}

@@ -71,4 +71,11 @@ public class TournamentController {
         return tournamentRepo.applicationsplayerTournaments(userId);
     }
 
+    @PostMapping("/tournaments/images/add")
+    public void imageAdd(@RequestBody Image image) {
+        tournamentRepo.imageAdd(image);
+    }
+
+
+
 }

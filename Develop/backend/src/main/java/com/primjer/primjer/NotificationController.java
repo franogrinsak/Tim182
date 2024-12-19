@@ -32,6 +32,14 @@ import java.util.List;
 
     }
 
+    @GetMapping("/notifications/unread")
+    public boolean unreadNotifications(@RequestParam int userId) {
+        return notificationRepo.unreadNotifications(userId);
+
+    }
+
+
+
 
 
 

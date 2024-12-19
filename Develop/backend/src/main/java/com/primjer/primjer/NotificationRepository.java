@@ -51,6 +51,18 @@ import java.util.List;
         }
     }
 
+    public boolean unreadNotifications(int userId) {
+        String querry = "SELECT COUNT(*) FROM notifications WHERE userId = ? AND isRead=false";
+        Integer number = jdbc.queryForObject(querry, Integer.class, userId);
+        if(number>0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
 
 
 

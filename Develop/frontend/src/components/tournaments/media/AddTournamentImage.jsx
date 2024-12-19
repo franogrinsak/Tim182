@@ -130,7 +130,11 @@ export default function AddTournamentImage() {
               />
             </label>
           )}
-          {previewImage && <button onClick={removeImage}>Remove image</button>}
+          {previewImage && (
+            <div className="flex justify-center my-2">
+              <Button onClick={removeImage}>Remove image</Button>
+            </div>
+          )}
           <DialogFooter>
             <Button
               loading={navigation.state === "submitting"}

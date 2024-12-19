@@ -6,6 +6,11 @@
   aspect-ratio: 4 / 3;
 }
 
+.max-fullscreen {
+  max-width: 98vh;
+  max-height: 98vh;
+}
+
 .galleria-demo {
   .custom-indicator-galleria {
     .indicator-text {

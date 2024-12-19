@@ -318,7 +318,13 @@ export default function TournamentMedia() {
 
   const itemTemplate = (item) => {
     if (isFullScreen) {
-      return <img src={item.itemImageSrc} alt={item.alt} />;
+      return (
+        <img
+          src={item.itemImageSrc}
+          alt={item.alt}
+          className="max-fullscreen"
+        />
+      );
     }
 
     return (

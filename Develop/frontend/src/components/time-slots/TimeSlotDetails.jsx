@@ -19,10 +19,12 @@ import {
 } from "../../util/api";
 import { isEarlierThan24Hours } from "../../util/date";
 import { useParams } from "react-router-dom";
+import PaymentOptions from "./PaymentOptions";
 
 export default function TimeSlotDetails(props) {
   const { user } = useUser();
   const { courtId, ownerId } = useParams();
+  const [payment, setPayment] = React.useState("cash");
   const [formData, setFormData] = React.useState({
     startDate: "",
     startTime: "",
@@ -63,21 +65,26 @@ export default function TimeSlotDetails(props) {
   }
   async function bookSlot() {
     let data = new URLSearchParams();
-    data.append("timeSlotId", formData.timeSlotId);
-    data.append("userId", user.userId);
 
-    /*
-    data = {
-      timeSlotId: formData.timeSlotId,
-      userId: user.userId,
-      name: "Rezervacija",
-      courtId: courtId,
-      ownerId: ownerId,
-    };
-    */
+    console.log(payment);
+    if (payment === "cash") {
+      data.append("timeSlotId", formData.timeSlotId);
+      data.append("userId", user.userId);
 
-    const success = await postBookTimeSlot(data);
-    if (success) window.location.reload();
+      const success = await postBookTimeSlot(data);
+      if (success) window.location.reload();
+    } else {
+      data = {
+        timeSlotId: formData.timeSlotId,
+        userId: user.userId,
+        name: "Rezervacija",
+        courtId: courtId,
+        ownerId: ownerId,
+      };
+
+      const success = await postBookTimeSlotBuy(data);
+      if (success) window.location.reload();
+    }
   }
 
   async function deleteSlot() {
@@ -191,6 +198,9 @@ export default function TimeSlotDetails(props) {
               </div>
             </div>
           </div>
+          {user && isPlayer(user) && !formData.userId && (
+            <PaymentOptions payment={payment} setPayment={setPayment} />
+          )}
         </DialogBody>
         <DialogFooter>
           {isOwner(user) && (

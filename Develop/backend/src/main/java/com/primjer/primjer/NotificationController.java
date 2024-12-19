@@ -26,6 +26,13 @@ import java.util.List;
 
     }
 
+    @PostMapping("/notifications/delete")
+    public void deleteNotifications(@RequestBody int[] notificationIds) {
+        notificationRepo.deleteNotifications(notificationIds);
+
+    }
+
+
 
 
 }

@@ -44,6 +44,14 @@ import java.util.List;
         }
     }
 
+    public void deleteNotifications(int[] notificationIds) {
+        String querry="DELETE FROM notifications WHERE notificationId = ? ";
+        for (int notificationId : notificationIds) {
+            jdbc.update(querry, notificationId);
+        }
+    }
+
+
 
 
 }

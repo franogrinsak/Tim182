@@ -62,8 +62,11 @@ import java.util.List;
         }
     }
 
+    public void subscribed(int userId, boolean isSubscribedToTournaments) {
+        String querry = "UPDATE players SET isSubscribedToTournaments=? WHERE userId = ?";
+        jdbc.update(querry, isSubscribedToTournaments, userId);
 
-
+    }
 
 
 }

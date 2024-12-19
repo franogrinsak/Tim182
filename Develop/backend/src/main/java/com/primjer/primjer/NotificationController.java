@@ -38,6 +38,14 @@ import java.util.List;
 
     }
 
+    @PostMapping("/notifications/subscribe")
+    public void subscribed(@RequestParam int userId, @RequestParam boolean isSubscribedToTournaments ) {
+        notificationRepo.subscribed(userId, isSubscribedToTournaments);
+
+    }
+
+
+
 
 
 

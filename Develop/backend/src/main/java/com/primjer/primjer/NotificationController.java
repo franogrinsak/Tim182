@@ -20,5 +20,12 @@ import java.util.List;
 
     }
 
+    @PostMapping("/notifications/mark")
+    public void markNotifications(@RequestBody int[] notificationIds) {
+        notificationRepo.markNotifications(notificationIds);
+
+    }
+
+
 
 }

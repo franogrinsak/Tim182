@@ -37,5 +37,13 @@ import java.util.List;
         return jdbc.query(querry, purchaseRowMapper, userId);
     }
 
+    public void markNotifications(int[] notificationIds) {
+        String querry = "UPDATE notifications SET isRead=true WHERE notificationId = ?";
+        for (int notificationId : notificationIds) {
+            jdbc.update(querry, notificationId);
+        }
+    }
+
+
 
 }

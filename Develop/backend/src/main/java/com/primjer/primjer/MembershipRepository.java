@@ -3,6 +3,8 @@ package com.primjer.primjer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public class MembershipRepository {
     private final JdbcTemplate jdbc;
@@ -16,5 +18,11 @@ public class MembershipRepository {
                 query,
                 String.class
         );
+    }
+
+    public void setPrice(String membershipPrice) {
+        BigDecimal bd=new BigDecimal(membershipPrice);
+        String querry="UPDATE membership_price SET membershipprice=?";
+        jdbc.update(querry, bd);
     }
 }

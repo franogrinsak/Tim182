@@ -1,4 +1,4 @@
-export const COURTS = [
+export const TEST_COURTS = [
   {
     courtId: 1,
     courtName: "Padel Zone",

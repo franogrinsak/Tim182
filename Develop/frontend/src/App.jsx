@@ -31,9 +31,18 @@ import {
   EDIT_COURT_OWNER_PROFILE,
   HOME,
   LOGGED,
+  MEMBERSHIP,
+  ORGANIZE_TOURNAMENT,
   OWNER_COURTS,
   OWNER_PROFILE,
+  OWNER_TOURNAMENTS,
+  PLAYER_NOTIFICATIONS,
+  PURCHASE_MEMBERSHIP,
   REGISTER,
+  TOURNAMENT_DETAIL,
+  TOURNAMENT_MEDIA,
+  TOURNAMENT_PARTICIPATIONS,
+  TOURNAMENTS,
   USERS,
 } from "./util/paths";
 import LandingPageLayout from "./components/pageLayout/LandingPageLayout";
@@ -63,9 +72,36 @@ import EditUser, {
   loader as editUserLoader,
 } from "./components/users/EditUser";
 import AddUser, { action as addUserAction } from "./components/users/AddUser";
+import Tournaments, {
+  loader as ownerTournamentsLoader,
+  allLoader as allTournamentsLoader,
+} from "./components/tournaments/Tournaments";
+import OrganizeTournament, {
+  loader as organizeTournamentLoader,
+  action as organizeTournamentAction,
+} from "./components/tournaments/OrganizeTournament";
+import TournamentDetails, {
+  loader as tournamentDetailsLoader,
+  action as completeTournamentAction,
+} from "./components/tournaments/TournamentDetails";
+import { TournamentDetailsLayout } from "./components/tournaments/TournamentDetailsLayout";
+import Participations, {
+  loader as participationsLoader,
+} from "./components/tournaments/Participations";
+import TournamentMedia, {
+  loader as torunamentMediaLoader,
+  action as tournamentMediaAction,
+} from "./components/tournaments/TournamentMedia";
+import Notifications, {
+  loader as notificationsLoader,
+} from "./components/notifications/Notifications";
+import EditMembership, {
+  loader as editMembershipLoader,
+  action as editMembershipAction,
+} from "./components/membership/EditMembership";
+import PurchaseMembership from "./components/membership/PurchaseMembership";
 
 function App() {
-  console.log(COURT_OWNER_DETAIL);
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -131,6 +167,54 @@ function App() {
             loader={allCourtsLoader}
           />
 
+          {/* Tournaments UI */}
+          <Route path={TOURNAMENTS}>
+            <Route
+              index
+              element={<Tournaments />}
+              loader={allTournamentsLoader}
+            />
+            <Route
+              path={OWNER_TOURNAMENTS}
+              element={<Tournaments />}
+              loader={ownerTournamentsLoader}
+            />
+            <Route
+              path={ORGANIZE_TOURNAMENT}
+              element={<OrganizeTournament />}
+              loader={organizeTournamentLoader}
+              action={organizeTournamentAction}
+            />
+            <Route
+              path={TOURNAMENT_DETAIL}
+              element={<TournamentDetailsLayout />}
+              loader={tournamentDetailsLoader}
+            >
+              <Route
+                index
+                element={<TournamentDetails />}
+                action={completeTournamentAction}
+              />
+              <Route
+                path={TOURNAMENT_PARTICIPATIONS}
+                element={<Participations />}
+                loader={participationsLoader}
+              />
+              <Route
+                path={TOURNAMENT_MEDIA}
+                element={<TournamentMedia />}
+                loader={torunamentMediaLoader}
+                action={tournamentMediaAction}
+              />
+            </Route>
+          </Route>
+
+          <Route
+            path={PLAYER_NOTIFICATIONS}
+            element={<Notifications />}
+            loader={notificationsLoader}
+          />
+
           <Route path={USERS}>
             <Route index element={<Users />} loader={usersLoader} />
             <Route path="add" element={<AddUser />} action={addUserAction} />
@@ -141,6 +225,19 @@ function App() {
             element={<EditUser />}
             loader={editUserLoader}
             action={editUserAction}
+          />
+
+          <Route
+            path={MEMBERSHIP}
+            element={<EditMembership />}
+            loader={editMembershipLoader}
+            action={editMembershipAction}
+          />
+
+          <Route
+            path={PURCHASE_MEMBERSHIP}
+            element={<PurchaseMembership />}
+            loader={editMembershipLoader}
           />
 
           <Route

@@ -7,7 +7,6 @@ import {
   useLoaderData,
   redirect,
 } from "react-router-dom";
-import { COURTS } from "../../util/test/courts";
 import ReturnButton from "../ReturnButton";
 import { postUpdateCourt } from "../../util/api";
 import sleep from "../../util/sleep";

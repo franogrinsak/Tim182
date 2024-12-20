@@ -7,6 +7,10 @@ export async function requireAuth() {
     data = await fetch(resolveBackendPath(BACKEND_LOGGED), {
       credentials: "include",
     });
+    if (!data.ok) {
+      console.log(data);
+      if ((data.status = 401)) return redirect("/login");
+    }
   } catch (error) {
     console.error("Error fetching user data:", error);
     return redirect("/login");

@@ -521,3 +521,99 @@ export async function postUploadImage(data) {
     throw { status: response.status, message: response.statusText };
   }
 }
+
+export async function getNotifications(data) {
+  const response = await fetch(
+    resolveBackendPath("/notifications/get?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function postMarkNotifications(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/notifications/mark"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
+export async function postDeleteNotifications(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/notifications/delete"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}
+
+export async function getUnreadNotifications(data) {
+  const response = await fetch(
+    resolveBackendPath("/notifications/unread?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function getIsSubscribedToTournaments(data) {
+  const response = await fetch(
+    resolveBackendPath("/notifications/subscribed?" + data),
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return await response.json();
+}
+
+export async function postSetIsSubscribedToTournaments(data) {
+  try {
+    const response = await fetch(
+      resolveBackendPath("/notifications/subscribe?" + data),
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    if (response.ok) {
+      return true;
+    } else {
+      console.error("Error:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}

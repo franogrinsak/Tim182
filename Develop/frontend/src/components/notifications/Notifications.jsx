@@ -12,6 +12,11 @@ import {
 import sleep from "../../util/sleep";
 import { NOTIFICATIONS } from "../../util/test/notifications";
 import { useLoaderData } from "react-router-dom";
+import {
+  getNotifications,
+  postDeleteNotifications,
+  postMarkNotifications,
+} from "../../util/api";
 
 function TrashIcon() {
   return (
@@ -46,8 +51,11 @@ function CheckIcon() {
   );
 }
 
-export async function loader() {
-  return NOTIFICATIONS;
+export async function loader({ params }) {
+  const { playerId } = params;
+  const data = new URLSearchParams();
+  data.append("userId", playerId);
+  return await getNotifications(data.toString());
 }
 
 export default function Notifications() {
@@ -65,8 +73,9 @@ export default function Notifications() {
         notificationId: notification.notificationId,
       }))
     );
-    const success = true; //await postDeleteNotifications(notifications);
-    await sleep(3000);
+    const success = await postMarkNotifications(
+      notifications.map((notification) => notification.notificationId)
+    );
     if (success) {
       window.location.reload();
       return;
@@ -83,8 +92,9 @@ export default function Notifications() {
         notificationId: notification.notificationId,
       }))
     );
-    const success = true; // await postMarkNotifications(notifications);
-    await sleep(3000);
+    const success = await postDeleteNotifications(
+      notifications.map((notification) => notification.notificationId)
+    );
     if (success) {
       window.location.reload();
       return;
@@ -104,13 +114,13 @@ export default function Notifications() {
             {notifications.map((notification) => {
               return (
                 <ListItem
-                  className={!notification.isRead ? "marked-notification" : ""}
+                  className={!notification.read ? "marked-notification" : ""}
                   key={`${notification.notificationId}`}
                 >
                   {notification.tournament.tournamentName} is being held
                   <ListItemSuffix className="flex">
                     {currentItemMark != notification.notificationId &&
-                      !notification.isRead && (
+                      !notification.read && (
                         <IconButton
                           variant="text"
                           color="blue"

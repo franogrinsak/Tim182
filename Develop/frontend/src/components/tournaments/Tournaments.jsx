@@ -5,7 +5,8 @@ import { getAllTournaments, getTournamentsForOwners } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { isToday } from "../../util/date";
 import TournamentNav from "./TournamentNav";
-import { isOwner } from "../../util/users";
+import { isOwner, isPlayer } from "../../util/users";
+import NotificationSubscription from "./NotificationSubscription";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -47,11 +48,12 @@ export default function Tournaments() {
   const [currentView, setCurrentView] = React.useState(VIEWS.OPEN);
   return (
     <section>
-      {isOwner(user) && (
+      {user && isOwner(user) && (
         <Link to="organize">
           <button>Organize a tournament</button>
         </Link>
       )}
+      {user && isPlayer(user) && <NotificationSubscription user={user} />}
       <TournamentNav
         currentView={currentView}
         setCurrentView={setCurrentView}

@@ -33,7 +33,7 @@ export const TOURNAMENT_MEDIA = TOURNAMENT_DETAIL + "/media";
 export const USERS = APP + "/users";
 
 export const NOTIFICATIONS = APP + "/notifications";
-export const PLAYER_NOTIFICATIONS = NOTIFICATIONS + "/:userId";
+export const PLAYER_NOTIFICATIONS = NOTIFICATIONS + "/:playerId";
 
 export const MEMBERSHIP = APP + "/membership";
 

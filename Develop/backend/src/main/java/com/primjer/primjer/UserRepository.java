@@ -36,11 +36,21 @@ public class UserRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper,email).get(0);
+        User user=jdbc.query(querry, purchaseRowMapper,email).get(0);
+        if(user.getRoleId()==4){
+            querry="SELECT COUNT(*) FROM owners WHERE userid = ? and membershipexpirationdate >= CURRENT_DATE";
+            Integer number = jdbc.queryForObject(querry,Integer.class,user.getUserId());
+            if(number==0){
+                user.setRoleId(3);
+                querry = "UPDATE users SET roleid=3 WHERE userid = ?";
+                jdbc.update(querry, user.getUserId());
+            }
+        }
+        return user;
     }
     public void updateUser(User user){
         String querry = "UPDATE users SET firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
-        jdbc.update(querry, user.getFirstName(), user.getLastName(), user.getRoleId(),user.getUserId());
+        jdbc.update(querry, user.getFirstName(), user.getLastName(), (user.getRoleId()==2?user.getRoleId():3),user.getUserId());
         if(user.getRoleId()==2){
             querry ="INSERT INTO players(userid) VALUES(?)";
             jdbc.update(querry,user.getUserId());

@@ -36,6 +36,7 @@ export const NOTIFICATIONS = APP + "/notifications";
 export const PLAYER_NOTIFICATIONS = NOTIFICATIONS + "/:playerId";
 
 export const MEMBERSHIP = APP + "/membership";
+export const PURCHASE_MEMBERSHIP = MEMBERSHIP + "/purchase";
 
 export const tempCorts = COURTS;
 

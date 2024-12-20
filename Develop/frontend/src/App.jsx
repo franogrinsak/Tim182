@@ -37,6 +37,7 @@ import {
   OWNER_PROFILE,
   OWNER_TOURNAMENTS,
   PLAYER_NOTIFICATIONS,
+  PURCHASE_MEMBERSHIP,
   REGISTER,
   TOURNAMENT_DETAIL,
   TOURNAMENT_MEDIA,
@@ -98,6 +99,7 @@ import EditMembership, {
   loader as editMembershipLoader,
   action as editMembershipAction,
 } from "./components/membership/EditMembership";
+import PurchaseMembership from "./components/membership/PurchaseMembership";
 
 function App() {
   const router = createBrowserRouter(
@@ -230,6 +232,12 @@ function App() {
             element={<EditMembership />}
             loader={editMembershipLoader}
             action={editMembershipAction}
+          />
+
+          <Route
+            path={PURCHASE_MEMBERSHIP}
+            element={<PurchaseMembership />}
+            loader={editMembershipLoader}
           />
 
           <Route

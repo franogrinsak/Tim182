@@ -642,3 +642,23 @@ export async function postSetMembershipPrice(data) {
     console.error("Network Error:", error);
   }
 }
+
+export async function postPurchaseMembership(data) {
+  try {
+    const response = await fetch(resolveBackendPath("/checkout"), {
+      method: "POST",
+      body: JSON.stringify(data),
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    const stripe = await response.json();
+    window.location.replace(stripe.sessionUrl);
+    return false;
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}

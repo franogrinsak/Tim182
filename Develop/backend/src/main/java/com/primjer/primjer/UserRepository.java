@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -117,5 +118,11 @@ public class UserRepository {
             querry ="UPDATE owners SET phonenumber=? WHERE userid = ?";
             jdbc.update(querry,user.getPhoneNumber(),user.getUserId());
         }
+    }
+    public void updateAfterPay(Integer id){
+        String querry = "UPDATE users SET roleid=? WHERE userid = ?";
+        jdbc.update(querry,4,id);
+        querry = "UPDATE owners SET membershipexpirationdate=? WHERE userid = ?";
+        jdbc.update(querry, LocalDate.now().plusYears(1),id);
     }
 }

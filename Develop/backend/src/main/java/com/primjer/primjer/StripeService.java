@@ -15,16 +15,17 @@ import java.math.BigDecimal;
 public class StripeService {
     private SlotsRepository slotsRepo;
     private MembershipRepository mr;
-
+    private UserRepository userRepo;
 
     @Value("${stripe.secretKey}")
     private String secretKey;
     @Value("${frontend.url}")
     private String FRONTEND_URL;
 
-    public StripeService(SlotsRepository slotsRepo, MembershipRepository mr) {
+    public StripeService(SlotsRepository slotsRepo, MembershipRepository mr, UserRepository userRepo) {
         this.slotsRepo = slotsRepo;
         this.mr = mr;
+        this.userRepo = userRepo;
     }
 
 
@@ -60,15 +61,23 @@ public class StripeService {
                         .setPriceData(priceData)
                         .build();
         String redirect_url=FRONTEND_URL+"/courts/"+stripeRequest.getOwnerId()+"/"+stripeRequest.getCourtId();
-        SessionCreateParams params =
-                SessionCreateParams.builder()
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setSuccessUrl(redirect_url)
-                        .setCancelUrl(redirect_url)
-                        .addLineItem(lineItem)
-                        .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
-                        .putMetadata("timeSlotId", String.valueOf(stripeRequest.getTimeSlotId()))
-                        .build();
+        SessionCreateParams params =(stripeRequest.getName().equals("Rezervacija")?(SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl(redirect_url)
+                .setCancelUrl(redirect_url)
+                .addLineItem(lineItem)
+                .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
+                .putMetadata("timeSlotId", String.valueOf(stripeRequest.getTimeSlotId()))
+                .putMetadata("type-pay",stripeRequest.getName())
+                .build()):(SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl(FRONTEND_URL+"/app")
+                .setCancelUrl(FRONTEND_URL+"/membership/purchase")
+                .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
+                .putMetadata("type-pay",stripeRequest.getName())
+                .addLineItem(lineItem)
+                .build()));
+
 
 
         Session session = null;
@@ -89,6 +98,20 @@ public class StripeService {
             Session session = Session.retrieve(sessionId);
             if ("paid".equals(session.getPaymentStatus())) {
                 slotsRepo.book(timeSlotId,userId);
+            } else {
+                throw new RuntimeException("Payment not completed. Cannot update database.");
+            }
+        } catch (StripeException e) {
+            throw new RuntimeException("Failed to retrieve session details from Stripe.", e);
+        }
+    }
+
+    public void updateDATABASE(String sessionId, Integer id) {
+        try {
+            Stripe.apiKey = secretKey;
+            Session session = Session.retrieve(sessionId);
+            if ("paid".equals(session.getPaymentStatus())) {
+                userRepo.updateAfterPay(id);
             } else {
                 throw new RuntimeException("Payment not completed. Cannot update database.");
             }

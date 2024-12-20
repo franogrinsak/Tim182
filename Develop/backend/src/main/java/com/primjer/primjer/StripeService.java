@@ -1,6 +1,7 @@
 package com.primjer.primjer;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.SetupIntent;
 import com.stripe.model.checkout.Session;
 
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Service
 public class StripeService {
@@ -61,17 +64,26 @@ public class StripeService {
                         .setPriceData(priceData)
                         .build();
         String redirect_url=FRONTEND_URL+"/courts/"+stripeRequest.getOwnerId()+"/"+stripeRequest.getCourtId();
-        SessionCreateParams params =(stripeRequest.getName().equals("Rezervacija")?(SessionCreateParams.builder()
+        SessionCreateParams params = (stripeRequest.getName().equals("Rezervacija") ?
+                (SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.PAYPAL)
                 .setSuccessUrl(redirect_url)
                 .setCancelUrl(redirect_url)
                 .addLineItem(lineItem)
                 .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
                 .putMetadata("timeSlotId", String.valueOf(stripeRequest.getTimeSlotId()))
                 .putMetadata("type-pay",stripeRequest.getName())
-                .build()):(SessionCreateParams.builder()
+                .build())
+
+                :
+
+                (SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(FRONTEND_URL+"/app")
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.PAYPAL)
+                .setSuccessUrl(FRONTEND_URL)
                 .setCancelUrl(FRONTEND_URL+"/membership/purchase")
                 .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
                 .putMetadata("type-pay",stripeRequest.getName())

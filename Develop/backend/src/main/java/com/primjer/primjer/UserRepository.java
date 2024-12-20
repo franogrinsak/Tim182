@@ -50,7 +50,7 @@ public class UserRepository {
     }
     public void updateUser(User user){
         String querry = "UPDATE users SET firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
-        jdbc.update(querry, user.getFirstName(), user.getLastName(), (user.getRoleId()==2?user.getRoleId():3),user.getUserId());
+        jdbc.update(querry, user.getFirstName(), user.getLastName(), (user.getRoleId() == 4 ? 3 : user.getRoleId()),user.getUserId());
         if(user.getRoleId()==2){
             querry ="INSERT INTO players(userid) VALUES(?)";
             jdbc.update(querry,user.getUserId());

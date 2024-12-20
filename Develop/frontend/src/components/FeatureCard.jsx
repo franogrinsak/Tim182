@@ -3,6 +3,7 @@ import courtImage from "../assets/court.png";
 import padelRacketImage from "../assets/padelracket.png";
 import trophyImage from "../assets/trophy.png";
 import usersImage from "../assets/users.png";
+import membershipImage from "../assets/membership.png";
 import { Link } from "react-router-dom";
 
 export function getOwnerCourtsCard(ownerId) {
@@ -13,6 +14,18 @@ export function getOwnerCourtsCard(ownerId) {
       imageUrl={courtImage}
       title="Your courts"
       text="Register your courts to attract clients, manage bookings, and showcase available playtimes directly on your profile."
+    />
+  );
+}
+
+export function getOwnerTournamentsCard(ownerId) {
+  return (
+    <FeatureCard
+      key={4}
+      link={`tournaments/${ownerId}`}
+      imageUrl={trophyImage}
+      title="Your tournaments"
+      text="Host exciting tournaments on your courts, allowing players to join, compete, and enjoy a professionally organized event."
     />
   );
 }
@@ -47,7 +60,7 @@ export const OWNER_COURTS = (
 export const OWNER_TOURNAMENT = (
   <FeatureCard
     key={4}
-    link="tournament"
+    link="tournaments"
     imageUrl={trophyImage}
     title="Your tournaments"
     text="Host exciting tournaments on your courts, allowing players to join, compete, and enjoy a professionally organized event."
@@ -60,6 +73,16 @@ export const ADMINISTRATOR_USERS = (
     imageUrl={usersImage}
     title="Manage users"
     text="View, add, edit or remove registered users with ease, managing the complete list of profiles directly from your admin panel."
+  />
+);
+
+export const ADMINISTRATOR_MEMBERSHIP = (
+  <FeatureCard
+    key={5}
+    link="membership"
+    imageUrl={membershipImage}
+    title="Membership"
+    text="View, update, or adjust membership prices for padel court owners effortlessly, managing all pricing details directly from your admin panel."
   />
 );
 

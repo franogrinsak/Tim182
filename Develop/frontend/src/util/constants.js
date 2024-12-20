@@ -5,6 +5,8 @@ import FeatureCard, {
   PLAYER_TOURNAMENT,
   ADMINISTRATOR_USERS,
   getOwnerCourtsCard,
+  getOwnerTournamentsCard,
+  ADMINISTRATOR_MEMBERSHIP,
 } from "../components/FeatureCard";
 
 export const DEV_MODE = true;
@@ -31,7 +33,7 @@ export const USER_ROLES_NAMES = {
 export const FEATURE_CARDS_BY_ROLES = {
   [USER_ROLES.PLAYER]: [PLAYER_COURTS, PLAYER_TOURNAMENT],
   [USER_ROLES.OWNER]: [OWNER_COURTS, OWNER_TOURNAMENT],
-  [USER_ROLES.ADMIN]: [ADMINISTRATOR_USERS],
+  [USER_ROLES.ADMIN]: [ADMINISTRATOR_USERS, ADMINISTRATOR_MEMBERSHIP],
 };
 
 export function getFeatureCards(user) {
@@ -41,9 +43,12 @@ export function getFeatureCards(user) {
     case USER_ROLES.PLAYER:
       return [PLAYER_COURTS, PLAYER_TOURNAMENT];
     case USER_ROLES.OWNER:
-      return [getOwnerCourtsCard(user.userId), OWNER_TOURNAMENT];
+      return [
+        getOwnerCourtsCard(user.userId),
+        getOwnerTournamentsCard(user.userId),
+      ];
     case USER_ROLES.ADMIN:
-      return [ADMINISTRATOR_USERS];
+      return [ADMINISTRATOR_USERS, ADMINISTRATOR_MEMBERSHIP];
     default:
       return [];
   }

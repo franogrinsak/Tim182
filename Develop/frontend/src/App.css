@@ -1,3 +1,5 @@
+@import "primeicons/primeicons.css";
+
 #root {
   max-width: 3840px;
   margin: 0;
@@ -151,4 +153,13 @@ footer {
 
 .users-table-container th {
   background-color: #f9fafb;
+}
+
+.p-datatable tr:hover {
+  background-color: #f0f0f0; /* Light gray background */
+  cursor: pointer;
+}
+
+.marked-notification {
+  background-color: rgb(203, 213, 225);
 }

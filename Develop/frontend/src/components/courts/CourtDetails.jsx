@@ -4,6 +4,7 @@ import ReturnButton from "../ReturnButton";
 import { getCourtDetails } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
+import OwnerCalendar from "../time-slots/OwnerCalendar";
 
 export async function loader({ params }) {
   const { courtId } = params;
@@ -44,7 +45,7 @@ export default function CourtDetail() {
             {court?.courtName}
           </p>
         </div>
-        <div className="mt-6 border-t border-gray-100">
+        <div className="mt-6 border-t border-gray-100 text-left">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm/6 font-medium text-gray-900">Owner</dt>
@@ -77,6 +78,7 @@ export default function CourtDetail() {
           </button>
         </Link>
       )}
+      <OwnerCalendar />
     </div>
   );
 }

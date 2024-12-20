@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -35,11 +36,21 @@ public class UserRepository {
             return rowObject;
         };
 
-        return jdbc.query(querry, purchaseRowMapper,email).get(0);
+        User user=jdbc.query(querry, purchaseRowMapper,email).get(0);
+        if(user.getRoleId()==4){
+            querry="SELECT COUNT(*) FROM owners WHERE userid = ? and membershipexpirationdate >= CURRENT_DATE";
+            Integer number = jdbc.queryForObject(querry,Integer.class,user.getUserId());
+            if(number==0){
+                user.setRoleId(3);
+                querry = "UPDATE users SET roleid=3 WHERE userid = ?";
+                jdbc.update(querry, user.getUserId());
+            }
+        }
+        return user;
     }
     public void updateUser(User user){
         String querry = "UPDATE users SET firstname = ?, lastname = ?, roleid=? WHERE userid = ?";
-        jdbc.update(querry, user.getFirstName(), user.getLastName(), user.getRoleId(),user.getUserId());
+        jdbc.update(querry, user.getFirstName(), user.getLastName(), (user.getRoleId() == 4 ? 3 : user.getRoleId()),user.getUserId());
         if(user.getRoleId()==2){
             querry ="INSERT INTO players(userid) VALUES(?)";
             jdbc.update(querry,user.getUserId());
@@ -117,5 +128,11 @@ public class UserRepository {
             querry ="UPDATE owners SET phonenumber=? WHERE userid = ?";
             jdbc.update(querry,user.getPhoneNumber(),user.getUserId());
         }
+    }
+    public void updateAfterPay(Integer id){
+        String querry = "UPDATE users SET roleid=? WHERE userid = ?";
+        jdbc.update(querry,4,id);
+        querry = "UPDATE owners SET membershipexpirationdate=? WHERE userid = ?";
+        jdbc.update(querry, LocalDate.now().plusYears(1),id);
     }
 }

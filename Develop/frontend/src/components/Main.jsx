@@ -4,7 +4,7 @@ import Footer from "./pageLayout/Footer";
 import Header from "./pageLayout/DashboardHeader";
 import { useUser } from "./auth/UserContext";
 import { USER_ROLES } from "../util/constants";
-import { REGISTER } from "../util/paths";
+import { PURCHASE_MEMBERSHIP, REGISTER } from "../util/paths";
 
 export default function Main() {
   const { setUser } = useUser();
@@ -19,6 +19,9 @@ export default function Main() {
       userData.roleId === USER_ROLES.NEW_USER
     )
       navigate(REGISTER);
+
+    if (userData.roleId === USER_ROLES.UNPAID_OWNER)
+      navigate(PURCHASE_MEMBERSHIP);
   }, [JSON.stringify(userData)]);
 
   return (

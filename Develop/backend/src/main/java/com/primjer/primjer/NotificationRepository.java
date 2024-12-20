@@ -69,4 +69,9 @@ import java.util.List;
     }
 
 
+    public boolean getSubscribed(int userId) {
+        String querry="SELECT isSubscribedToTournaments FROM players WHERE userId = ?";
+        RowMapper<Boolean> purchaseRowMapper = (r, i) -> r.getBoolean("isSubscribedToTournaments");
+        return jdbc.query(querry, purchaseRowMapper, userId).get(0);
+    }
 }

@@ -44,6 +44,11 @@ import java.util.List;
 
     }
 
+    @GetMapping("/notifications/subscribed")
+    public boolean getSubscribed(@RequestParam int userId ) {
+        return notificationRepo.getSubscribed(userId);
+    }
+
 
 
 

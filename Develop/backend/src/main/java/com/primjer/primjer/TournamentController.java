@@ -71,4 +71,26 @@ public class TournamentController {
         return tournamentRepo.applicationsplayerTournaments(userId);
     }
 
+    @PostMapping("/tournaments/images/add")
+    public void imageAdd(@RequestBody Image image) {
+        tournamentRepo.imageAdd(image);
+    }
+
+    @GetMapping("/tournaments/images")
+    public List<Image> getImages(@RequestParam int tournamentId) {
+        return tournamentRepo.getImages(tournamentId);
+    }
+
+    @PostMapping("/tournaments/comments/add")
+    public void commentAdd(@RequestBody Comment comment) {
+        tournamentRepo.commentAdd(comment);
+    }
+
+    @GetMapping("/tournaments/comments")
+    public List<Comment> getComments(@RequestParam int tournamentId) {
+        return tournamentRepo.getComments(tournamentId);
+    }
+
+
+
 }

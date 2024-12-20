@@ -1,15 +1,20 @@
 import { Button } from "@material-tailwind/react";
 import React from "react";
-import { Form, useLoaderData, useNavigation } from "react-router-dom";
+import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
 import sleep from "../../util/sleep";
+import { MEMBERSHIP } from "../../util/paths";
+import { getMembershipPrice, postSetMembershipPrice } from "../../util/api";
 
 export async function loader() {
-  return "0.00";
+  return await getMembershipPrice();
 }
 
-export async function action() {
-  await sleep(3000);
-  return null;
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = new URLSearchParams();
+  data.append("membershipPrice", formData.get("price"));
+  await postSetMembershipPrice(data);
+  return redirect(MEMBERSHIP);
 }
 
 export default function EditMembership() {
@@ -33,7 +38,7 @@ export default function EditMembership() {
                 €
               </div>
               <input
-                value={price}
+                defaultValue={price}
                 type="text"
                 name="price"
                 id="price"

@@ -617,3 +617,28 @@ export async function postSetIsSubscribedToTournaments(data) {
     console.error("Network Error:", error);
   }
 }
+
+export async function getMembershipPrice() {
+  const response = await fetch(resolveBackendPath("/membership/get"), {
+    method: "GET",
+    credentials: "include",
+  });
+  return await response.json();
+}
+
+export async function postSetMembershipPrice(data) {
+  try {
+    const response = await fetch(
+      resolveBackendPath("/membership/set?" + data),
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    if (!response.ok) {
+      throw { status: response.status, message: response.statusText };
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+  }
+}

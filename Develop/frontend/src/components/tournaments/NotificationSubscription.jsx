@@ -45,19 +45,19 @@ export default function NotificationSubscription(props) {
             disabled={changing}
           />
         )}
-        {changing && (
-          <ProgressSpinner
-            className="m-0 h-7 w-7 absolute top-0 left-full ml-2"
-            strokeWidth="4"
-            fill="var(--surface-ground)"
-            animationDuration=".5s"
-          />
-        )}
-        {!changing && (
-          <span className="absolute top-0 left-full ml-2 w-96 text-left">
+        <div className="flex justify-start h-7 absolute top-0 left-full ml-2 w-72">
+          <span className="w-96 text-left">
             Get new tournament notifications
           </span>
-        )}
+          {changing && (
+            <ProgressSpinner
+              className="h-7 w-7 -ml-36"
+              strokeWidth="4"
+              fill="var(--surface-ground)"
+              animationDuration=".5s"
+            />
+          )}
+        </div>
       </div>
       {loading && (
         <ProgressSpinner

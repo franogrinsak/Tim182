@@ -1,7 +1,9 @@
-package com.primjer.primjer;
+package com.primjer.primjer.tournament;
 
 
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import com.primjer.primjer.model.Comment;
+import com.primjer.primjer.model.Image;
+import com.primjer.primjer.model.Participations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

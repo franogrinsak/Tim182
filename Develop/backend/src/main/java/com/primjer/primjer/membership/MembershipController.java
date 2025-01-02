@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.membership;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

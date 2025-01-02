@@ -1,5 +1,10 @@
-package com.primjer.primjer;
+package com.primjer.primjer.tournament;
 
+import com.primjer.primjer.model.Comment;
+import com.primjer.primjer.model.Image;
+import com.primjer.primjer.model.Participations;
+import com.primjer.primjer.court.Court;
+import com.primjer.primjer.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

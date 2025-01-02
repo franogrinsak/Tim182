@@ -1,8 +1,7 @@
-package com.primjer.primjer;
+package com.primjer.primjer.notification;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 

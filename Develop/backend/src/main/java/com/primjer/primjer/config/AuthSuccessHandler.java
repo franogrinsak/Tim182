@@ -1,5 +1,7 @@
-package com.primjer.primjer;
+package com.primjer.primjer.config;
 
+import com.primjer.primjer.user.User;
+import com.primjer.primjer.user.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

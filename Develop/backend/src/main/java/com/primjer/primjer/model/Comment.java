@@ -1,20 +1,23 @@
-package com.primjer.primjer;
+package com.primjer.primjer.model;
+
+import com.primjer.primjer.tournament.Tournament;
+import com.primjer.primjer.user.User;
 
 import java.sql.Timestamp;
 
-public class Image {
-    private int imageId;
+public class Comment {
+    private int commentId;
     private Timestamp uploadTime;
     private User user;
     private Tournament tournament;
-    private String imageContent;
+    private String commentText;
 
-    public int getImageId() {
-        return imageId;
+    public int getCommentId() {
+        return commentId;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
     }
 
     public Timestamp getUploadTime() {
@@ -41,13 +44,11 @@ public class Image {
         this.tournament = tournament;
     }
 
-    public String getImageContent() {
-        return imageContent;
+    public String getCommentText() {
+        return commentText;
     }
 
-    public void setImageContent(String imageContent) {
-        this.imageContent = imageContent;
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
     }
 }
-
-

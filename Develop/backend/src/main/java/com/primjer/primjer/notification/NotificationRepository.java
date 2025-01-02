@@ -1,10 +1,12 @@
-package com.primjer.primjer;
+package com.primjer.primjer.notification;
 
+import com.primjer.primjer.notification.Notification;
+import com.primjer.primjer.tournament.Tournament;
+import com.primjer.primjer.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 

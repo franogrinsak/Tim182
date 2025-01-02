@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.membership;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

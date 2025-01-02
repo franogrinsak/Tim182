@@ -1,6 +1,5 @@
-package com.primjer.primjer;
+package com.primjer.primjer.slot;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

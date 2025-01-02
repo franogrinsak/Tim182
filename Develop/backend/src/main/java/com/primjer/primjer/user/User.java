@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.user;
 
 public class User{
     private int userId;

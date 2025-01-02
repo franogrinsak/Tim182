@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.stripe;
 public class StripeResponse {
     private String sessionId;
     private String sessionUrl;

@@ -1,4 +1,7 @@
-package com.primjer.primjer;
+package com.primjer.primjer.notification;
+
+import com.primjer.primjer.tournament.Tournament;
+import com.primjer.primjer.user.User;
 
 import java.sql.Timestamp;
 

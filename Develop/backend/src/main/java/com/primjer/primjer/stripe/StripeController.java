@@ -1,4 +1,9 @@
-package com.primjer.primjer;
+package com.primjer.primjer.stripe;
+import com.primjer.primjer.stripe.StripeRequest;
+import com.primjer.primjer.stripe.StripeResponse;
+import com.primjer.primjer.stripe.StripeService;
+import com.primjer.primjer.user.User;
+import com.primjer.primjer.user.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -10,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 public class StripeController {
@@ -28,7 +34,7 @@ public class StripeController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest,OAuth2AuthenticationToken token) throws StripeException {
+    public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest, OAuth2AuthenticationToken token) throws StripeException {
         System.out.println("Daaaaa");
         if(stripeRequest.getName().equals("Clanarina")){
             String email=token.getPrincipal().getAttribute("email");

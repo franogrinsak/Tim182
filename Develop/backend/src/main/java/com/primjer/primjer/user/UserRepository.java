@@ -1,5 +1,6 @@
-package com.primjer.primjer;
+package com.primjer.primjer.user;
 
+import com.primjer.primjer.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

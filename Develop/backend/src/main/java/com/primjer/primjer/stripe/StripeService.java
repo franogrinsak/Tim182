@@ -1,7 +1,9 @@
-package com.primjer.primjer;
+package com.primjer.primjer.stripe;
+import com.primjer.primjer.membership.MembershipRepository;
+import com.primjer.primjer.slot.SlotsRepository;
+import com.primjer.primjer.user.UserRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.SetupIntent;
 import com.stripe.model.checkout.Session;
 
 
@@ -11,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @Service
 public class StripeService {

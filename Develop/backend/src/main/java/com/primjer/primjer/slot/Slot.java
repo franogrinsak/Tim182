@@ -1,6 +1,7 @@
-package com.primjer.primjer;
+package com.primjer.primjer.slot;
 
-import java.sql.Timestamp;
+import com.primjer.primjer.user.User;
+
 import java.time.LocalDateTime;
 
 public class Slot {

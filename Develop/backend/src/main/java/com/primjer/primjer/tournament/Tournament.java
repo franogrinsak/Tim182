@@ -1,4 +1,7 @@
-package com.primjer.primjer;
+package com.primjer.primjer.tournament;
+
+import com.primjer.primjer.court.Court;
+import com.primjer.primjer.user.User;
 
 import java.time.LocalDate;
 

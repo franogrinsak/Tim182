@@ -1,7 +1,6 @@
-package com.primjer.primjer;
+package com.primjer.primjer.court;
 
 
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

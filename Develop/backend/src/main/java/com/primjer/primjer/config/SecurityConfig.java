@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

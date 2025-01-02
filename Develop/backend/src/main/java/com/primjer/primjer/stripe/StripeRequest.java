@@ -1,4 +1,4 @@
-package com.primjer.primjer;
+package com.primjer.primjer.stripe;
 public class StripeRequest {
 
     private String name;

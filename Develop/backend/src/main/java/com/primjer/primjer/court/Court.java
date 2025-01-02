@@ -1,4 +1,6 @@
-package com.primjer.primjer;
+package com.primjer.primjer.court;
+
+import com.primjer.primjer.user.User;
 
 public class Court {
     private int courtId;

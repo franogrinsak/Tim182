@@ -13,6 +13,7 @@ import com.stripe.net.Webhook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class StripeController {
         this.stripeService = stripeService;
         this.userRepo = userRepo;
     }
-
+    @Secured({"ROLE_PLAYER","ROLE_UNPAID_OWNER"})
     @PostMapping("/checkout")
     public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest, OAuth2AuthenticationToken token) throws StripeException {
         System.out.println("Daaaaa");

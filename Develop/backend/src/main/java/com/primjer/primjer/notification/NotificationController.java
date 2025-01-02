@@ -1,5 +1,6 @@
 package com.primjer.primjer.notification;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,18 +14,21 @@ import java.util.List;
         this.notificationRepo = notificationRepo;
     }
 
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/notifications/get")
     public List<Notification> getNotifications(@RequestParam int userId) {
         return notificationRepo.getNotifications(userId);
 
     }
 
+    @Secured({"ROLE_PLAYER"})
     @PostMapping("/notifications/mark")
     public void markNotifications(@RequestBody int[] notificationIds) {
         notificationRepo.markNotifications(notificationIds);
 
     }
 
+    @Secured({"ROLE_PLAYER"})
     @PostMapping("/notifications/delete")
     public void deleteNotifications(@RequestBody int[] notificationIds) {
         notificationRepo.deleteNotifications(notificationIds);

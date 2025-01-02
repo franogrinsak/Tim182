@@ -2,6 +2,7 @@ package com.primjer.primjer.court;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public class CourtController {
     public CourtController(CourtRepository courtRepo) {
         this.courtRepo = courtRepo;
     }
+
+    @Secured({"ROLE_OWNER"})
     @PostMapping("/courts/add")
     public ResponseEntity<String> courtAdd(@RequestBody Court court){
         Integer n=courtRepo.addCourt(court);
@@ -21,22 +24,32 @@ public class CourtController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
     @GetMapping("/courts")
     public List<Court> getCourts(@RequestParam int userId){
         return courtRepo.getCourts(userId);
     }
+
+    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
     @GetMapping("/courts/all")
     public List<Court> getAllCourts(){
         return courtRepo.getAllCourts();
     }
+
+    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
     @GetMapping("/courts/court")
     public Court getCourt(@RequestParam int courtId){
         return courtRepo.getCourt(courtId);
     }
+
+    @Secured({"ROLE_OWNER"})
     @PostMapping("/courts/edit")
     public void courtEdit(@RequestBody Court court){
         courtRepo.editCourt(court);
     }
+
+    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
     @GetMapping("/courts/imageless")
     public List<Court> getCourtsImageless(@RequestParam int userId){
         return courtRepo.getCourtsImageless(userId);

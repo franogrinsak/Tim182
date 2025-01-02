@@ -136,4 +136,10 @@ public class UserRepository {
         querry = "UPDATE owners SET membershipexpirationdate=? WHERE userid = ?";
         jdbc.update(querry, LocalDate.now().plusYears(1),id);
     }
+
+    public String getRoleName(int roleId) {
+        String querry="SELECT rolename FROM user_roles WHERE roleid = ?";
+        String rolename = jdbc.queryForObject(querry,String.class,roleId);
+        return rolename;
+    }
 }

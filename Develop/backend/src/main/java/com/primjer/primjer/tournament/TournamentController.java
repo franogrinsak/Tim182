@@ -18,11 +18,11 @@ public class TournamentController {
     }
 
     @PostMapping("/tournaments/add")
-    public ResponseEntity<Void> tournamentAdd(@RequestBody Tournament tournament) {
+    public ResponseEntity<String> tournamentAdd(@RequestBody Tournament tournament) {
 
         Integer n=tournamentRepo.addTournament(tournament);
         if(n==0){
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(400).body("That tournament name alrady exists");
         }
         return  ResponseEntity.ok().build();
     }

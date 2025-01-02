@@ -14,10 +14,10 @@ public class CourtController {
         this.courtRepo = courtRepo;
     }
     @PostMapping("/courts/add")
-    public ResponseEntity<Void> courtAdd(@RequestBody Court court){
+    public ResponseEntity<String> courtAdd(@RequestBody Court court){
         Integer n=courtRepo.addCourt(court);
         if(n==0){
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(400).body("That court name alrady exists");
         }
         return ResponseEntity.ok().build();
     }

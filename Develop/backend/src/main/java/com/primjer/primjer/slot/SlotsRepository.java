@@ -16,6 +16,7 @@ public class SlotsRepository {
         this.jdbc = jdbc;
     }
     public List<Slot> addSlot(Slot slot) {
+
         String querry = "SELECT * FROM time_slots WHERE courtid = ? AND ((starttimestamp=? AND endtimestamp=?) OR (starttimestamp<? AND endtimestamp>?) OR (starttimestamp<? AND endtimestamp>?) OR (starttimestamp>? AND starttimestamp<?) OR (endtimestamp>? AND endtimestamp<?) OR (starttimestamp=? AND endtimestamp<?) OR (starttimestamp>? AND endtimestamp=?))";
         RowMapper<Slot> purchaseRowMapper = (r, i) -> {
             Slot rowObject = new Slot();

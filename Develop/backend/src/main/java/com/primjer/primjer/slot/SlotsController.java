@@ -15,12 +15,15 @@ public class SlotsController {
     }
     @PostMapping("/slots/add")
     public ResponseEntity<List<Slot>> courtAdd(@RequestBody Slot slot){
+        if(slot.getStartTimestamp().compareTo(slot.getEndTimestamp())>=0){
+            return ResponseEntity.status(400).build();
+        }
         List<Slot> lista=slotsRepo.addSlot(slot);
         if(lista!=null){
             return ResponseEntity.badRequest()
                     .body(lista);
         }
-        return null;
+        return ResponseEntity.ok().build();
     }
     @PostMapping("slots/delete")
     public void deleteSlots(@RequestParam int timeSlotId){

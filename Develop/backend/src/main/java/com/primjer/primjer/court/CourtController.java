@@ -1,6 +1,7 @@
 package com.primjer.primjer.court;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +14,12 @@ public class CourtController {
         this.courtRepo = courtRepo;
     }
     @PostMapping("/courts/add")
-    public void courtAdd(@RequestBody Court court){
-        courtRepo.addCourt(court);
+    public ResponseEntity<Void> courtAdd(@RequestBody Court court){
+        Integer n=courtRepo.addCourt(court);
+        if(n==0){
+            return ResponseEntity.status(400).build();
+        }
+        return ResponseEntity.ok().build();
     }
     @GetMapping("/courts")
     public List<Court> getCourts(@RequestParam int userId){

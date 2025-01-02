@@ -15,10 +15,16 @@ public class CourtRepository {
         this.jdbc = jdbc;
     }
 
-    public void addCourt(Court court) {
-        String querry="INSERT INTO courts(courtname,location,isindoor,image,userid) VALUES(?,?,?,?,?)";
+    public int addCourt(Court court) {
+        String querry = "SELECT COUNT(*) FROM courts WHERE courtname= ? ";
+        Integer number = jdbc.queryForObject(querry, Integer.class, court.getCourtName());
+        if(number>0){
+            return 0;
+        }
+        querry="INSERT INTO courts(courtname,location,isindoor,image,userid) VALUES(?,?,?,?,?)";
         jdbc.update(querry,
                 court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUser().getUserId());
+        return 1;
     }
 
     public List<Court> getCourts(int userId) {

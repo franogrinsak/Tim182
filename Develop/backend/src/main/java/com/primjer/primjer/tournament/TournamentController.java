@@ -4,6 +4,7 @@ package com.primjer.primjer.tournament;
 import com.primjer.primjer.model.Comment;
 import com.primjer.primjer.model.Image;
 import com.primjer.primjer.model.Participations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +18,13 @@ public class TournamentController {
     }
 
     @PostMapping("/tournaments/add")
-    public void tournamentAdd(@RequestBody Tournament tournament) {
-        tournamentRepo.addTournament(tournament);
+    public ResponseEntity<Void> tournamentAdd(@RequestBody Tournament tournament) {
+
+        Integer n=tournamentRepo.addTournament(tournament);
+        if(n==0){
+            return ResponseEntity.status(400).build();
+        }
+        return  ResponseEntity.ok().build();
     }
 
     @GetMapping("/tournaments/all")

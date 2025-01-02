@@ -19,10 +19,16 @@ public class TournamentRepository {
         this.jdbc = jdbc;
     }
 
-    public void addTournament(Tournament tournament) {
-        String querry = "INSERT INTO tournaments(tournamentname,date,registrationfee,reward,playerlevel,description,isopen,userid,courtid) VALUES(?,?,?,?,?,?,?,?,?)";
+    public Integer addTournament(Tournament tournament) {
+        String querry = "SELECT COUNT(*) FROM tournaments WHERE tournamentname= ? ";
+        Integer number = jdbc.queryForObject(querry, Integer.class, tournament.getTournamentName());
+        if(number>0){
+            return 0;
+        }
+        querry = "INSERT INTO tournaments(tournamentname,date,registrationfee,reward,playerlevel,description,isopen,userid,courtid) VALUES(?,?,?,?,?,?,?,?,?)";
         jdbc.update(querry,
                 tournament.getTournamentName(), tournament.getDate(), tournament.getRegistrationFee(), tournament.getReward(), tournament.getPlayerLevel(), tournament.getDescription(), tournament.isOpen(), tournament.getUser().getUserId(), tournament.getCourt().getCourtId());
+        return 1;
     }
 
     public List<Tournament> getAllTournaments() {

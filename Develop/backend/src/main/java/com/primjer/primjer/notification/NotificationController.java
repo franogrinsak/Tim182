@@ -35,28 +35,23 @@ import java.util.List;
 
     }
 
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/notifications/unread")
     public boolean unreadNotifications(@RequestParam int userId) {
         return notificationRepo.unreadNotifications(userId);
 
     }
 
+    @Secured({"ROLE_PLAYER"})
     @PostMapping("/notifications/subscribe")
     public void subscribed(@RequestParam int userId, @RequestParam boolean isSubscribedToTournaments ) {
         notificationRepo.subscribed(userId, isSubscribedToTournaments);
 
     }
 
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/notifications/subscribed")
     public boolean getSubscribed(@RequestParam int userId ) {
         return notificationRepo.getSubscribed(userId);
     }
-
-
-
-
-
-
-
-
 }

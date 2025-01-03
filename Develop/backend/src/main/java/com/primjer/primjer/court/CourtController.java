@@ -31,7 +31,7 @@ public class CourtController {
         return courtRepo.getCourts(userId);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/courts/all")
     public List<Court> getAllCourts(){
         return courtRepo.getAllCourts();
@@ -49,7 +49,7 @@ public class CourtController {
         courtRepo.editCourt(court);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_OWNER"})
     @GetMapping("/courts/imageless")
     public List<Court> getCourtsImageless(@RequestParam int userId){
         return courtRepo.getCourtsImageless(userId);

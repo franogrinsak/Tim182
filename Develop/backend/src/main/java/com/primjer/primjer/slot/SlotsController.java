@@ -52,13 +52,13 @@ public class SlotsController {
         return ResponseEntity.ok().body(bool);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_OWNER"})
     @GetMapping("slots/get/owners")
     public List<Slot> getOSlots(@RequestParam int courtId,@RequestParam int userId){
         return slotsRepo.getO(courtId,userId);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("slots/get/players")
     public List<Slot> getPSlots(@RequestParam int courtId,@RequestParam int userId){
         return slotsRepo.getP(courtId,userId);

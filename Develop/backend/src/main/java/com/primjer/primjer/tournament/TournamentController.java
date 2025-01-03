@@ -29,18 +29,16 @@ public class TournamentController {
         return  ResponseEntity.ok().build();
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/tournaments/all")
     public List<Tournament> getAllTournaments() {
         return tournamentRepo.getAllTournaments();
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_OWNER"})
     @GetMapping("/tournaments/owners")
     public List<Tournament> getOwnersTournaments(@RequestParam int userId) {
         return tournamentRepo.getOwnersTournaments(userId);
-
-
     }
 
     @Secured({"ROLE_OWNER"})
@@ -73,19 +71,19 @@ public class TournamentController {
         tournamentRepo.denyTournament(participations);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_OWNER"})
     @GetMapping("/tournaments/applications")
     public List<Participations> applicationsTournaments(@RequestParam int tournamentId) {
         return tournamentRepo.applicationsTournaments(tournamentId);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/tournaments/application")
     public Participations applicationTournaments(@RequestParam int tournamentId, @RequestParam int userId) {
         return tournamentRepo.applicationTournaments(tournamentId, userId);
     }
 
-    @Secured({"ROLE_OWNER","ROLE_PLAYER"})
+    @Secured({"ROLE_PLAYER"})
     @GetMapping("/tournaments/applications/player")
     public List<Participations> applicationsplayerTournaments(@RequestParam int userId) {
         return tournamentRepo.applicationsplayerTournaments(userId);

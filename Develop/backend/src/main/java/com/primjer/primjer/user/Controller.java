@@ -33,13 +33,14 @@ public class Controller {
     public void logged(@RequestBody User user){
         userRepo.updateUser(user);
     }
-    @Secured({"ROLE_OWNER"})
+
+    @Secured({"ROLE_OWNER", "ROLE_PLAYER"})
     @GetMapping("/owner")
     public User owner(@RequestParam int userId){
         return userRepo.getOwner(userId);
     }
 
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_OWNER"})
     @PostMapping("/owner/edit")
     public void editOwner(@RequestBody User user){
         userRepo.updateOwner(user);

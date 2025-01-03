@@ -34,6 +34,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         if(!userRepo.userExist(email)) {
             User user = new User();
             user.setEmail(email);
+            user.setUserId(1);
             userRepo.storeUser(user);
         }
         User user=userRepo.getUser(email);

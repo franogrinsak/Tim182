@@ -36,7 +36,6 @@ public class StripeController {
     @Secured({"ROLE_PLAYER","ROLE_UNPAID_OWNER"})
     @PostMapping("/checkout")
     public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest, OAuth2AuthenticationToken token) throws StripeException {
-        System.out.println("Daaaaa");
         if(stripeRequest.getName().equals("Clanarina")){
             String email=token.getPrincipal().getAttribute("email");
             User user= userRepo.getUser(email);
@@ -49,7 +48,6 @@ public class StripeController {
     }
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
-        System.out.println("DADadada");
         Stripe.apiKey = secretKey;
         Event event;
         try {

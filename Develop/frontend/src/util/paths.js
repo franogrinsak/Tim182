@@ -13,6 +13,7 @@ export const LOGGED = APP + "/logged";
 
 export const COURTS = APP + "/courts";
 export const OWNER_COURTS = COURTS + "/:ownerId";
+export const ALL_COURTS = COURTS + "/all";
 export const COURT_DETAIL = OWNER_COURTS + "/:courtId";
 export const COURT_OWNER_DETAIL = OWNER_COURTS + "/:courtId";
 export const COURT_OWNER_ADD = OWNER_COURTS + "/add";

@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { ADD_COURT, COURTS } from "../../util/paths";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
 

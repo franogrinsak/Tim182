@@ -9,8 +9,6 @@ import {
   Spinner,
   Button,
 } from "@material-tailwind/react";
-import sleep from "../../util/sleep";
-import { NOTIFICATIONS } from "../../util/test/notifications";
 import { useLoaderData } from "react-router-dom";
 import {
   getNotifications,

@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
 import { postUpdateCourt } from "../../util/api";
-import sleep from "../../util/sleep";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -23,8 +22,6 @@ export async function action({ request }) {
   };
   console.log(data);
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postUpdateCourt(data);
     return redirect("/app/courts/" + data.user.userId + "/" + data.courtId);
   } catch (err) {

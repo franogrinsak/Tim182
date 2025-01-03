@@ -11,7 +11,7 @@ function isUnauthorized(response) {
   return response.ok && response.status === 401;
 }
 
-async function postData(path) {
+async function postDataBody(path, data) {
   const response = await fetch(resolveBackendPath(path), {
     method: "POST",
     body: JSON.stringify(data),

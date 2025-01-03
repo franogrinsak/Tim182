@@ -35,7 +35,6 @@ export default function TournamentsTable(props) {
     return (
       <div className="flex justify-content-end">
         <IconField iconPosition="left">
-          <InputIcon className="pi pi-search" />
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}

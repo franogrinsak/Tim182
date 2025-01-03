@@ -1,10 +1,8 @@
 import React from "react";
 import { Form, useActionData, redirect } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { USER_ROLES } from "../../util/constants";
 import sleep from "../../util/sleep";
 import { postNewCourt } from "../../util/api";
-import { COURTS, OWNER_COURTS } from "../../util/paths";
 
 export async function action({ request }) {
   const formData = await request.formData();

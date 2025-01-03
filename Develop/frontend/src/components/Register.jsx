@@ -3,7 +3,6 @@ import { Form, useActionData, redirect, useNavigation } from "react-router-dom";
 import { USER_ROLES } from "../util/constants";
 import { postRegisterData } from "../util/api";
 import { useUser } from "./auth/UserContext";
-import sleep from "../util/sleep";
 import { DASHBOARD } from "../util/paths";
 
 export async function action({ request }) {
@@ -16,8 +15,6 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postRegisterData(data);
     return redirect(DASHBOARD);
   } catch (err) {

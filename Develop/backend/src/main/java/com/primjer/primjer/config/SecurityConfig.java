@@ -1,5 +1,7 @@
 package com.primjer.primjer.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,7 +39,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable).cors(cors -> cors.configurationSource(corsConfigurationSource())).authorizeHttpRequests(auth->{
             auth.requestMatchers("/","/login","/webhook").permitAll();
             auth.anyRequest().authenticated();
-        }).oauth2Login(oauth2 -> oauth2
+        }).exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint())).oauth2Login(oauth2 -> oauth2
                 .successHandler(authHandler)).logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl(FRONTEND_DOMAIN)
@@ -44,6 +48,14 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .build();
+    }
+    private AuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return (HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) -> {
+            response.setContentType("application/json");
+            response.setStatus(401);
+            response.getWriter().write("{\"message\": \"Unauthorized\"}");
+
+        };
     }
 
     @Bean

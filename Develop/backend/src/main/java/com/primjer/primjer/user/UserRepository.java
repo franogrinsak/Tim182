@@ -16,13 +16,18 @@ public class UserRepository {
         this.jdbc = jdbc;
     }
     public void storeUser(User user){
-        String querry="INSERT INTO users(email,firstName,lastName,roleId) VALUES(?,NULL,NULL,NULL)";
-        jdbc.update(querry,
-                user.getEmail());
+        String querry="INSERT INTO users(email,roleId) VALUES(?,1)";
+        jdbc.update(querry, user.getEmail());
     }
     public boolean userExist(String email){
         String querry="SELECT COUNT(*) FROM users WHERE email = ?";
         Integer number = jdbc.queryForObject(querry,Integer.class,email);
+        return (number==1) ? true:false;
+    }
+
+    public boolean userExistExcludeId(String email, int userId){
+        String querry="SELECT COUNT(*) FROM users WHERE email = ? AND userId <> ?";
+        Integer number = jdbc.queryForObject(querry,Integer.class,email, userId);
         return (number==1) ? true:false;
     }
     public User getUser(String email){
@@ -141,5 +146,28 @@ public class UserRepository {
         String querry="SELECT rolename FROM user_roles WHERE roleid = ?";
         String rolename = jdbc.queryForObject(querry,String.class,roleId);
         return rolename;
+    }
+
+    public void deleteUser(int userId) {
+        String querry = "DELETE FROM users WHERE userid = ?";
+        jdbc.update(querry, userId);
+    }
+
+    public User getUserFromId(int userId) {
+        String querry="SELECT * FROM users natural left join owners WHERE users.userId = ?";
+        RowMapper<User> purchaseRowMapper = (r, i) -> {
+            User rowObject = new User();
+            rowObject.setUserId(r.getInt("userid"));
+            rowObject.setEmail(r.getString("email"));
+            rowObject.setFirstName(r.getString("firstname"));
+            rowObject.setLastName(r.getString("lastname"));
+            rowObject.setRoleId(r.getInt("roleid"));
+            rowObject.setPhoneNumber(r.getString("phonenumber"));
+            return rowObject;
+        };
+
+        List<User> users = jdbc.query(querry, purchaseRowMapper, userId);
+        if (users.isEmpty()) return null;
+        return users.get(0);
     }
 }

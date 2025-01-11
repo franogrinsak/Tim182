@@ -19,13 +19,16 @@ import java.util.List;
         }
 
     public List<Notification> getNotifications(int userId) {
-        String querry = "SELECT * FROM notifications join tournaments on notifications.tournamentId=tournaments.tournamentId join users on notifications.userId= users.userId WHERE notifications.userId = ? order by creationTime desc";
+        String querry = "SELECT tournaments.userId as ownerId , * FROM notifications join tournaments on notifications.tournamentId=tournaments.tournamentId join users on notifications.userId= users.userId WHERE notifications.userId = ? order by creationTime desc";
         RowMapper<Notification> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
             Tournament tournament = new Tournament();
             tournament.setTournamentId(r.getInt("tournamentid"));
             tournament.setTournamentName(r.getString("tournamentname"));
+            User owner = new User();
+            owner.setUserId(r.getInt("ownerId"));
+            tournament.setUser(owner);
             Notification rowObject = new Notification();
             rowObject.setUser(user);
             rowObject.setTournament(tournament);

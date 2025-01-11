@@ -34,12 +34,11 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         if(!userRepo.userExist(email)) {
             User user = new User();
             user.setEmail(email);
-            user.setUserId(1);
+            user.setRoleId(1);
             userRepo.storeUser(user);
         }
         User user=userRepo.getUser(email);
         String role=userRepo.getRoleName(user.getRoleId());
-        System.out.println("role is:"+role);
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);  // Prefix with "ROLE_"
 
 

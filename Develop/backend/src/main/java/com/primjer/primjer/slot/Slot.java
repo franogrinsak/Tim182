@@ -3,6 +3,7 @@ package com.primjer.primjer.slot;
 import com.primjer.primjer.user.User;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Slot {
     private int timeSlotId;
@@ -70,5 +71,13 @@ public class Slot {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFormatedStartTimestamp() {
+        if (startTimestamp != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+            return startTimestamp.format(formatter);
+        }
+        return null;
     }
 }

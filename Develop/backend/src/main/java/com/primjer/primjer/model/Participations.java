@@ -10,8 +10,7 @@ public class Participations {
     private User user;
     private boolean isApproved;
     private Timestamp signUpTime;
-
-
+    private boolean isDenied;
 
     public Tournament getTournament() {
         return tournament;
@@ -44,5 +43,13 @@ public class Participations {
 
     public void setSignUpTime(Timestamp signUpTime) {
         this.signUpTime = signUpTime;
+    }
+
+    public void setDenied(boolean denied) {
+        isDenied = denied;
+    }
+
+    public boolean isDenied() {
+        return isDenied;
     }
 }

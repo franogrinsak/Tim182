@@ -136,12 +136,12 @@ public class TournamentRepository {
     }
 
     public void denyTournament(Participations participations) {
-        String querry="DELETE FROM participations WHERE userId = ? AND tournamentId = ?";
+        String querry="UPDATE participations SET isDenied = true, isApproved = false WHERE userId = ? AND tournamentId = ?";
         jdbc.update(querry,participations.getUser().getUserId(),participations.getTournament().getTournamentId());
     }
 
     public List<Participations> applicationsTournaments(int tournamentId) {
-        String querry = "SELECT * FROM participations JOIN users ON participations.userId= users.userId  WHERE tournamentId = ?";
+        String querry = "SELECT * FROM participations JOIN users ON participations.userId= users.userId  WHERE tournamentId = ? AND isDenied <> true";
         RowMapper<Participations> purchaseRowMapper = (r, i) -> {
             User user = new User();
             user.setUserId(r.getInt("userid"));
@@ -153,6 +153,7 @@ public class TournamentRepository {
             rowObject.setUser(user);
             rowObject.setTournament(tournament);
             rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setDenied(r.getBoolean("isDenied"));
             rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
             return rowObject;
         };
@@ -172,6 +173,7 @@ public class TournamentRepository {
             rowObject.setUser(user);
             rowObject.setTournament(tournament);
             rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setDenied(r.getBoolean("isDenied"));
             rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
             return rowObject;
         };
@@ -191,6 +193,7 @@ public class TournamentRepository {
             rowObject.setUser(user);
             rowObject.setTournament(tournament);
             rowObject.setApproved(r.getBoolean("isapproved"));
+            rowObject.setDenied(r.getBoolean("isDenied"));
             rowObject.setSignUpTime(r.getTimestamp("signUpTime"));
             return rowObject;
         };

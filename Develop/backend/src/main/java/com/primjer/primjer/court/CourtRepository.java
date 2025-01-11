@@ -87,9 +87,17 @@ public class CourtRepository {
         return jdbc.query(querry, purchaseRowMapper,courtId).get(0);
     }
 
-    public void editCourt(Court court) {
-        String querry="UPDATE courts SET courtName= ?,location= ?,isIndoor= ?,image= ?,userId= ? WHERE courtid = ?";
+    public int editCourt(Court court) {
+        String querry = "SELECT COUNT(*) FROM courts WHERE courtname= ? AND courtId <> ?";
+        Integer number = jdbc.queryForObject(querry, Integer.class, court.getCourtName(), court.getCourtId());
+        if(number>0){
+            return 0;
+        }
+
+        querry="UPDATE courts SET courtName= ?,location= ?,isIndoor= ?,image= ?,userId= ? WHERE courtid = ?";
         jdbc.update(querry,court.getCourtName(),court.getLocation(),court.getisIndoor(),court.getImage(),court.getUser().getUserId(),court.getCourtId());
+
+        return 1;
     }
 
     public List<Court> getCourtsImageless(int userId) {

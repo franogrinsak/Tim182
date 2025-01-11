@@ -45,8 +45,13 @@ public class CourtController {
 
     @Secured({"ROLE_OWNER"})
     @PostMapping("/courts/edit")
-    public void courtEdit(@RequestBody Court court){
-        courtRepo.editCourt(court);
+    public ResponseEntity<String> courtEdit(@RequestBody Court court){
+        int n = courtRepo.editCourt(court);
+
+        if(n==0){
+            return ResponseEntity.status(400).body("That court name alrady exists");
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Secured({"ROLE_OWNER"})

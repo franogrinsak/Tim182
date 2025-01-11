@@ -17,14 +17,14 @@ public class SlotsController {
 
     @Secured({"ROLE_OWNER"})
     @PostMapping("/slots/add")
-    public ResponseEntity<List<Slot>> courtAdd(@RequestBody Slot slot){
+    public ResponseEntity<String> courtAdd(@RequestBody Slot slot){
         if(slot.getStartTimestamp().compareTo(slot.getEndTimestamp())>=0){
             return ResponseEntity.status(400).build();
         }
         List<Slot> lista=slotsRepo.addSlot(slot);
         if(lista!=null){
             return ResponseEntity.badRequest()
-                    .body(lista);
+                    .body("there is a conflict with a slot starting at " + lista.get(0).getFormatedStartTimestamp());
         }
         return ResponseEntity.ok().build();
     }

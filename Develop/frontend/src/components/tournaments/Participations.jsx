@@ -1,13 +1,14 @@
 import React from "react";
-import { getTournamentApplictions } from "../../util/api";
 import { useLoaderData } from "react-router-dom";
 import ParticipationsList from "./ParticipationsList";
+import { getTournamentApplictions } from "../../util/api/participations";
 
 export async function loader({ params }) {
   const { tournamentId } = params;
   const data = new URLSearchParams();
   data.append("tournamentId", tournamentId);
   const participations = await getTournamentApplictions(data.toString());
+  if (participations instanceof Response) return participations;
   return {
     unapprovedParticipations: participations.filter(
       (participation) => !participation.approved
@@ -25,7 +26,6 @@ export default function Participations() {
   const [currentItemApprove, setCurrentItemApprove] = React.useState(0);
   const [currentItemDeny, setCurrentItemDeny] = React.useState(0);
 
-  console.log(approvedParticipations);
   return (
     <section className="flex justify-center flex-row wrap my-6">
       {unapprovedParticipations.length == 0 &&

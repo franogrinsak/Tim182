@@ -4,9 +4,9 @@ import { useUser } from "../auth/UserContext";
 import { APP, NOTIFICATIONS } from "../../util/paths";
 import { Badge } from "primereact/badge";
 import { isPlayer } from "../../util/users";
-import { getUnreadNotifications } from "../../util/api";
 import DesktopDashboardHeader from "./DesktopDashboardHeader";
 import MobileDashboardHeader from "./MobileDashboardHeader";
+import { getUnreadNotifications } from "../../util/api/notifications";
 
 const CHECK_NOTIFICATIONS_TIME = 60000;
 
@@ -21,8 +21,9 @@ export default function Header() {
     async function getUnread() {
       const data = new URLSearchParams();
       data.append("userId", user.userId);
-      const unreadResponse = await getUnreadNotifications(data);
-      setUnread(unreadResponse);
+      const { response, redirected } = await getUnreadNotifications(data);
+      if (redirected) return;
+      setUnread(response);
     }
 
     if (user && isPlayer(user)) {

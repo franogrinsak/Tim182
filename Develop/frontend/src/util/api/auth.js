@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { BACKEND_LOGGED, resolveBackendPath } from "./paths";
+import { BACKEND_LOGGED, LOGIN, resolveBackendPath } from "../paths";
 
 export async function requireAuth() {
   let data;
@@ -8,8 +8,7 @@ export async function requireAuth() {
       credentials: "include",
     });
     if (!data.ok) {
-      console.log(data);
-      if ((data.status = 401)) return redirect("/login");
+      if (data.status === 401) return redirect(LOGIN);
     }
   } catch (error) {
     console.error("Error fetching user data:", error);

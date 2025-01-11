@@ -1,13 +1,10 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
-import { Avatar } from "primereact/avatar";
-import { Ripple } from "primereact/ripple";
-import { StyleClass } from "primereact/styleclass";
 import { getLinks } from "./DesktopDashboardHeader";
 import { LOGOUT, resolveBackendPath } from "../../util/paths";
 
-export default function HeadlessDemo(props) {
+export default function ExpandingHeader(props) {
   const { headerOpened, setHeaderOpened, name, user } = props;
 
   return (

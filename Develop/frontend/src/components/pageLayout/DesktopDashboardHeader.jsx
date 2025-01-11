@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
-  ALL_COURTS,
   COURTS,
   LOGOUT,
   MEMBERSHIP,
@@ -15,7 +14,7 @@ const ACTIVE_STYLE = "text-blue-500 hover:text-blue-500";
 const INACTIVE_STYLE = "text-green-500 hover:text-green-500";
 
 const PLAYER_LINKS = [
-  <DekstopLink key={1} text="Courts" link={ALL_COURTS} />,
+  <DekstopLink key={1} text="Courts" link={COURTS} />,
   <DekstopLink key={2} text="Tournaments" link={TOURNAMENTS} />,
 ];
 

@@ -16,25 +16,22 @@ import NotFound from "./components/pageLayout/NotFound";
 import Register from "./components/Register";
 import { action as registerAction } from "./components/Register";
 import { action as addCourtAction } from "./components/courts/AddCourt";
-import { requireAuth } from "./util/auth";
 import {
-  ADD_COURT,
+  ADD_USER,
   APP,
   COURT_DETAIL,
-  COURT_NOT_FOUND,
   COURT_OWNER_ADD,
-  COURT_OWNER_DETAIL,
   COURT_OWNER_PROFILE,
   COURTS,
-  DASHBOARD,
   EDIT_COURT,
   EDIT_COURT_OWNER_PROFILE,
+  EDIT_USER,
   HOME,
   LOGGED,
+  LOGIN,
   MEMBERSHIP,
   ORGANIZE_TOURNAMENT,
   OWNER_COURTS,
-  OWNER_PROFILE,
   OWNER_TOURNAMENTS,
   PLAYER_NOTIFICATIONS,
   PURCHASE_MEMBERSHIP,
@@ -60,7 +57,10 @@ import EditCourt, {
 import OwnerProfile, {
   loader as ownerProfileLoader,
 } from "./components/courts/OwnerProfile";
-import Users, { loader as usersLoader } from "./components/users/Users";
+import Users, {
+  loader as usersLoader,
+  action as deleteUserAction,
+} from "./components/users/Users";
 import AllCourts, {
   loader as allCourtsLoader,
 } from "./components/courts/AllCourts";
@@ -100,14 +100,15 @@ import EditMembership, {
   action as editMembershipAction,
 } from "./components/membership/EditMembership";
 import PurchaseMembership from "./components/membership/PurchaseMembership";
+import { requireAuth } from "./util/api/auth";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path={HOME} element={<LandingPageLayout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
+          <Route index element={<LandingPage />} />
+          <Route path={LOGIN} element={<Login />} />
           <Route
             path="*"
             element={<NotFound link={HOME} returnText={"homepage"} />}
@@ -129,6 +130,7 @@ function App() {
 
           {/* Courts UI */}
           <Route path={COURTS}>
+            <Route index element={<AllCourts />} loader={allCourtsLoader} />
             <Route path={OWNER_COURTS} element={<CourtsLayout />}>
               <Route index element={<Courts />} loader={ownerCourtsLoader} />
               <Route
@@ -143,7 +145,7 @@ function App() {
               />
             </Route>
             <Route
-              path={COURT_OWNER_DETAIL}
+              path={COURT_DETAIL}
               element={<CourtDetail />}
               loader={courtDetailLoader}
             />
@@ -160,12 +162,6 @@ function App() {
               action={editCourtAction}
             />
           </Route>
-
-          <Route
-            path="/app/courts/all"
-            element={<AllCourts />}
-            loader={allCourtsLoader}
-          />
 
           {/* Tournaments UI */}
           <Route path={TOURNAMENTS}>
@@ -209,24 +205,35 @@ function App() {
             </Route>
           </Route>
 
+          {/* Notifications */}
           <Route
             path={PLAYER_NOTIFICATIONS}
             element={<Notifications />}
             loader={notificationsLoader}
           />
 
+          {/* User management UI */}
           <Route path={USERS}>
-            <Route index element={<Users />} loader={usersLoader} />
-            <Route path="add" element={<AddUser />} action={addUserAction} />
+            <Route
+              index
+              element={<Users />}
+              loader={usersLoader}
+              action={deleteUserAction}
+            />
+            <Route
+              path={ADD_USER}
+              element={<AddUser />}
+              action={addUserAction}
+            />
+            <Route
+              path={EDIT_USER}
+              element={<EditUser />}
+              loader={editUserLoader}
+              action={editUserAction}
+            />
           </Route>
 
-          <Route
-            path="users/edit/:userId"
-            element={<EditUser />}
-            loader={editUserLoader}
-            action={editUserAction}
-          />
-
+          {/* Membership mangement UI */}
           <Route
             path={MEMBERSHIP}
             element={<EditMembership />}
@@ -234,6 +241,7 @@ function App() {
             action={editMembershipAction}
           />
 
+          {/* Buying membership */}
           <Route
             path={PURCHASE_MEMBERSHIP}
             element={<PurchaseMembership />}

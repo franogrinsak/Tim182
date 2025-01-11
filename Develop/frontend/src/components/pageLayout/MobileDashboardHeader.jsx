@@ -1,7 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import React from "react";
-import { getLinks } from "./DesktopDashboardHeader";
-import HeadlessDemo from "./HeadlessDemo";
+import ExpandingHeader from "./ExpandingHeader";
 
 export default function MobileDashboardHeader(props) {
   const { headerOpened, setHeaderOpened, name, user } = props;
@@ -15,7 +14,7 @@ export default function MobileDashboardHeader(props) {
       >
         <i className="pi pi-bars"></i>
       </Button>
-      <HeadlessDemo
+      <ExpandingHeader
         headerOpened={headerOpened}
         setHeaderOpened={setHeaderOpened}
         name={name}

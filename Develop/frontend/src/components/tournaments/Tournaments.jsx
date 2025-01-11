@@ -1,12 +1,15 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import TournamentsTable from "./TournamentsTable";
-import { getAllTournaments, getTournamentsForOwners } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { isToday } from "../../util/date";
 import TournamentNav from "./TournamentNav";
 import { isOwner, isPlayer } from "../../util/users";
 import NotificationSubscription from "./NotificationSubscription";
+import {
+  getAllTournaments,
+  getTournamentsForOwners,
+} from "../../util/api/tournaments";
 
 export async function loader({ params }) {
   const { ownerId } = params;

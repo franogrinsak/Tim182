@@ -9,12 +9,13 @@ import {
   Spinner,
   Button,
 } from "@material-tailwind/react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { TOURNAMENTS } from "../../util/paths";
 import {
   getNotifications,
   postDeleteNotifications,
   postMarkNotifications,
-} from "../../util/api";
+} from "../../util/api/notifications";
 
 function TrashIcon() {
   return (
@@ -62,6 +63,7 @@ export default function Notifications() {
   const [currentItemDelete, setCurrentItemDelete] = React.useState();
   const [marking, setMarking] = React.useState(false);
   const [currentItemMark, setCurrentItemMark] = React.useState();
+  const navigate = useNavigate();
 
   async function markNotifications(notifications, currentNotificationId) {
     setMarking(true);
@@ -114,6 +116,11 @@ export default function Notifications() {
                 <ListItem
                   className={!notification.read ? "marked-notification" : ""}
                   key={`${notification.notificationId}`}
+                  onClick={() =>
+                    navigate(
+                      `${TOURNAMENTS}/${notification.tournament.user.userId}/${notification.tournament.tournamentId}`
+                    )
+                  }
                 >
                   {notification.tournament.tournamentName} is being held
                   <ListItemSuffix className="flex">

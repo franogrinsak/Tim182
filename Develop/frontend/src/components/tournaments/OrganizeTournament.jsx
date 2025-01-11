@@ -7,7 +7,8 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { getCourtsForOwnersImageless, postNewTournament } from "../../util/api";
+import { getCourtsForOwnersImageless } from "../../util/api/courts";
+import { postNewTournament } from "../../util/api/tournaments";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -36,10 +37,7 @@ export async function action({ request }) {
     await postNewTournament(data);
     return redirect("/app/tournaments/" + data.user.userId);
   } catch (err) {
-    console.log(err);
-    return (
-      "Failed to organize tournament, reason: " + `${err.status} ${err.message}`
-    );
+    return "Failed to organize tournament, reason: " + err.message;
   }
 }
 
@@ -56,15 +54,17 @@ export default function OrganizeTournament() {
 
   return (
     <>
-      <h2 className="text-xl">Organize a tournament</h2>
       {message && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-          role="alert"
-        >
-          <span className="block sm:inline">{message}</span>
+        <div className="flex justify-center">
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded register-size"
+            role="alert"
+          >
+            <span className="block sm:inline">{message}</span>
+          </div>
         </div>
       )}
+      <h2 className="text-xl">Organize a tournament</h2>
       <div className="register-form-container">
         <div className="w-full register-size">
           <Form

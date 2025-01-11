@@ -8,7 +8,7 @@ import {
   redirect,
 } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { postUpdateCourt } from "../../util/api";
+import { postUpdateCourt } from "../../util/api/courts";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -20,13 +20,11 @@ export async function action({ request }) {
     image: formData.get("imageText"),
     courtId: formData.get("courtId"),
   };
-  console.log(data);
   try {
     await postUpdateCourt(data);
     return redirect("/app/courts/" + data.user.userId + "/" + data.courtId);
   } catch (err) {
-    console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to edit the court: " + err.message;
   }
 }
 

@@ -5,7 +5,6 @@ export default function PaymentOptions(props) {
   const { payment, setPayment } = props;
 
   function onValueChange(event) {
-    console.log(event.target.value);
     setPayment(event.target.value);
   }
   return (

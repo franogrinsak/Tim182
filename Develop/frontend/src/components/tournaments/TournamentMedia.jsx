@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { Galleria } from "primereact/galleria";
 import { classNames } from "primereact/utils";
-import { useLoaderData, useOutletContext } from "react-router-dom";
+import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import "../../Media.css";
 import TournamentComments from "./media/TournamentComments";
 import AddTournamentImage from "./media/AddTournamentImage";
@@ -11,7 +11,8 @@ import {
   getTournamentImages,
   postUploadComment,
   postUploadImage,
-} from "../../util/api";
+} from "../../util/api/tournament-media";
+import { TOURNAMENT_MEDIA } from "../../util/paths";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -23,14 +24,23 @@ export async function action({ request }) {
       tournament: { tournamentId: formData.get("tournamentId") },
       commentText: formData.get("commentText"),
     };
-    await postUploadComment(data);
+    try {
+      await postUploadComment(data);
+    } catch (err) {
+      return "Failed to add a comment: " + err.message;
+    }
   } else {
     const data = {
       user: { userId: formData.get("userId") },
       tournament: { tournamentId: formData.get("tournamentId") },
       imageContent: formData.get("imageText"),
     };
-    await postUploadImage(data);
+
+    try {
+      await postUploadImage(data);
+    } catch (err) {
+      return "Failed to add an image: " + err.message;
+    }
   }
   window.location.reload();
   return null;
@@ -42,6 +52,8 @@ export async function loader({ params }) {
   data.append("tournamentId", tournamentId);
   const comments = await getTournamentComments(data.toString());
   const images = await getTournamentImages(data.toString());
+  if (comments instanceof Response) return comments;
+  if (images instanceof Response) return images;
   return {
     comments: comments,
     images: images.map((image) => {
@@ -198,7 +210,6 @@ export default function TournamentMedia() {
       "pi-window-minimize": isFullScreen,
     });
 
-    console.log(media);
     return (
       <div className="custom-galleria-footer rounded-b-lg">
         {/*

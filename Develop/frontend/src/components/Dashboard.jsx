@@ -2,7 +2,7 @@ import React from "react";
 import { useUser } from "./auth/UserContext";
 import { getFeatureCards, USER_ROLES } from "../util/constants";
 import { useNavigate } from "react-router-dom";
-import { REGISTER } from "../util/paths";
+import { PURCHASE_MEMBERSHIP, REGISTER } from "../util/paths";
 
 export default function Dashboard() {
   const { user } = useUser();

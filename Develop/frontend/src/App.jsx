@@ -11,7 +11,6 @@ import LandingPage from "./components/LandingPage";
 import Main from "./components/Main";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
-import Logged from "./components/Logged";
 import NotFound from "./components/pageLayout/NotFound";
 import Register from "./components/Register";
 import { action as registerAction } from "./components/Register";
@@ -27,7 +26,6 @@ import {
   EDIT_COURT_OWNER_PROFILE,
   EDIT_USER,
   HOME,
-  LOGGED,
   LOGIN,
   MEMBERSHIP,
   ORGANIZE_TOURNAMENT,
@@ -100,6 +98,8 @@ import EditMembership, {
   action as editMembershipAction,
 } from "./components/membership/EditMembership";
 import PurchaseMembership from "./components/membership/PurchaseMembership";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { USER_ROLES } from "./util/constants";
 import { requireAuth } from "./util/api/auth";
 
 function App() {
@@ -119,134 +119,192 @@ function App() {
           {/* Dashboard */}
           <Route index element={<Dashboard />} />
 
-          <Route path={LOGGED} element={<Logged />} />
-
           {/* Register page */}
           <Route
-            path={REGISTER}
-            element={<Register />}
-            action={registerAction}
-          />
-
-          {/* Courts UI */}
-          <Route path={COURTS}>
-            <Route index element={<AllCourts />} loader={allCourtsLoader} />
-            <Route path={OWNER_COURTS} element={<CourtsLayout />}>
-              <Route index element={<Courts />} loader={ownerCourtsLoader} />
-              <Route
-                path={COURT_OWNER_PROFILE}
-                element={<OwnerProfile />}
-                loader={ownerProfileLoader}
-              />
-              <Route
-                path={COURT_OWNER_ADD}
-                element={<AddCourt />}
-                action={addCourtAction}
-              />
-            </Route>
+            element={<ProtectedRoute allowedRoles={[USER_ROLES.NEW_USER]} />}
+          >
             <Route
-              path={COURT_DETAIL}
-              element={<CourtDetail />}
-              loader={courtDetailLoader}
-            />
-            <Route
-              path={EDIT_COURT_OWNER_PROFILE}
-              element={<EditOwnerProfile />}
-              loader={ownerProfileLoader}
-              action={editOwnerProfileAction}
-            />
-            <Route
-              path={EDIT_COURT}
-              element={<EditCourt />}
-              loader={courtDetailLoader}
-              action={editCourtAction}
+              path={REGISTER}
+              element={<Register />}
+              action={registerAction}
             />
           </Route>
 
+          {/* Courts UI */}
+          <Route
+            element={
+              <ProtectedRoute
+                allowedRoles={[USER_ROLES.OWNER, USER_ROLES.PLAYER]}
+              />
+            }
+          >
+            <Route path={COURTS}>
+              <Route
+                element={<ProtectedRoute allowedRoles={[USER_ROLES.PLAYER]} />}
+              >
+                <Route index element={<AllCourts />} loader={allCourtsLoader} />
+              </Route>
+              <Route path={OWNER_COURTS} element={<CourtsLayout />}>
+                <Route index element={<Courts />} loader={ownerCourtsLoader} />
+                <Route
+                  path={COURT_OWNER_PROFILE}
+                  element={<OwnerProfile />}
+                  loader={ownerProfileLoader}
+                />
+                <Route
+                  element={<ProtectedRoute allowedRoles={[USER_ROLES.OWNER]} />}
+                >
+                  <Route
+                    path={COURT_OWNER_ADD}
+                    element={<AddCourt />}
+                    action={addCourtAction}
+                  />
+                </Route>
+              </Route>
+              <Route
+                path={COURT_DETAIL}
+                element={<CourtDetail />}
+                loader={courtDetailLoader}
+              />
+              <Route
+                element={<ProtectedRoute allowedRoles={[USER_ROLES.PLAYER]} />}
+              >
+                <Route
+                  path={EDIT_COURT_OWNER_PROFILE}
+                  element={<EditOwnerProfile />}
+                  loader={ownerProfileLoader}
+                  action={editOwnerProfileAction}
+                />
+                <Route
+                  path={EDIT_COURT}
+                  element={<EditCourt />}
+                  loader={courtDetailLoader}
+                  action={editCourtAction}
+                />
+              </Route>
+            </Route>
+          </Route>
+
           {/* Tournaments UI */}
-          <Route path={TOURNAMENTS}>
-            <Route
-              index
-              element={<Tournaments />}
-              loader={allTournamentsLoader}
-            />
-            <Route
-              path={OWNER_TOURNAMENTS}
-              element={<Tournaments />}
-              loader={ownerTournamentsLoader}
-            />
-            <Route
-              path={ORGANIZE_TOURNAMENT}
-              element={<OrganizeTournament />}
-              loader={organizeTournamentLoader}
-              action={organizeTournamentAction}
-            />
-            <Route
-              path={TOURNAMENT_DETAIL}
-              element={<TournamentDetailsLayout />}
-              loader={tournamentDetailsLoader}
-            >
+          <Route
+            element={
+              <ProtectedRoute
+                allowedRoles={[USER_ROLES.OWNER, USER_ROLES.PLAYER]}
+              />
+            }
+          >
+            <Route path={TOURNAMENTS}>
               <Route
-                index
-                element={<TournamentDetails />}
-                action={completeTournamentAction}
+                element={<ProtectedRoute allowedRoles={[USER_ROLES.PLAYER]} />}
+              >
+                <Route
+                  index
+                  element={<Tournaments />}
+                  loader={allTournamentsLoader}
+                />
+              </Route>
+
+              <Route
+                path={OWNER_TOURNAMENTS}
+                element={<Tournaments />}
+                loader={ownerTournamentsLoader}
               />
               <Route
-                path={TOURNAMENT_PARTICIPATIONS}
-                element={<Participations />}
-                loader={participationsLoader}
-              />
+                element={<ProtectedRoute allowedRoles={[USER_ROLES.OWNER]} />}
+              >
+                <Route
+                  path={ORGANIZE_TOURNAMENT}
+                  element={<OrganizeTournament />}
+                  loader={organizeTournamentLoader}
+                  action={organizeTournamentAction}
+                />
+              </Route>
+
               <Route
-                path={TOURNAMENT_MEDIA}
-                element={<TournamentMedia />}
-                loader={torunamentMediaLoader}
-                action={tournamentMediaAction}
-              />
+                path={TOURNAMENT_DETAIL}
+                element={<TournamentDetailsLayout />}
+                loader={tournamentDetailsLoader}
+              >
+                <Route
+                  index
+                  element={<TournamentDetails />}
+                  action={completeTournamentAction}
+                />
+                <Route
+                  element={<ProtectedRoute allowedRoles={[USER_ROLES.OWNER]} />}
+                >
+                  <Route
+                    path={TOURNAMENT_PARTICIPATIONS}
+                    element={<Participations />}
+                    loader={participationsLoader}
+                  />
+                </Route>
+                <Route
+                  path={TOURNAMENT_MEDIA}
+                  element={<TournamentMedia />}
+                  loader={torunamentMediaLoader}
+                  action={tournamentMediaAction}
+                />
+              </Route>
             </Route>
           </Route>
 
           {/* Notifications */}
           <Route
-            path={PLAYER_NOTIFICATIONS}
-            element={<Notifications />}
-            loader={notificationsLoader}
-          />
-
-          {/* User management UI */}
-          <Route path={USERS}>
+            element={<ProtectedRoute allowedRoles={[USER_ROLES.PLAYER]} />}
+          >
             <Route
-              index
-              element={<Users />}
-              loader={usersLoader}
-              action={deleteUserAction}
-            />
-            <Route
-              path={ADD_USER}
-              element={<AddUser />}
-              action={addUserAction}
-            />
-            <Route
-              path={EDIT_USER}
-              element={<EditUser />}
-              loader={editUserLoader}
-              action={editUserAction}
+              path={PLAYER_NOTIFICATIONS}
+              element={<Notifications />}
+              loader={notificationsLoader}
             />
           </Route>
 
+          {/* User management UI */}
+          <Route element={<ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]} />}>
+            <Route path={USERS}>
+              <Route
+                index
+                element={<Users />}
+                loader={usersLoader}
+                action={deleteUserAction}
+              />
+              <Route
+                path={ADD_USER}
+                element={<AddUser />}
+                action={addUserAction}
+              />
+              <Route
+                path={EDIT_USER}
+                element={<EditUser />}
+                loader={editUserLoader}
+                action={editUserAction}
+              />
+            </Route>
+          </Route>
+
           {/* Membership mangement UI */}
-          <Route
-            path={MEMBERSHIP}
-            element={<EditMembership />}
-            loader={editMembershipLoader}
-            action={editMembershipAction}
-          />
+          <Route element={<ProtectedRoute allowedRoles={[USER_ROLES.ADMIN]} />}>
+            <Route
+              path={MEMBERSHIP}
+              element={<EditMembership />}
+              loader={editMembershipLoader}
+              action={editMembershipAction}
+            />
+          </Route>
 
           {/* Buying membership */}
           <Route
-            path={PURCHASE_MEMBERSHIP}
-            element={<PurchaseMembership />}
-            loader={editMembershipLoader}
-          />
+            element={
+              <ProtectedRoute allowedRoles={[USER_ROLES.UNPAID_OWNER]} />
+            }
+          >
+            <Route
+              path={PURCHASE_MEMBERSHIP}
+              element={<PurchaseMembership />}
+              loader={editMembershipLoader}
+            />
+          </Route>
 
           <Route
             path="*"

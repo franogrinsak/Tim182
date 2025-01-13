@@ -9,6 +9,7 @@ import {
   postCompleteTournament,
 } from "../../util/api/tournaments";
 import ApplicationButton from "./ApplicationButton";
+import { isBeforeToday } from "../../util/date";
 
 export async function loader({ params }) {
   const { tournamentId } = params;
@@ -52,6 +53,9 @@ export default function TournamentDetails() {
             {tournament.tournamentName}
           </p>
         </div>
+        {tournament.open && isBeforeToday(tournament.date) && (
+          <div>Waiting for results</div>
+        )}
         <div className="mt-6 border-t border-gray-100 text-left">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

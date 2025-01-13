@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import TournamentsTable from "./TournamentsTable";
 import { useUser } from "../auth/UserContext";
-import { isToday } from "../../util/date";
+import { isBeforeToday, isToday } from "../../util/date";
 import TournamentNav from "./TournamentNav";
 import { isOwner, isPlayer } from "../../util/users";
 import NotificationSubscription from "./NotificationSubscription";
@@ -10,6 +10,7 @@ import {
   getAllTournaments,
   getTournamentsForOwners,
 } from "../../util/api/tournaments";
+import { getTournamentApplicationsPlayer } from "../../util/api/participations";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -26,6 +27,7 @@ export const VIEWS = {
   OPEN: "open",
   TODAY: "today",
   PLAYED: "played",
+  PLAYER: "player",
 };
 
 export default function Tournaments() {
@@ -34,19 +36,47 @@ export default function Tournaments() {
   const openTournaments = [];
   const playedTournaments = [];
   const ongoingTournaments = [];
+  const playerTournaments = [];
+  const [playerApplications, setPlayerApplications] = React.useState();
   tournaments?.forEach((tournament) => {
+    if (user && isPlayer(user) && playerApplications) {
+      if (
+        playerApplications.some(
+          (application) =>
+            application.tournament.tournamentId == tournament.tournamentId
+        )
+      ) {
+        playerTournaments.push(tournament);
+        return;
+      }
+    }
+
     if (!tournament.open) {
       playedTournaments.push(tournament);
       return;
     }
 
-    if (isToday(tournament.date)) {
+    if (isToday(tournament.date) || isBeforeToday(tournament.date)) {
       ongoingTournaments.push(tournament);
       return;
     }
 
     openTournaments.push(tournament);
   });
+
+  React.useEffect(() => {
+    async function getApplications() {
+      const data = new URLSearchParams();
+      data.append("userId", user.userId);
+      const response = await getTournamentApplicationsPlayer(data);
+      if (!response) return;
+      setPlayerApplications(response);
+    }
+
+    if (user && isPlayer(user)) {
+      getApplications();
+    }
+  }, [JSON.stringify(user)]);
 
   const [currentView, setCurrentView] = React.useState(VIEWS.OPEN);
   return (
@@ -66,9 +96,12 @@ export default function Tournaments() {
       )}
       {currentView == VIEWS.TODAY && (
         <TournamentsTable tournaments={ongoingTournaments} />
-      )}{" "}
+      )}
       {currentView == VIEWS.PLAYED && (
         <TournamentsTable tournaments={playedTournaments} />
+      )}
+      {user && isPlayer(user) && currentView == VIEWS.PLAYER && (
+        <TournamentsTable tournaments={playerTournaments} />
       )}
     </section>
   );

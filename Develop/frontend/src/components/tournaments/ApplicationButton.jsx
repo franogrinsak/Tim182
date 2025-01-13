@@ -6,6 +6,7 @@ import {
 } from "../../util/api/participations";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "@material-tailwind/react";
+import { isBeforeToday, isToday } from "../../util/date";
 
 export default function ApplicationButton(props) {
   const [application, setApplication] = React.useState();
@@ -45,37 +46,41 @@ export default function ApplicationButton(props) {
 
   return (
     <>
-      {!loadingApplication && (
-        <div>
-          {!application && (
-            <Button loading={signingUp} onClick={signUpForTournament}>
-              Apply to tournament
-            </Button>
+      {!(isToday(tournament.date) || isBeforeToday(tournament.date)) && (
+        <>
+          {!loadingApplication && (
+            <div>
+              {!application && (
+                <Button loading={signingUp} onClick={signUpForTournament}>
+                  Apply to tournament
+                </Button>
+              )}
+              {application && application.approved && tournament.open && (
+                <h2 onClick={() => getApplicationLocal()}>
+                  Your application is approved
+                </h2>
+              )}
+              {application &&
+                !application.approved &&
+                !application.denied &&
+                tournament.open && (
+                  <h2>Your application is waiting for approval</h2>
+                )}
+              {application &&
+                !application.approved &&
+                application.denied &&
+                tournament.open && <h2>Your application is denied</h2>}
+            </div>
           )}
-          {application && application.approved && tournament.open && (
-            <h2 onClick={() => getApplicationLocal()}>
-              Your application is approved
-            </h2>
+          {loadingApplication && (
+            <ProgressSpinner
+              style={{ width: "2rem", height: "2rem" }}
+              strokeWidth="8"
+              fill="var(--surface-ground)"
+              animationDuration=".5s"
+            />
           )}
-          {application &&
-            !application.approved &&
-            !application.denied &&
-            tournament.open && (
-              <h2>Your application is waiting for approval</h2>
-            )}
-          {application &&
-            !application.approved &&
-            application.denied &&
-            tournament.open && <h2>Your application is denied</h2>}
-        </div>
-      )}
-      {loadingApplication && (
-        <ProgressSpinner
-          style={{ width: "2rem", height: "2rem" }}
-          strokeWidth="8"
-          fill="var(--surface-ground)"
-          animationDuration=".5s"
-        />
+        </>
       )}
     </>
   );

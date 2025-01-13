@@ -32,7 +32,7 @@ public class StripeService {
     }
 
 
-    public StripeResponse checkoutProducts(StripeRequest stripeRequest) throws StripeException {
+    public StripeResponse checkoutProducts(StripeRequest stripeRequest, StringBuilder currentUrl) throws StripeException {
 
         Stripe.apiKey = secretKey;
 
@@ -83,7 +83,7 @@ public class StripeService {
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.PAYPAL)
-                .setSuccessUrl(FRONTEND_URL)
+                .setSuccessUrl(currentUrl + "/membership/context")
                 .setCancelUrl(FRONTEND_URL+"/membership/purchase")
                 .putMetadata("userId", String.valueOf(stripeRequest.getUserId()))
                 .putMetadata("type-pay",stripeRequest.getName())
@@ -92,11 +92,7 @@ public class StripeService {
 
 
 
-        Session session = null;
-
-        session = Session.create(params);
-
-
+        Session session = Session.create(params);
 
         StripeResponse sr=new StripeResponse();
         sr.setSessionId(session.getId());

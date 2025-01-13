@@ -40,9 +40,10 @@ public class Controller {
         userRepo.updateUser(user);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        String role=userRepo.getRoleName(user.getRoleId());
+        String role=userRepo.getRoleName(user.getRoleId() == 4 ? 3 : user.getRoleId());
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
         updatedAuthorities.set(0, new SimpleGrantedAuthority("ROLE_" + role));  // Prefix with "ROLE_"
+        System.out.println("n " + updatedAuthorities.get(0).getAuthority());
 
 
         Authentication updatedAuthentication = new OAuth2AuthenticationToken(

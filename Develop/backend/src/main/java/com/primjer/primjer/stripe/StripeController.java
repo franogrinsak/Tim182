@@ -10,6 +10,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,28 @@ public class StripeController {
     }
     @Secured({"ROLE_PLAYER","ROLE_UNPAID_OWNER"})
     @PostMapping("/checkout")
-    public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest, OAuth2AuthenticationToken token) throws StripeException {
+    public ResponseEntity<StripeResponse> checkoutProducts(@RequestBody StripeRequest stripeRequest, OAuth2AuthenticationToken token, HttpServletRequest request) throws StripeException {
         if(stripeRequest.getName().equals("Clanarina")){
             String email=token.getPrincipal().getAttribute("email");
             User user= userRepo.getUser(email);
             stripeRequest.setUserId(user.getUserId());
+
         }
-        StripeResponse stripeResponse = stripeService.checkoutProducts(stripeRequest);
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+
+        StringBuilder currentUrl = new StringBuilder();
+        currentUrl.append(scheme).append("://").append(serverName);
+
+        if ((scheme.equals("http") && serverPort != 80) ||
+                (scheme.equals("https") && serverPort != 443)) {
+            currentUrl.append(":").append(serverPort);
+        }
+
+        currentUrl.append(contextPath);
+        StripeResponse stripeResponse = stripeService.checkoutProducts(stripeRequest, currentUrl);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(stripeResponse);

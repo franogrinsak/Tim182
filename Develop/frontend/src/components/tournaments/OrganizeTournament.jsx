@@ -53,7 +53,7 @@ export default function OrganizeTournament() {
   let courts = useLoaderData();
   const message = useActionData();
   let noCourts = false;
-  if (courts == []) {
+  if (courts.length === 0) {
     courts = [{ courtId: 0, courtName: "You have no courts" }];
     noCourts = true;
   }
@@ -228,7 +228,7 @@ export default function OrganizeTournament() {
               </div>
             </div>
             <button
-              disabled={user && navigation.state !== "idle" && !noCourts}
+              disabled={(user && navigation.state !== "idle") || noCourts}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               {navigation.state === "submitting" ? "Organizing..." : "Organize"}

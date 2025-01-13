@@ -34,12 +34,7 @@ public class MembershipController {
 
     @Secured({"ROLE_UNPAID_OWNER","ROLE_ADMIN"})
     @GetMapping("membership/get")
-    public String getMP(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
-        System.out.println("y " + updatedAuthorities.get(0).getAuthority());
-        return MR.getPrice();
-    }
+    public String getMP() { return MR.getPrice(); }
 
     @Secured({"ROLE_ADMIN"})
     @PostMapping("membership/set")

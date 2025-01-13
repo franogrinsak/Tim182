@@ -101,6 +101,7 @@ import PurchaseMembership from "./components/membership/PurchaseMembership";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { USER_ROLES } from "./util/constants";
 import { requireAuth } from "./util/api/auth";
+import ErrorPage from "./components/pageLayout/ErrorPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -115,7 +116,12 @@ function App() {
           />
         </Route>
 
-        <Route path={APP} loader={async () => requireAuth()} element={<Main />}>
+        <Route
+          path={APP}
+          loader={async () => requireAuth()}
+          element={<Main />}
+          errorElement={<ErrorPage />}
+        >
           {/* Dashboard */}
           <Route index element={<Dashboard />} />
 

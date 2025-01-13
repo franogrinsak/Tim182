@@ -8,6 +8,12 @@ export function isToday(date) {
   return check.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0);
 }
 
+export function isAfterToday(date) {
+  const check = new Date(date);
+  const today = new Date();
+  return check.setHours(0, 0, 0, 0) > today.setHours(0, 0, 0, 0);
+}
+
 export function isBeforeToday(date) {
   const check = new Date(date);
   const today = new Date();

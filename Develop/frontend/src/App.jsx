@@ -167,7 +167,7 @@ function App() {
                 loader={courtDetailLoader}
               />
               <Route
-                element={<ProtectedRoute allowedRoles={[USER_ROLES.PLAYER]} />}
+                element={<ProtectedRoute allowedRoles={[USER_ROLES.OWNER]} />}
               >
                 <Route
                   path={EDIT_COURT_OWNER_PROFILE}

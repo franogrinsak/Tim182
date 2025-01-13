@@ -9,6 +9,7 @@ import {
 import { useUser } from "../auth/UserContext";
 import { getCourtsForOwnersImageless } from "../../util/api/courts";
 import { postNewTournament } from "../../util/api/tournaments";
+import { isAfterToday } from "../../util/date";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -33,6 +34,11 @@ export async function action({ request }) {
       courtId: formData.get("courtId"),
     },
   };
+
+  if (!isAfterToday(data.date)) {
+    return "Date has to be in the future.";
+  }
+
   try {
     await postNewTournament(data);
     return redirect("/app/tournaments/" + data.user.userId);

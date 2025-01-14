@@ -23,7 +23,6 @@ export default function CourtForm({ court, mode }) {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);

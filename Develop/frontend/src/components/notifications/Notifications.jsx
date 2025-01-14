@@ -68,11 +68,6 @@ export default function Notifications() {
   async function markNotifications(notifications, currentNotificationId) {
     setMarking(true);
     setCurrentItemMark(currentNotificationId);
-    console.log(
-      notifications.map((notification) => ({
-        notificationId: notification.notificationId,
-      }))
-    );
     const success = await postMarkNotifications(
       notifications.map((notification) => notification.notificationId)
     );
@@ -87,11 +82,6 @@ export default function Notifications() {
   async function deleteNotifications(notifications, currentNotificationId) {
     setDeleteing(true);
     setCurrentItemDelete(currentNotificationId);
-    console.log(
-      notifications.map((notification) => ({
-        notificationId: notification.notificationId,
-      }))
-    );
     const success = await postDeleteNotifications(
       notifications.map((notification) => notification.notificationId)
     );
@@ -116,11 +106,15 @@ export default function Notifications() {
                 <ListItem
                   className={!notification.read ? "marked-notification" : ""}
                   key={`${notification.notificationId}`}
-                  onClick={() =>
+                  onClick={async () => {
+                    await markNotifications(
+                      [notification],
+                      notification.notificationId
+                    );
                     navigate(
                       `${TOURNAMENTS}/${notification.tournament.user.userId}/${notification.tournament.tournamentId}`
-                    )
-                  }
+                    );
+                  }}
                 >
                   {notification.tournament.tournamentName} is being held
                   <ListItemSuffix className="flex">
@@ -129,12 +123,13 @@ export default function Notifications() {
                         <IconButton
                           variant="text"
                           color="blue"
-                          onClick={() =>
+                          onClick={(event) => {
+                            event.preventDefault();
                             markNotifications(
                               [notification],
                               notification.notificationId
-                            )
-                          }
+                            );
+                          }}
                           disabled={marking || deleteing}
                         >
                           <CheckIcon />
@@ -148,12 +143,13 @@ export default function Notifications() {
                       <IconButton
                         variant="text"
                         color="red"
-                        onClick={() =>
+                        onClick={(event) => {
+                          event.preventDefault();
                           deleteNotifications(
                             [notification],
                             notification.notificationId
-                          )
-                        }
+                          );
+                        }}
                         disabled={marking || deleteing}
                       >
                         <TrashIcon />

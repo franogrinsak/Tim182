@@ -44,7 +44,7 @@ export default function TournamentDetails() {
 
   return (
     <section className="flex flex-col items-center">
-      {user && isPlayer(user) && (
+      {user && isPlayer(user) && tournament.open && (
         <ApplicationButton user={user} tournament={tournament} />
       )}
       <div>

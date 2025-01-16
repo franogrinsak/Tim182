@@ -11,8 +11,14 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Select from "react-select";
-import { postNewTimeSlot } from "../../util/api";
 import { redirect, useNavigate, useParams } from "react-router-dom";
+import { postNewTimeSlot } from "../../util/api/time-slots";
+import {
+  DAY_MS,
+  FIVE_MINUTES_MS,
+  isIntervalBiggerThanThreshold,
+  THIRTY_MINUTES_MS,
+} from "../../util/date";
 
 const daysOfTheWeek = [
   { value: "mon", label: "Monday" },
@@ -27,6 +33,8 @@ const daysOfTheWeek = [
 export default function AddTimeSlot(props) {
   const navigate = useNavigate();
   const { courtId } = useParams();
+  const [uploading, setUploading] = React.useState(false);
+  const [error, setError] = React.useState();
   const [formData, setFormData] = React.useState({
     startDate: "",
     startTime: "",
@@ -72,9 +80,64 @@ export default function AddTimeSlot(props) {
       price: formData.price,
     };
 
-    const success = await postNewTimeSlot(data);
-    console.log(success);
-    if (success) window.location.reload();
+    if (
+      !formData.startDate ||
+      !formData.startTime ||
+      !formData.endDate ||
+      !formData.endTime ||
+      !data.price
+    ) {
+      setError("Please fill out all of the fields.");
+      return;
+    }
+
+    if (
+      new Date(data.startTimestamp).getTime() <
+      Date.now() + THIRTY_MINUTES_MS
+    ) {
+      setError(
+        "Starting date and time has to be at least 30 minutes after the current time."
+      );
+      return;
+    }
+
+    if (
+      !isIntervalBiggerThanThreshold(
+        data.startTimestamp,
+        data.endTimestamp,
+        FIVE_MINUTES_MS
+      )
+    ) {
+      setError("Time slot has to last at least 5 minutes");
+      return;
+    }
+
+    if (isIntervalBiggerThanThreshold)
+      if (
+        isIntervalBiggerThanThreshold(
+          data.startTimestamp,
+          data.endTimestamp,
+          DAY_MS
+        )
+      ) {
+        setError("Start and end times have to be 24 hours apart at most.");
+        return;
+      }
+
+    if (new Date(data.endTimestamp) <= new Date(data.startTimestamp)) {
+      setError("Start date and time has to be earlier than end date and time.");
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const success = await postNewTimeSlot(data);
+      if (!success) return;
+      window.location.reload();
+    } catch (err) {
+      setError("Failed to add a time slot: " + err.message);
+      setUploading(false);
+    }
   }
 
   return (
@@ -82,13 +145,18 @@ export default function AddTimeSlot(props) {
       <Button className="ml-auto" onClick={handleOpen}>
         Add slot
       </Button>
-      <Dialog size="sm" open={props.open} handler={handleOpen} className="p-4">
+      <Dialog
+        size="sm"
+        open={uploading || props.open}
+        handler={handleOpen}
+        className="p-4"
+      >
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4" color="blue-gray">
-            Add time slots
+            Add a time slot
           </Typography>
           <Typography className="mt-1 font-normal text-gray-600">
-            Add a new time slots
+            Add a new time slot
           </Typography>
           <IconButton
             size="sm"
@@ -100,6 +168,14 @@ export default function AddTimeSlot(props) {
           </IconButton>
         </DialogHeader>
         <DialogBody className="space-y-4 pb-6">
+          {error && (
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
+              role="alert"
+            >
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
           <div>
             <Typography
               variant="small"
@@ -227,7 +303,12 @@ export default function AddTimeSlot(props) {
           </div>
         </DialogBody>
         <DialogFooter>
-          <Button className="ml-auto" color="blue" onClick={submitSlot}>
+          <Button
+            className="ml-auto"
+            color="blue"
+            onClick={submitSlot}
+            loading={uploading}
+          >
             Add slot
           </Button>
         </DialogFooter>

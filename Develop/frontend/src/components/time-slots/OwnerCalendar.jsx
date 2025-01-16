@@ -6,18 +6,25 @@ import interactionPlugin from "@fullcalendar/interaction";
 import AddTimeSlot from "./AddTimeSlot";
 import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
-import { TEST_SLOTS } from "../../util/test/time-slots";
 import TimeSlotDetails from "./TimeSlotDetails";
-import { getTimeSlotsOwners, getTimeSlotsPlayers } from "../../util/api";
 import { useParams } from "react-router-dom";
 import { USER_ROLES } from "../../util/constants";
+import { THIRTY_MINUTES_MS } from "../../util/date";
+import { ProgressSpinner } from "primereact/progressspinner";
+import {
+  getTimeSlotsOwners,
+  getTimeSlotsPlayers,
+} from "../../util/api/time-slots";
 
 function mapSlotForPlayers(slot) {
   const tmp = {
     id: slot.timeSlotId,
     start: slot.startTimestamp,
     end: slot.endTimestamp,
-    title: "Available",
+    title:
+      new Date(slot.startTimestamp) >= Date.now() + THIRTY_MINUTES_MS
+        ? "Available"
+        : "Expired",
     extendedProps: {
       price: slot.price,
       userId: slot.user.userId,
@@ -32,11 +39,12 @@ function mapSlotForPlayers(slot) {
     tmp.backgroundColor = "green";
     tmp.title = "Your booking";
   }
+  if (tmp.title === "Expired") tmp.backgroundColor = "red";
   return tmp;
 }
 
 function mapSlotForOwners(slot) {
-  return {
+  const tmp = {
     id: slot.timeSlotId,
     start: slot.startTimestamp,
     end: slot.endTimestamp,
@@ -44,7 +52,9 @@ function mapSlotForOwners(slot) {
     title:
       slot.user.userId != 0
         ? `Booked by ${slot.user.firstName} ${slot.user.lastName}`
-        : "Available",
+        : new Date(slot.startTimestamp) >= Date.now() + THIRTY_MINUTES_MS
+        ? "Available"
+        : "Expired",
     extendedProps: {
       price: slot.price,
       userId: slot.user.userId,
@@ -52,6 +62,9 @@ function mapSlotForOwners(slot) {
       lastName: slot.user.lastName,
     },
   };
+
+  if (tmp.title === "Expired") tmp.backgroundColor = "red";
+  return tmp;
 }
 
 async function getTimeSlots(ownerId, courtId, user) {
@@ -62,6 +75,10 @@ async function getTimeSlots(ownerId, courtId, user) {
   let slots;
   if (user.roleId == USER_ROLES.OWNER) slots = await getTimeSlotsOwners(data);
   if (user.roleId == USER_ROLES.PLAYER) slots = await getTimeSlotsPlayers(data);
+  if (!slots) {
+    return false;
+  }
+
   return slots.map((slot) => {
     if (user.roleId == USER_ROLES.PLAYER) return mapSlotForPlayers(slot);
     if (user.roleId == USER_ROLES.OWNER) return mapSlotForOwners(slot);
@@ -87,8 +104,11 @@ export default function OwnerCalendar() {
   React.useEffect(() => {
     async function getTimeSlotsWrapper() {
       if (user) {
+        setLoadingSlots(true);
         const data = await getTimeSlots(ownerId, courtId, user);
+        if (!data) return;
         setSlots(data);
+        setLoadingSlots(false);
       }
     }
     getTimeSlotsWrapper();
@@ -127,6 +147,7 @@ export default function OwnerCalendar() {
       id: info.event.id,
       price: info.event.extendedProps.price,
       userId: info.event.extendedProps.userId,
+      title: info.event.title,
     });
     setOpenDetails(true);
   }
@@ -146,38 +167,47 @@ export default function OwnerCalendar() {
   }
   return (
     <section className="w-full max-w-3xl py-10">
-      {isOwner(user) && (
-        <AddTimeSlot initialSlot={initialSlot} open={open} setOpen={setOpen} />
+      {loadingSlots && <ProgressSpinner />}
+      {!loadingSlots && (
+        <>
+          {isOwner(user) && (
+            <AddTimeSlot
+              initialSlot={initialSlot}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
+          <TimeSlotDetails
+            initialSlot={eventSlot}
+            open={openDetails}
+            setOpen={setOpenDetails}
+          />
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+            initialView="timeGridWeek"
+            headerToolbar={{
+              left: "prev,next",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay", // user can switch between the three
+            }}
+            allDaySlot={false}
+            selectable={true}
+            nowIndicator={true}
+            weekends={true}
+            dateClick={handleDateClick}
+            select={selectRange}
+            eventClick={handleEventClick}
+            eventMouseEnter={handleEventMouseEnter}
+            eventMouseLeave={handleEventMouseLeave}
+            selectAllow={(selectInfo) => {
+              // Detect if the date string contains time info, rather than date only.
+              return isOwner(user) && selectInfo.startStr.split("T").length > 1;
+            }}
+            events={slots}
+          />
+        </>
       )}
-      <TimeSlotDetails
-        initialSlot={eventSlot}
-        open={openDetails}
-        setOpen={setOpenDetails}
-      />
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-        initialView="timeGridWeek"
-        headerToolbar={{
-          left: "prev,next",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay", // user can switch between the three
-        }}
-        allDaySlot={false}
-        selectable={true}
-        nowIndicator={true}
-        weekends={true}
-        dateClick={handleDateClick}
-        select={selectRange}
-        eventClick={handleEventClick}
-        eventMouseEnter={handleEventMouseEnter}
-        eventMouseLeave={handleEventMouseLeave}
-        selectAllow={(selectInfo) => {
-          // Detect if the date string contains time info, rather than date only.
-          return isOwner(user) && selectInfo.startStr.split("T").length > 1;
-        }}
-        events={slots}
-      />
     </section>
   );
 }

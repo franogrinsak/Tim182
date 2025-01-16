@@ -1,6 +1,6 @@
 import React from "react";
-import { getAllCourts } from "../../util/api";
 import { Link, useLoaderData } from "react-router-dom";
+import { getAllCourts } from "../../util/api/courts";
 
 export async function loader() {
   return await getAllCourts();

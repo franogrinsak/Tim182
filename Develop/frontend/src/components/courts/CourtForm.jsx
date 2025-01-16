@@ -23,7 +23,6 @@ export default function CourtForm({ court, mode }) {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
@@ -32,10 +31,8 @@ export default function CourtForm({ court, mode }) {
   };
 
   React.useEffect(() => {
-    console.log("Getting image");
     if (court?.imageUrl) {
       // Fetch the image from the URL and convert it to a blob
-      console.log("Getting image");
       fetch(court.imageUrl)
         .then((response) => response.blob())
         .then((blob) => {

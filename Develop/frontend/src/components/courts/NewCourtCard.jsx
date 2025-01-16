@@ -1,5 +1,4 @@
 import React from "react";
-import { ADD_COURT } from "../../util/paths";
 import { Link } from "react-router-dom";
 
 export default function NewCourtCard() {

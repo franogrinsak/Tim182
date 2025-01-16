@@ -12,18 +12,24 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useUser } from "../auth/UserContext";
 import { isOwner, isPlayer } from "../../util/users";
 import {
+  isEarlierThan24Hours,
+  isEarlierThanThershold,
+  THIRTY_MINUTES_MS,
+} from "../../util/date";
+import { useParams } from "react-router-dom";
+import PaymentOptions from "./PaymentOptions";
+import {
   postBookTimeSlot,
   postBookTimeSlotBuy,
   postCancelTimeSlot,
   postDeleteTimeSlot,
-} from "../../util/api";
-import { isEarlierThan24Hours } from "../../util/date";
-import { useParams } from "react-router-dom";
-import PaymentOptions from "./PaymentOptions";
+} from "../../util/api/time-slots";
 
 export default function TimeSlotDetails(props) {
   const { user } = useUser();
   const { courtId, ownerId } = useParams();
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState();
   const [payment, setPayment] = React.useState("cash");
   const [formData, setFormData] = React.useState({
     startDate: "",
@@ -43,6 +49,7 @@ export default function TimeSlotDetails(props) {
       endTime: props.initialSlot?.endTime || "",
       price: props.initialSlot?.price || "",
       userId: props.initialSlot?.userId || "",
+      title: props.initialSlot?.title || "",
     });
   }, [JSON.stringify(props.initialSlot)]);
 
@@ -60,19 +67,32 @@ export default function TimeSlotDetails(props) {
     const data = new URLSearchParams();
     data.append("timeSlotId", formData.timeSlotId);
 
-    const success = await postCancelTimeSlot(data);
-    if (success) window.location.reload();
+    try {
+      setLoading(true);
+      const success = await postCancelTimeSlot(data);
+      if (!success) return;
+      window.location.reload();
+    } catch (err) {
+      setError("Failed to cancel the booking: " + err.message);
+      setLoading(false);
+    }
   }
   async function bookSlot() {
     let data = new URLSearchParams();
 
-    console.log(payment);
     if (payment === "cash") {
       data.append("timeSlotId", formData.timeSlotId);
       data.append("userId", user.userId);
 
-      const success = await postBookTimeSlot(data);
-      if (success) window.location.reload();
+      try {
+        setLoading(true);
+        const success = await postBookTimeSlot(data);
+        if (!success) return;
+        window.location.reload();
+      } catch (err) {
+        setError("Failed to book the time slot: " + err.message);
+        setLoading(false);
+      }
     } else {
       data = {
         timeSlotId: formData.timeSlotId,
@@ -82,8 +102,15 @@ export default function TimeSlotDetails(props) {
         ownerId: ownerId,
       };
 
-      const success = await postBookTimeSlotBuy(data);
-      if (success) window.location.reload();
+      try {
+        setLoading(true);
+        const success = await postBookTimeSlotBuy(data);
+        if (!success) return;
+        window.location.reload();
+      } catch (err) {
+        setError("Failed to purchase the booking: " + err.message);
+        setLoading(false);
+      }
     }
   }
 
@@ -91,19 +118,31 @@ export default function TimeSlotDetails(props) {
     const data = new URLSearchParams();
     data.append("timeSlotId", formData.timeSlotId);
 
-    const success = await postDeleteTimeSlot(data);
-    if (success) window.location.reload();
+    try {
+      setLoading(true);
+      const success = await postDeleteTimeSlot(data);
+      if (!success) return;
+      window.location.reload();
+    } catch (err) {
+      setError("Failed to delete the time slot: " + err.message);
+      setLoading(false);
+    }
   }
 
   return (
     <>
-      <Dialog size="sm" open={props.open} handler={handleOpen} className="p-4">
+      <Dialog
+        size="sm"
+        open={loading || props.open}
+        handler={handleOpen}
+        className="p-4"
+      >
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4" color="blue-gray">
             Time slot details
           </Typography>
           <Typography className="mt-1 font-normal text-gray-600">
-            {/* Edit or delete the time slot */}
+            {formData.title + " "}
           </Typography>
           <IconButton
             size="sm"
@@ -115,6 +154,14 @@ export default function TimeSlotDetails(props) {
           </IconButton>
         </DialogHeader>
         <DialogBody className="space-y-4 pb-6">
+          {error && (
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
+              role="alert"
+            >
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
           <div>
             <Typography
               variant="small"
@@ -198,21 +245,36 @@ export default function TimeSlotDetails(props) {
               </div>
             </div>
           </div>
-          {user && isPlayer(user) && !formData.userId && (
-            <PaymentOptions payment={payment} setPayment={setPayment} />
-          )}
+          {user &&
+            isPlayer(user) &&
+            !formData.userId &&
+            new Date(formData.startDate + " " + formData.startTime) >=
+              Date.now() && (
+              <PaymentOptions payment={payment} setPayment={setPayment} />
+            )}
         </DialogBody>
         <DialogFooter>
           {isOwner(user) && (
-            <Button className="ml-auto" color="red" onClick={deleteSlot}>
+            <Button
+              className="ml-auto"
+              color="red"
+              onClick={deleteSlot}
+              loading={loading}
+            >
               Delete slot
             </Button>
           )}
-          {isPlayer(user) && formData.userId == 0 && (
-            <Button className="ml-auto" onClick={bookSlot}>
-              Book slot
-            </Button>
-          )}
+          {isPlayer(user) &&
+            formData.userId == 0 &&
+            isEarlierThanThershold(
+              formData.startDate,
+              formData.startTime,
+              THIRTY_MINUTES_MS
+            ) && (
+              <Button className="ml-auto" onClick={bookSlot} loading={loading}>
+                Book slot
+              </Button>
+            )}
           {isPlayer(user) &&
             formData.userId != 0 &&
             isEarlierThan24Hours(formData.startDate, formData.startTime) && (
@@ -220,6 +282,7 @@ export default function TimeSlotDetails(props) {
                 className="ml-auto"
                 color="red"
                 onClick={cancelBookedSlot}
+                loading={loading}
               >
                 Cancel booking
               </Button>

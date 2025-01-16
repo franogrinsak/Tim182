@@ -12,6 +12,7 @@
 header {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   padding: 1em;
   justify-content: space-between;
   box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
@@ -162,4 +163,30 @@ footer {
 
 .marked-notification {
   background-color: rgb(203, 213, 225);
+}
+
+.custom-mobile-link a {
+  margin-top: 30px;
+  font-size: 2em;
+  margin-left: 15px;
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    justify-content: center;
+  }
+
+  .header-text {
+    padding: 0;
+    margin-right: 15px;
+  }
+
+  .header-nav button {
+    margin: 0;
+    margin-left: 15px;
+  }
+
+  .header-nav {
+    padding: 0;
+  }
 }

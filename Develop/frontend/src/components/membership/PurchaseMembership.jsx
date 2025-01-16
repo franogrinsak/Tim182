@@ -1,7 +1,7 @@
 import { Button } from "@material-tailwind/react";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
-import { postPurchaseMembership } from "../../util/api";
+import { postPurchaseMembership } from "../../util/api/membership";
 
 export default function PurchaseMembership() {
   const price = useLoaderData();

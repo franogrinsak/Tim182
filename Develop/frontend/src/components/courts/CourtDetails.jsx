@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, Navigate, useLoaderData, useParams } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { getCourtDetails } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
 import OwnerCalendar from "../time-slots/OwnerCalendar";
+import { getCourtDetails } from "../../util/api/courts";
+import { COURTS } from "../../util/paths";
 
 export async function loader({ params }) {
   const { courtId } = params;
@@ -26,7 +27,7 @@ export default function CourtDetail() {
   return (
     <div className="flex flex-col items-center">
       {user?.roleId === USER_ROLES.PLAYER && (
-        <ReturnButton link={"/app/courts/all"} text="Return to all courts" />
+        <ReturnButton link={COURTS} text="Return to all courts" />
       )}
       <ReturnButton
         link={"/app/courts/" + court.user.userId}

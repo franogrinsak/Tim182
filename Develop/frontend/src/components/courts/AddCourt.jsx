@@ -1,10 +1,7 @@
 import React from "react";
 import { Form, useActionData, redirect } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { USER_ROLES } from "../../util/constants";
-import sleep from "../../util/sleep";
-import { postNewCourt } from "../../util/api";
-import { COURTS, OWNER_COURTS } from "../../util/paths";
+import { postNewCourt } from "../../util/api/courts";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -15,15 +12,11 @@ export async function action({ request }) {
     isIndoor: formData.get("isIndoor"),
     image: formData.get("imageText"),
   };
-  console.log(data);
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postNewCourt(data);
     return redirect("/app/courts/" + data.user.userId);
   } catch (err) {
-    console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to add a court: " + err.message;
   }
 }
 

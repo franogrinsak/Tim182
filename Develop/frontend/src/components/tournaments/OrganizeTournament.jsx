@@ -7,7 +7,9 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { useUser } from "../auth/UserContext";
-import { getCourtsForOwnersImageless, postNewTournament } from "../../util/api";
+import { getCourtsForOwnersImageless } from "../../util/api/courts";
+import { postNewTournament } from "../../util/api/tournaments";
+import { isAfterToday } from "../../util/date";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -32,14 +34,16 @@ export async function action({ request }) {
       courtId: formData.get("courtId"),
     },
   };
+
+  if (!isAfterToday(data.date)) {
+    return "Date has to be in the future.";
+  }
+
   try {
     await postNewTournament(data);
     return redirect("/app/tournaments/" + data.user.userId);
   } catch (err) {
-    console.log(err);
-    return (
-      "Failed to organize tournament, reason: " + `${err.status} ${err.message}`
-    );
+    return "Failed to organize tournament, reason: " + err.message;
   }
 }
 
@@ -49,22 +53,24 @@ export default function OrganizeTournament() {
   let courts = useLoaderData();
   const message = useActionData();
   let noCourts = false;
-  if (courts == []) {
+  if (courts.length === 0) {
     courts = [{ courtId: 0, courtName: "You have no courts" }];
     noCourts = true;
   }
 
   return (
     <>
-      <h2 className="text-xl">Organize a tournament</h2>
       {message && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-          role="alert"
-        >
-          <span className="block sm:inline">{message}</span>
+        <div className="flex justify-center">
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded register-size"
+            role="alert"
+          >
+            <span className="block sm:inline">{message}</span>
+          </div>
         </div>
       )}
+      <h2 className="text-xl">Organize a tournament</h2>
       <div className="register-form-container">
         <div className="w-full register-size">
           <Form
@@ -222,7 +228,7 @@ export default function OrganizeTournament() {
               </div>
             </div>
             <button
-              disabled={user && navigation.state !== "idle" && !noCourts}
+              disabled={(user && navigation.state !== "idle") || noCourts}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               {navigation.state === "submitting" ? "Organizing..." : "Organize"}

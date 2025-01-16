@@ -8,8 +8,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { postUpdateOwnerProfileData } from "../../util/api";
-import sleep from "../../util/sleep";
+import { postUpdateOwnerProfileData } from "../../util/api/courts";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -21,13 +20,10 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postUpdateOwnerProfileData(data);
     return redirect("/app/courts/" + data.userId + "/profile");
   } catch (err) {
-    console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to update your profile: " + err.message;
   }
 }
 
@@ -36,7 +32,6 @@ export default function EditOwnerProfile() {
   const message = useActionData();
   const owner = useLoaderData();
   const navigation = useNavigation();
-  console.log(owner);
   return (
     <>
       <ReturnButton

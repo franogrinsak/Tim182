@@ -66,7 +66,6 @@ Vanjski servis za kalendare\
 Fran Ogrinšak\
 Patrik Pašić\
 Lovro Matić\
-Luka Zorčić\
 Filip Šturlić
 
 # 📝 Kodeks ponašanja [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)

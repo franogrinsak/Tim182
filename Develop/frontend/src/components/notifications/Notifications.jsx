@@ -9,7 +9,7 @@ import {
   Spinner,
   Button,
 } from "@material-tailwind/react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { TOURNAMENTS } from "../../util/paths";
 import {
   getNotifications,
@@ -65,13 +65,17 @@ export default function Notifications() {
   const [currentItemMark, setCurrentItemMark] = React.useState();
   const navigate = useNavigate();
 
-  async function markNotifications(notifications, currentNotificationId) {
+  async function markNotifications(
+    notifications,
+    currentNotificationId,
+    redirect
+  ) {
     setMarking(true);
     setCurrentItemMark(currentNotificationId);
     const success = await postMarkNotifications(
       notifications.map((notification) => notification.notificationId)
     );
-    if (success) {
+    if (success && redirect) {
       window.location.reload();
       return;
     }
@@ -107,10 +111,14 @@ export default function Notifications() {
                   className={!notification.read ? "marked-notification" : ""}
                   key={`${notification.notificationId}`}
                   onClick={async () => {
-                    await markNotifications(
-                      [notification],
-                      notification.notificationId
-                    );
+                    if (!notification.read) {
+                      await markNotifications(
+                        [notification],
+                        notification.notificationId,
+                        false
+                      );
+                    }
+
                     navigate(
                       `${TOURNAMENTS}/${notification.tournament.user.userId}/${notification.tournament.tournamentId}`
                     );
@@ -127,7 +135,8 @@ export default function Notifications() {
                             event.preventDefault();
                             markNotifications(
                               [notification],
-                              notification.notificationId
+                              notification.notificationId,
+                              true
                             );
                           }}
                           disabled={marking || deleteing}
@@ -170,7 +179,7 @@ export default function Notifications() {
               color="blue"
               loading={currentItemMark == 0}
               disabled={marking || deleteing}
-              onClick={() => markNotifications(notifications, 0)}
+              onClick={() => markNotifications(notifications, 0, true)}
             >
               Mark all as read
             </Button>

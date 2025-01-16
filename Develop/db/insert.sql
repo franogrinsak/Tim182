@@ -1,3 +1,6 @@
+INSERT INTO membership_price (membershipPrice) VALUES
+	(15);
+
 INSERT INTO user_roles (roleId, roleName) VALUES
 	(1, 'NEW_USER'),
 	(2, 'PLAYER'),

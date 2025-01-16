@@ -4,7 +4,7 @@ import React from "react";
 import {
   getIsSubscribedToTournaments,
   postSetIsSubscribedToTournaments,
-} from "../../util/api";
+} from "../../util/api/notifications";
 
 export default function NotificationSubscription(props) {
   const { user } = props;
@@ -17,7 +17,8 @@ export default function NotificationSubscription(props) {
     const data = new URLSearchParams();
     data.append("userId", user.userId);
     data.append("isSubscribedToTournaments", e.value);
-    await postSetIsSubscribedToTournaments(data);
+    const success = await postSetIsSubscribedToTournaments(data);
+    if (!success) return;
     setChecked(e.value);
     setChanging(false);
   }
@@ -27,8 +28,9 @@ export default function NotificationSubscription(props) {
       isLoading(true);
       const data = new URLSearchParams();
       data.append("userId", user.userId);
-      const subscribed = await getIsSubscribedToTournaments(data);
-      setChecked(subscribed);
+      const { response, redirected } = await getIsSubscribedToTournaments(data);
+      if (redirected) return;
+      setChecked(response);
       isLoading(false);
     }
 

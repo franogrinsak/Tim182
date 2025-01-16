@@ -1,8 +1,8 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
 import { Link, useLoaderData } from "react-router-dom";
-import { getOwnerProfileData } from "../../util/api";
 import { USER_ROLES } from "../../util/constants";
+import { getOwnerProfileData } from "../../util/api/courts";
 
 export async function loader({ params }) {
   const { ownerId } = params;

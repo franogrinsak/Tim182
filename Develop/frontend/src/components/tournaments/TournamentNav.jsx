@@ -1,5 +1,7 @@
 import React from "react";
 import { VIEWS } from "./Tournaments";
+import { isPlayer } from "../../util/users";
+import { useUser } from "../auth/UserContext";
 
 const ACTIVE_STYLE =
   "court-nav-text remove-link-style inline-flex items-center h-10 px-2 py-2 -mb-px text-center text-blue-600 bg-transparent border-b-2 border-green-500 sm:px-4 -px-1 dark:border-green-400 dark:text-green-300 whitespace-nowrap focus:outline-none";
@@ -8,6 +10,7 @@ const INACTIVE_STYLE =
 
 export default function TournamentNav(props) {
   const { currentView, setCurrentView } = props;
+  const { user } = useUser();
 
   return (
     <nav aria-label="Tabs" className="flex justify-center">
@@ -24,7 +27,7 @@ export default function TournamentNav(props) {
           }
           onClick={() => setCurrentView(VIEWS.TODAY)}
         >
-          <span className="mx-1 text-sm sm:text-base">Today</span>
+          <span className="mx-1 text-sm sm:text-base">Ongoing</span>
         </button>
         <button
           className={
@@ -34,6 +37,16 @@ export default function TournamentNav(props) {
         >
           <span className="mx-1 text-sm sm:text-base">Played</span>
         </button>
+        {user && isPlayer(user) && (
+          <button
+            className={
+              currentView === VIEWS.PLAYER ? ACTIVE_STYLE : INACTIVE_STYLE
+            }
+            onClick={() => setCurrentView(VIEWS.PLAYER)}
+          >
+            <span className="mx-1 text-sm sm:text-base">Personal</span>
+          </button>
+        )}
       </div>
     </nav>
   );

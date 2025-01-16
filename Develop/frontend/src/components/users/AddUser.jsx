@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Form,
-  redirect,
-  useActionData,
-  useLoaderData,
-  useParams,
-} from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { getAllUsers, postAddUser, postUpdateUserData } from "../../util/api";
 import { USER_ROLES } from "../../util/constants";
-import sleep from "../../util/sleep";
 import { USERS } from "../../util/paths";
+import { postAddUser } from "../../util/api/users";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -22,21 +15,17 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postAddUser(data);
     return redirect(USERS);
   } catch (err) {
     console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to add the user: " + `${err.message}`;
   }
 }
 
 export default function AddUser() {
   const [isOwner, setIsOwner] = React.useState(false);
-  const user = useLoaderData();
   const message = useActionData();
-  const { userId } = useParams();
 
   function userTypeChanged(event) {
     event.preventDefault();

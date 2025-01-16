@@ -1,20 +1,15 @@
 import React from "react";
 import { useUser } from "../auth/UserContext";
-import {
-  Link,
-  useLoaderData,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
-import {
-  getAppliction,
-  getTournamentDetails,
-  postCompleteTournament,
-  postSignUpToTournament,
-} from "../../util/api";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import CompleteTournament from "./CompleteTournament";
 import { Button } from "@material-tailwind/react";
 import { isPlayer } from "../../util/users";
+import {
+  getTournamentDetails,
+  postCompleteTournament,
+} from "../../util/api/tournaments";
+import ApplicationButton from "./ApplicationButton";
+import { isBeforeToday } from "../../util/date";
 
 export async function loader({ params }) {
   const { tournamentId } = params;
@@ -46,55 +41,11 @@ export default function TournamentDetails() {
   const { tournament } = useOutletContext();
   const ownerProfilePath = "/app/courts/" + tournament?.user?.userId;
   const courtProfilePath = ownerProfilePath + "/" + tournament?.court?.courtId;
-  const [application, setApplication] = React.useState();
-  const [signingUp, setSigningUp] = React.useState(false);
-  const [loadingApplication, setLoadingApplication] = React.useState(true);
-
-  async function getApplication() {
-    const data = new URLSearchParams();
-    data.append("userId", user.userId);
-    data.append("tournamentId", tournamentId);
-    const app = await getAppliction(data);
-    setApplication(app);
-  }
-
-  React.useEffect(() => {
-    setLoadingApplication(true);
-    if (user && isPlayer(user)) getApplication();
-    setLoadingApplication(false);
-  }, [JSON.stringify(user)]);
-
-  async function signUpForTournament() {
-    setSigningUp(true);
-    const data = {
-      tournament: {
-        tournamentId: tournamentId,
-      },
-      user: {
-        userId: user.userId,
-      },
-    };
-    await postSignUpToTournament(data);
-    await getApplication();
-    setSigningUp(false);
-  }
 
   return (
     <section className="flex flex-col items-center">
-      {user &&
-        isPlayer(user) &&
-        !application &&
-        tournament.open &&
-        !loadingApplication && (
-          <Button loading={signingUp} onClick={signUpForTournament}>
-            Apply to tournament
-          </Button>
-        )}
-      {application && application.approved && tournament.open && (
-        <h2>Your application is approved</h2>
-      )}
-      {application && !application.approved && tournament.open && (
-        <h2>Your application is waiting for approval</h2>
+      {user && isPlayer(user) && (
+        <ApplicationButton user={user} tournament={tournament} />
       )}
       <div>
         <div className="px-4 sm:px-0">
@@ -102,6 +53,9 @@ export default function TournamentDetails() {
             {tournament.tournamentName}
           </p>
         </div>
+        {tournament.open && isBeforeToday(tournament.date) && (
+          <div>Waiting for results</div>
+        )}
         <div className="mt-6 border-t border-gray-100 text-left">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

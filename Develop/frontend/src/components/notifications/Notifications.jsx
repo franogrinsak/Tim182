@@ -9,14 +9,13 @@ import {
   Spinner,
   Button,
 } from "@material-tailwind/react";
-import sleep from "../../util/sleep";
-import { NOTIFICATIONS } from "../../util/test/notifications";
-import { useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { TOURNAMENTS } from "../../util/paths";
 import {
   getNotifications,
   postDeleteNotifications,
   postMarkNotifications,
-} from "../../util/api";
+} from "../../util/api/notifications";
 
 function TrashIcon() {
   return (
@@ -64,19 +63,19 @@ export default function Notifications() {
   const [currentItemDelete, setCurrentItemDelete] = React.useState();
   const [marking, setMarking] = React.useState(false);
   const [currentItemMark, setCurrentItemMark] = React.useState();
+  const navigate = useNavigate();
 
-  async function markNotifications(notifications, currentNotificationId) {
+  async function markNotifications(
+    notifications,
+    currentNotificationId,
+    redirect
+  ) {
     setMarking(true);
     setCurrentItemMark(currentNotificationId);
-    console.log(
-      notifications.map((notification) => ({
-        notificationId: notification.notificationId,
-      }))
-    );
     const success = await postMarkNotifications(
       notifications.map((notification) => notification.notificationId)
     );
-    if (success) {
+    if (success && redirect) {
       window.location.reload();
       return;
     }
@@ -87,11 +86,6 @@ export default function Notifications() {
   async function deleteNotifications(notifications, currentNotificationId) {
     setDeleteing(true);
     setCurrentItemDelete(currentNotificationId);
-    console.log(
-      notifications.map((notification) => ({
-        notificationId: notification.notificationId,
-      }))
-    );
     const success = await postDeleteNotifications(
       notifications.map((notification) => notification.notificationId)
     );
@@ -116,6 +110,19 @@ export default function Notifications() {
                 <ListItem
                   className={!notification.read ? "marked-notification" : ""}
                   key={`${notification.notificationId}`}
+                  onClick={async () => {
+                    if (!notification.read) {
+                      await markNotifications(
+                        [notification],
+                        notification.notificationId,
+                        false
+                      );
+                    }
+
+                    navigate(
+                      `${TOURNAMENTS}/${notification.tournament.user.userId}/${notification.tournament.tournamentId}`
+                    );
+                  }}
                 >
                   {notification.tournament.tournamentName} is being held
                   <ListItemSuffix className="flex">
@@ -124,12 +131,14 @@ export default function Notifications() {
                         <IconButton
                           variant="text"
                           color="blue"
-                          onClick={() =>
+                          onClick={(event) => {
+                            event.preventDefault();
                             markNotifications(
                               [notification],
-                              notification.notificationId
-                            )
-                          }
+                              notification.notificationId,
+                              true
+                            );
+                          }}
                           disabled={marking || deleteing}
                         >
                           <CheckIcon />
@@ -143,12 +152,13 @@ export default function Notifications() {
                       <IconButton
                         variant="text"
                         color="red"
-                        onClick={() =>
+                        onClick={(event) => {
+                          event.preventDefault();
                           deleteNotifications(
                             [notification],
                             notification.notificationId
-                          )
-                        }
+                          );
+                        }}
                         disabled={marking || deleteing}
                       >
                         <TrashIcon />
@@ -169,7 +179,7 @@ export default function Notifications() {
               color="blue"
               loading={currentItemMark == 0}
               disabled={marking || deleteing}
-              onClick={() => markNotifications(notifications, 0)}
+              onClick={() => markNotifications(notifications, 0, true)}
             >
               Mark all as read
             </Button>

@@ -1,10 +1,9 @@
 import React from "react";
 import { Form, useActionData, redirect, useNavigation } from "react-router-dom";
 import { USER_ROLES } from "../util/constants";
-import { postRegisterData } from "../util/api";
 import { useUser } from "./auth/UserContext";
-import sleep from "../util/sleep";
 import { DASHBOARD } from "../util/paths";
+import { postRegisterData } from "../util/api/register";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -16,14 +15,12 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postRegisterData(data);
-    return redirect(DASHBOARD);
+    window.location.replace(DASHBOARD);
   } catch (err) {
-    console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to register, reason: " + `${err.message}`;
   }
+  return null;
 }
 
 export default function Register() {

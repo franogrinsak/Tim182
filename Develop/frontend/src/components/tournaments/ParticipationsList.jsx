@@ -8,11 +8,10 @@ import {
   Typography,
   Spinner,
 } from "@material-tailwind/react";
-import sleep from "../../util/sleep";
 import {
   postApproveParticipation,
   postDenyParticipation,
-} from "../../util/api";
+} from "../../util/api/participations";
 
 function TrashIcon() {
   return (
@@ -66,24 +65,14 @@ export default function ParticipationsList(props) {
     setDenying(true);
     setCurrentItemDeny(participation.user.userId);
     const success = await postDenyParticipation(participation);
-    if (success) {
-      window.location.reload();
-      return;
-    }
-    setCurrentItemDeny(0);
-    setDenying(false);
+    if (success) window.location.reload();
   }
 
   async function approveApplication(participation) {
     setApproving(true);
     setCurrentItemApprove(participation.user.userId);
     const success = await postApproveParticipation(participation);
-    if (success) {
-      window.location.reload();
-      return;
-    }
-    setCurrentItemApprove(0);
-    setApproving(false);
+    if (success) window.location.reload();
   }
   return (
     <>

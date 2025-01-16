@@ -7,10 +7,9 @@ import {
   useParams,
 } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { getAllUsers, postUpdateUserData } from "../../util/api";
 import { USER_ROLES } from "../../util/constants";
-import sleep from "../../util/sleep";
 import { USERS } from "../../util/paths";
+import { getUser, postUpdateUserData } from "../../util/api/users";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -23,27 +22,19 @@ export async function action({ request }) {
     roleId: formData.get("roleId"),
   };
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postUpdateUserData(data);
     return redirect(USERS);
   } catch (err) {
     console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to edit the user data: " + `${err.message}`;
   }
 }
 
 export async function loader({ params }) {
   const { userId } = params;
   const data = new URLSearchParams();
-  const users = await getAllUsers();
-  console.log(users);
-  for (let i = 0; i < users.length; ++i) {
-    if (users[i].userId == userId) {
-      return { ...users[i] };
-    }
-  }
-  return null;
+  data.append("userId", userId);
+  return await getUser(data);
 }
 
 export default function EditUser() {

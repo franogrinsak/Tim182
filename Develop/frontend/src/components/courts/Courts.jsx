@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import NewCourtCard from "./NewCourtCard";
-import { getCourtsForOwners, getOwnerProfileData } from "../../util/api";
 import { useUser } from "../auth/UserContext";
 import { USER_ROLES } from "../../util/constants";
+import { getCourtsForOwners, getOwnerProfileData } from "../../util/api/courts";
 
 export async function loader({ params }) {
   const { ownerId } = params;
@@ -11,6 +11,10 @@ export async function loader({ params }) {
   data.append("userId", ownerId);
   const ownerData = await getOwnerProfileData(data.toString());
   const courts = await getCourtsForOwners(data.toString());
+
+  if (ownerData instanceof Response) return ownerData;
+  if (courts instanceof Response) return courts;
+
   return { ownerData: ownerData, courts: courts };
 }
 

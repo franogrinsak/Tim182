@@ -8,8 +8,7 @@ import {
   redirect,
 } from "react-router-dom";
 import ReturnButton from "../ReturnButton";
-import { postUpdateCourt } from "../../util/api";
-import sleep from "../../util/sleep";
+import { postUpdateCourt } from "../../util/api/courts";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -21,15 +20,11 @@ export async function action({ request }) {
     image: formData.get("imageText"),
     courtId: formData.get("courtId"),
   };
-  console.log(data);
   try {
-    // Sleep is here to test the register button changing while doing a post request
-    sleep(5000);
     await postUpdateCourt(data);
     return redirect("/app/courts/" + data.user.userId + "/" + data.courtId);
   } catch (err) {
-    console.log(err);
-    return "Failed to register, reason: " + `${err.status} ${err.message}`;
+    return "Failed to edit the court: " + err.message;
   }
 }
 
@@ -56,7 +51,6 @@ export default function EditCourt() {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        console.log(reader.result);
         setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);

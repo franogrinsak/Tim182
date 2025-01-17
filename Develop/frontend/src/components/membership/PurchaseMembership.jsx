@@ -36,6 +36,7 @@ export default function PurchaseMembership() {
               </div>
               <input
                 defaultValue={price}
+                readOnly
                 type="text"
                 name="price"
                 id="price"

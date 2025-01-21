@@ -119,4 +119,23 @@ public class CourtRepository {
         return jdbc.query(querry, purchaseRowMapper,userId);
     }
 
+    public Court getCourtByName(String teren1) {
+        String querry="SELECT * FROM courts natural join users WHERE courtname = ?";
+        RowMapper<Court> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            user.setFirstName(r.getString("firstname"));
+            user.setLastName(r.getString("lastname"));
+            Court rowObject = new Court();
+            rowObject.setUser(user);
+            rowObject.setCourtId(r.getInt("courtid"));
+            rowObject.setImage(r.getString("image"));
+            rowObject.setisIndoor(r.getBoolean("isindoor"));
+            rowObject.setCourtName(r.getString("courtname"));
+            rowObject.setLocation(r.getString("location"));
+            return rowObject;
+        };
+
+        return jdbc.query(querry, purchaseRowMapper,teren1).get(0);
+    }
 }

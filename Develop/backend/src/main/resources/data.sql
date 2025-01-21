@@ -23,16 +23,16 @@ INSERT INTO players (userId) VALUES
 	(3);
 	
 INSERT INTO courts (courtId, userId, courtName, location, isIndoor, image) VALUES
-    (1, 1, 'Padel Zone', '123 Elm Street, Austin, TX', false,""),
-    (2, 1, 'Ace Arena', '456 Oak Avenue, Miami, FL', false,""),
-    (3, 1, 'The Padel Hub', '789 Maple Road, Denver, CO', true,""),
-    (4, 1, 'Smash Court', '101 Pine Lane, Seattle, WA', false,""),
-    (5, 1, 'Net Masters', '202 Cedar Street, Nashville, TN', true,""),
-    (6, 2, 'PowerPadel', '303 Birch Drive, Austin, TX', false,""),
-    (7, 2, 'Rally Point', '404 Spruce Boulevard, Portland, OR', true,""),
-    (8, 2, 'Padel Playhouse', '505 Willow Way, Phoenix, AZ', false,""),
-    (9, 2, 'Court Kings', '123 Poplar Street, Boston, MA', true,""),
-	(10, 2, 'Padel Oasis', '707 Redwood Avenue, San Diego, CA', false,"");
+    (1, 1, 'Padel Zone', '123 Elm Street, Austin, TX', false,'a'),
+    (2, 1, 'Ace Arena', '456 Oak Avenue, Miami, FL', false,'a'),
+    (3, 1, 'The Padel Hub', '789 Maple Road, Denver, CO', true,'a'),
+    (4, 1, 'Smash Court', '101 Pine Lane, Seattle, WA', false,'a'),
+    (5, 1, 'Net Masters', '202 Cedar Street, Nashville, TN', true,'a'),
+    (6, 2, 'PowerPadel', '303 Birch Drive, Austin, TX', false,'a'),
+    (7, 2, 'Rally Point', '404 Spruce Boulevard, Portland, OR', true,'a'),
+    (8, 2, 'Padel Playhouse', '505 Willow Way, Phoenix, AZ', false,'a'),
+    (9, 2, 'Court Kings', '123 Poplar Street, Boston, MA', true,'a'),
+	(10, 2, 'Padel Oasis', '707 Redwood Avenue, San Diego, CA', false,'a');
 	
 INSERT INTO tournaments (tournamentName, date, registrationFee, reward, playerLevel, description, isOpen, userId, courtId) VALUES
 	('Spring Smash', '2024-02-20', 15, 100, 'Beginner', 'A fun event for new players', true, 1, 1),

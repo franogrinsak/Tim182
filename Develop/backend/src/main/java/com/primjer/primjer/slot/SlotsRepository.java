@@ -139,4 +139,22 @@ public class SlotsRepository {
         };
         return jdbc.query(querry, purchaseRowMapper,courtId);
     }
+
+
+    public Slot getSlot(int id) {
+        String querry="SELECT * FROM time_slots WHERE timeslotid= ?";
+        RowMapper<Slot> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            Slot rowObject = new Slot();
+            rowObject.setCourtId(r.getInt("courtid"));
+            rowObject.setPrice(String.valueOf(r.getFloat("price")));
+            rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
+            rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
+            rowObject.setUser(user);
+            rowObject.setTimeSlotId(r.getInt("timeslotid"));
+            return rowObject;
+        };
+        return jdbc.query(querry, purchaseRowMapper,id).get(0);
+    }
 }

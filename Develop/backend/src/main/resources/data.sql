@@ -33,6 +33,12 @@ INSERT INTO courts (userId, courtName, location, isIndoor, image) VALUES
     (2, 'Padel Playhouse', '505 Willow Way, Phoenix, AZ', false,'a'),
     (2, 'Court Kings', '123 Poplar Street, Boston, MA', true,'a'),
 	(2, 'Padel Oasis', '707 Redwood Avenue, San Diego, CA', false,'a');
+
+INSERT INTO time_slots (starttimestamp, endtimestamp, price, courtid, userid) VALUES
+    ('2025-03-18 08:30:00', '2025-03-18 12:00:00', 12.00, 1, NULL),
+    ('2025-03-20 07:00:00', '2025-03-20 10:00:00', 12.00, 1, NULL),
+    ('2025-04-20 07:00:00', '2025-04-20 10:00:00', 12.00, 1, NULL);
+
 	
 INSERT INTO tournaments (tournamentName, date, registrationFee, reward, playerLevel, description, isOpen, userId, courtId) VALUES
 	('Spring Smash', '2024-02-20', 15, 100, 'Beginner', 'A fun event for new players', true, 1, 1),

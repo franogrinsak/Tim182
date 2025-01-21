@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -62,6 +61,14 @@ public class CourtRepoTests {
         assertEquals("lokacijaEdit1234",fcourt.getLocation());
         assertEquals(true,fcourt.getisIndoor());
         assertEquals("aaaaaa",fcourt.getImage());
+
+    }
+    @Test
+    public void testDeleteCourt() {
+        assertNotNull(courtRepo);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            courtRepo.deleteCourt(1);
+        });
 
     }
 }

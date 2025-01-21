@@ -37,7 +37,10 @@ INSERT INTO courts (userId, courtName, location, isIndoor, image) VALUES
 INSERT INTO time_slots (starttimestamp, endtimestamp, price, courtid, userid) VALUES
     ('2025-03-18 08:30:00', '2025-03-18 12:00:00', 12.00, 1, NULL),
     ('2025-03-20 07:00:00', '2025-03-20 10:00:00', 12.00, 1, NULL),
-    ('2025-04-20 07:00:00', '2025-04-20 10:00:00', 12.00, 1, NULL);
+    ('2025-04-20 07:00:00', '2025-04-20 10:00:00', 12.00, 1, NULL),
+    (CURRENT_TIMESTAMP + INTERVAL '10' HOUR, CURRENT_TIMESTAMP + INTERVAL '13' HOUR, 12.00, 1, 3),
+    (CURRENT_TIMESTAMP + INTERVAL '3' MONTH, CURRENT_TIMESTAMP + INTERVAL '3' MONTH + INTERVAL '3' HOUR, 12.00, 1, NULL),
+    (CURRENT_TIMESTAMP + INTERVAL '3' MONTH, CURRENT_TIMESTAMP + INTERVAL '3' MONTH + INTERVAL '3' HOUR, 12.00, 1, 3);
 
 	
 INSERT INTO tournaments (tournamentName, date, registrationFee, reward, playerLevel, description, isOpen, userId, courtId) VALUES

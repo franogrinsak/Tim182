@@ -138,4 +138,8 @@ public class CourtRepository {
 
         return jdbc.query(querry, purchaseRowMapper,teren1).get(0);
     }
+
+    public void deleteCourt(int courtId) {
+        throw new UnsupportedOperationException("Brisanje terena nije implementirano");
+    }
 }

@@ -15,8 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -36,7 +35,7 @@ public class SlotRepoTest {
         slot.setCourtId(1);
         slot.setPrice("5.0");
         slotRepo.addSlot(slot);
-        Slot slotf =slotRepo.getSlot(4);
+        Slot slotf =slotRepo.getSlot(7);
         assertEquals(slot.getStartTimestamp(),slotf.getStartTimestamp());
         assertEquals(slot.getStartTimestamp(),slotf.getStartTimestamp());
         assertEquals(slot.getCourtId(),slotf.getCourtId());
@@ -52,53 +51,44 @@ public class SlotRepoTest {
         slot.setCourtId(1);
         slot.setPrice("5.0");
         slotRepo.addSlot(slot);
-        Slot slotf =slotRepo.getSlot(5);
+        Slot slotf =slotRepo.getSlot(8);
         assertEquals(slot.getStartTimestamp(),slotf.getStartTimestamp());
         assertEquals(slot.getStartTimestamp(),slotf.getStartTimestamp());
         assertEquals(slot.getCourtId(),slotf.getCourtId());
         assertEquals(slot.getPrice(),slotf.getPrice());
     }
-
-   /*@Test
-    public void testaddCourt() {
-
-        assertNotNull(courtRepo);
-
-        Court court=new Court();
-        court.setCourtName("teren1");
-        court.setLocation("lokacija1");
-        court.setisIndoor(true);
-        court.setImage("");
-        User user=new User();
-        user.setUserId(1);
-        court.setUser(user);
-        courtRepo.addCourt(court);
-        Court fcourt=courtRepo.getCourtByName("teren1");
-        assertNotNull(fcourt);
-        assertEquals("teren1",fcourt.getCourtName());
+    @Test
+    public void testBookSlot() {
+        assertNotNull(slotRepo);
+        int timeSlotId=5;
+        int userId=3;
+        slotRepo.book(timeSlotId,userId);
+        Slot slotf =slotRepo.getSlot(timeSlotId);
+        assertEquals(userId,slotf.getUser().getUserId());
+    }
+    @Test
+    public void testCancelSlot() {
+        assertNotNull(slotRepo);
+        int timeSlotId=6;
+        slotRepo.cancel(timeSlotId);
+        Slot slotf =slotRepo.getSlot(timeSlotId);
+        assertEquals(0,slotf.getUser().getUserId());
+    }
+    @Test
+    public void testCancelErrorSlot() {
+        assertNotNull(slotRepo);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            slotRepo.cancel(4);
+        });
 
     }
     @Test
-    public void testEditCourt() {
+    public void testUnknownSlot() {
+        assertNotNull(slotRepo);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            slotRepo.brojTermina(1);
+        });
 
-        assertNotNull(courtRepo);
+    }
 
-        Court courtEdit=new Court();
-        courtEdit.setCourtId(10);
-        courtEdit.setCourtName("terenEdit1234");
-        courtEdit.setLocation("lokacijaEdit1234");
-        courtEdit.setisIndoor(true);
-        courtEdit.setImage("aaaaaa");
-        User user=new User();
-        user.setUserId(1);
-        courtEdit.setUser(user);
-        courtRepo.editCourt(courtEdit);
-        Court fcourt=courtRepo.getCourt(10);
-        assertNotNull(fcourt);
-        assertEquals("terenEdit1234",fcourt.getCourtName());
-        assertEquals("lokacijaEdit1234",fcourt.getLocation());
-        assertEquals(true,fcourt.getisIndoor());
-        assertEquals("aaaaaa",fcourt.getImage());
-
-    }*/
 }

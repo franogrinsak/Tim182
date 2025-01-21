@@ -45,11 +45,12 @@ public class SlotsController {
     @Secured({"ROLE_PLAYER"})
     @PostMapping("slots/cancel")
     public ResponseEntity<Boolean> cancelSlots(@RequestParam int timeSlotId){
-        boolean bool=slotsRepo.cancel(timeSlotId);
-        if(!bool){
-            return ResponseEntity.badRequest().body(bool);
+        try{
+            slotsRepo.cancel(timeSlotId);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(false);
         }
-        return ResponseEntity.ok().body(bool);
+        return ResponseEntity.ok().body(true);
     }
 
     @Secured({"ROLE_OWNER"})

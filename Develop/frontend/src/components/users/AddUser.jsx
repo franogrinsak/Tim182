@@ -18,7 +18,6 @@ export async function action({ request }) {
     await postAddUser(data);
     return redirect(USERS);
   } catch (err) {
-    console.log(err);
     return "Failed to add the user: " + `${err.message}`;
   }
 }

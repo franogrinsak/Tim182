@@ -63,7 +63,10 @@ export async function loader() {
   return users.map((user) => {
     return {
       ...user,
-      fullName: `${user.firstName} ${user.lastName}`,
+      fullName:
+        user.firstName || user.lastName
+          ? `${user.firstName} ${user.lastName}`
+          : "N/A",
       phoneNumber: user.phoneNumber ? user.phoneNumber : "N/A",
       roleName: USER_ROLES_NAMES[user.roleId],
     };

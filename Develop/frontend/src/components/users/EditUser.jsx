@@ -25,7 +25,6 @@ export async function action({ request }) {
     await postUpdateUserData(data);
     return redirect(USERS);
   } catch (err) {
-    console.log(err);
     return "Failed to edit the user data: " + `${err.message}`;
   }
 }

@@ -146,6 +146,7 @@ export default function AddTimeSlot(props) {
         Add slot
       </Button>
       <Dialog
+        id="addTimeSlotModal"
         size="sm"
         open={uploading || props.open}
         handler={handleOpen}

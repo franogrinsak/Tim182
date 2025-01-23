@@ -82,18 +82,19 @@ public class SlotsRepository {
                 timeSlotId);
     }
 
-    public boolean cancel(int timeSlotId) {
-        String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND (starttimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp  OR endtimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp )";
+    public void cancel(int timeSlotId) {
+        /*String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND (starttimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp  OR endtimestamp::timestamp -'1 day'::INTERVAL < CURRENT_TIMESTAMP::timestamp )";*/
+        String querry = "SELECT COUNT(*) FROM time_slots WHERE timeslotid = ? AND (starttimestamp - INTERVAL '1' DAY < CURRENT_TIMESTAMP OR endtimestamp - INTERVAL '1' DAY < CURRENT_TIMESTAMP)";
         Integer number = jdbc.queryForObject(querry, Integer.class, timeSlotId);
         if(number>0){
-            return false;
+            throw new UnsupportedOperationException("Cancellation is not allowed within 24 hours of the time slot.");
         }
         else{
             querry="UPDATE time_slots SET userid = NULL WHERE timeslotid=?";
             jdbc.update(querry,
                     timeSlotId);
         }
-        return true;
+
     }
 
 
@@ -138,5 +139,26 @@ public class SlotsRepository {
             return rowObject;
         };
         return jdbc.query(querry, purchaseRowMapper,courtId);
+    }
+
+
+    public Slot getSlot(int id) {
+        String querry="SELECT * FROM time_slots WHERE timeslotid= ?";
+        RowMapper<Slot> purchaseRowMapper = (r, i) -> {
+            User user = new User();
+            user.setUserId(r.getInt("userid"));
+            Slot rowObject = new Slot();
+            rowObject.setCourtId(r.getInt("courtid"));
+            rowObject.setPrice(String.valueOf(r.getFloat("price")));
+            rowObject.setStartTimestamp(r.getTimestamp("starttimestamp").toLocalDateTime());
+            rowObject.setEndTimestamp(r.getTimestamp("endtimestamp").toLocalDateTime());
+            rowObject.setUser(user);
+            rowObject.setTimeSlotId(r.getInt("timeslotid"));
+            return rowObject;
+        };
+        return jdbc.query(querry, purchaseRowMapper,id).get(0);
+    }
+    public void brojTermina(int courtId) {
+        throw new UnsupportedOperationException("Broj termina na pojedinom terenu nije implementirano");
     }
 }

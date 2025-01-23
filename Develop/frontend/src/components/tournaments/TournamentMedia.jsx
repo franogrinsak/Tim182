@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { Galleria } from "primereact/galleria";
 import { classNames } from "primereact/utils";
-import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
+import { useLoaderData, useOutletContext } from "react-router-dom";
 import "../../Media.css";
 import TournamentComments from "./media/TournamentComments";
 import AddTournamentImage from "./media/AddTournamentImage";
@@ -12,7 +12,6 @@ import {
   postUploadComment,
   postUploadImage,
 } from "../../util/api/tournament-media";
-import { TOURNAMENT_MEDIA } from "../../util/paths";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -35,7 +34,7 @@ export async function action({ request }) {
       tournament: { tournamentId: formData.get("tournamentId") },
       imageContent: formData.get("imageText"),
     };
-
+    if (!data.imageContent) return "Please upload an image.";
     try {
       await postUploadImage(data);
     } catch (err) {

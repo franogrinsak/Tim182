@@ -12,6 +12,7 @@ export async function action({ request }) {
     isIndoor: formData.get("isIndoor"),
     image: formData.get("imageText"),
   };
+  if (!data.image) return "Please upload an image.";
   try {
     await postNewCourt(data);
     return redirect("/app/courts/" + data.user.userId);

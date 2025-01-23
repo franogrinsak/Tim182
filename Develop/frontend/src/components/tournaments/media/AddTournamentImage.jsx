@@ -48,9 +48,12 @@ export default function AddTournamentImage() {
 
   return (
     <>
-      <Button className="ml-auto mt-2" onClick={handleOpen}>
-        Upload an image
-      </Button>
+      <div>
+        <Button className="ml-auto mt-2" onClick={handleOpen}>
+          Upload an image
+        </Button>
+      </div>
+
       <Dialog size="sm" open={open} handler={handleOpen} className="p-4">
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4" color="blue-gray">

@@ -23,7 +23,7 @@ export default function (props) {
   return (
     <>
       {user && isOwner(user) && (
-        <Button className="ml-auto" onClick={handleOpen}>
+        <Button className="ml-auto my-2" onClick={handleOpen}>
           Enter results and complete the tournament
         </Button>
       )}

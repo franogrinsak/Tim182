@@ -190,3 +190,27 @@ footer {
     padding: 0;
   }
 }
+
+@media only screen and (min-width: 800px) {
+  .tournament-subscriptions {
+    position: absolute;
+    top: 0px;
+    left: 100%;
+    margin-left: 0.5rem;
+    width: 18rem;
+  }
+
+  .subscirptions-text {
+    width: 24rem;
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 799px) {
+  .subscriptions-loader {
+    position: absolute;
+    top: 0px;
+    left: 100%;
+    margin-left: 0.5rem;
+  }
+}

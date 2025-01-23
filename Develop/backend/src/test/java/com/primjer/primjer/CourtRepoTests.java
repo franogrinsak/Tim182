@@ -2,6 +2,7 @@ package com.primjer.primjer;
 import com.primjer.primjer.court.Court;
 import com.primjer.primjer.court.CourtRepository;
 import com.primjer.primjer.user.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class CourtRepoTests {
 
 
     @Test
+    @DisplayName("Testiranje dodavanje terena")
     public void testaddCourt() {
 
         assertNotNull(courtRepo);
@@ -41,6 +43,7 @@ public class CourtRepoTests {
 
     }
     @Test
+    @DisplayName("Testiranje uredivanje terena")
     public void testEditCourt() {
 
         assertNotNull(courtRepo);
@@ -64,6 +67,7 @@ public class CourtRepoTests {
 
     }
     @Test
+    @DisplayName("Testiranje nepostojece funkcionalnosti")
     public void testDeleteCourt() {
         assertNotNull(courtRepo);
         assertThrows(UnsupportedOperationException.class, () -> {

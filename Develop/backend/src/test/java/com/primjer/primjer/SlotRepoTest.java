@@ -5,6 +5,7 @@ import com.primjer.primjer.court.CourtRepository;
 import com.primjer.primjer.slot.Slot;
 import com.primjer.primjer.slot.SlotsRepository;
 import com.primjer.primjer.user.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class SlotRepoTest {
     @Autowired
     private SlotsRepository slotRepo;
     @Test
+    @DisplayName("Testiranje dodavanje termina")
     public void testaddSlot() {
         assertNotNull(slotRepo);
         Slot slot=new Slot();
@@ -42,6 +44,7 @@ public class SlotRepoTest {
         assertEquals(slot.getPrice(),slotf.getPrice());
     }
     @Test
+    @DisplayName("Testiranje rubnog uvjeta dodavanje termina")
     public void testEdgeaddSlot() {
         assertNotNull(slotRepo);
         Slot slot=new Slot();
@@ -58,6 +61,7 @@ public class SlotRepoTest {
         assertEquals(slot.getPrice(),slotf.getPrice());
     }
     @Test
+    @DisplayName("Testiranje rezervacije termina")
     public void testBookSlot() {
         assertNotNull(slotRepo);
         int timeSlotId=5;
@@ -67,6 +71,7 @@ public class SlotRepoTest {
         assertEquals(userId,slotf.getUser().getUserId());
     }
     @Test
+    @DisplayName("Testiranje otkazivanje termina")
     public void testCancelSlot() {
         assertNotNull(slotRepo);
         int timeSlotId=6;
@@ -75,6 +80,7 @@ public class SlotRepoTest {
         assertEquals(0,slotf.getUser().getUserId());
     }
     @Test
+    @DisplayName("Testiranje izazivanja pogreske kod otkazivanja termina")
     public void testCancelErrorSlot() {
         assertNotNull(slotRepo);
         assertThrows(UnsupportedOperationException.class, () -> {
@@ -83,6 +89,7 @@ public class SlotRepoTest {
 
     }
     @Test
+    @DisplayName("Testiranje nepostojece funkcionalnosti")
     public void testUnknownSlot() {
         assertNotNull(slotRepo);
         assertThrows(UnsupportedOperationException.class, () -> {

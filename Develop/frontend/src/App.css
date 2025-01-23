@@ -209,7 +209,7 @@ footer {
 @media only screen and (max-width: 799px) {
   .subscriptions-loader {
     position: absolute;
-    top: 0px;
+    top: 50%;
     left: 100%;
     margin-left: 0.5rem;
   }

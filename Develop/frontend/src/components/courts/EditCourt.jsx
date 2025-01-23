@@ -20,6 +20,7 @@ export async function action({ request }) {
     image: formData.get("imageText"),
     courtId: formData.get("courtId"),
   };
+  if (!data.image) return "Please upload an image.";
   try {
     await postUpdateCourt(data);
     return redirect("/app/courts/" + data.user.userId + "/" + data.courtId);
@@ -67,6 +68,7 @@ export default function EditCourt() {
 
   function returnImage() {
     setImageUrl(saveImage);
+    setPreviewImage(saveImage);
   }
 
   return (

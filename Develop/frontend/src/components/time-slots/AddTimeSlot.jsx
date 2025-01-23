@@ -305,7 +305,7 @@ export default function AddTimeSlot(props) {
                   name="price"
                   id="price"
                   title="Price has to be a non-zero decimal with 2 decimal digits at most and not greater than 999.99€"
-                  pattern="^[0-9]{1,4}\.[0-9]{1,2}$"
+                  pattern="^[0-9]{1,3}\.[0-9]{1,2}$"
                   className="grow block min-w-0 py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
                   placeholder="0.00"
                 />

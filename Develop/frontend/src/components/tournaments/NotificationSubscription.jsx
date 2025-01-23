@@ -37,7 +37,7 @@ export default function NotificationSubscription(props) {
     getSubsribed();
   }, []);
   return (
-    <div className="card flex justify-center relative items-center">
+    <div className="card flex justify-center relative items-center mt-4">
       <div className="relative">
         {!loading && (
           <InputSwitch
@@ -47,13 +47,13 @@ export default function NotificationSubscription(props) {
             disabled={changing}
           />
         )}
-        <div className="flex justify-start h-7 absolute top-0 left-full ml-2 w-72">
-          <span className="w-96 text-left">
+        <div className="flex justify-start h-7 tournament-subscriptions">
+          <span className="subscirptions-text">
             Get new tournament notifications
           </span>
           {changing && (
             <ProgressSpinner
-              className="h-7 w-7 -ml-36"
+              className="h-7 w-7 -ml-36 subscriptions-loader"
               strokeWidth="4"
               fill="var(--surface-ground)"
               animationDuration=".5s"

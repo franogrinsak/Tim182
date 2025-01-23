@@ -25,7 +25,6 @@ export async function action({ request }) {
     await postUpdateUserData(data);
     return redirect(USERS);
   } catch (err) {
-    console.log(err);
     return "Failed to edit the user data: " + `${err.message}`;
   }
 }
@@ -111,6 +110,7 @@ export default function EditUser() {
               </label>
               <input
                 minLength="1"
+                maxLength="50"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 name="email"

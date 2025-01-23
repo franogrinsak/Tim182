@@ -10,12 +10,12 @@ export default function CourtsLayout() {
   const { user } = useUser();
 
   return (
-    <>
+    <div className="h-full ">
       {user?.roleId === USER_ROLES.PLAYER && (
         <ReturnButton link={COURTS} text="Return to all courts" />
       )}
       <TabNavigation />
       <Outlet />
-    </>
+    </div>
   );
 }

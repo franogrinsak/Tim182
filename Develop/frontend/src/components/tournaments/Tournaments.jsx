@@ -80,10 +80,12 @@ export default function Tournaments() {
 
   const [currentView, setCurrentView] = React.useState(VIEWS.OPEN);
   return (
-    <section>
+    <section className="h-full">
       {user && isOwner(user) && (
         <Link to="organize">
-          <button>Organize a tournament</button>
+          <button className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            Organize a tournament
+          </button>
         </Link>
       )}
       {user && isPlayer(user) && <NotificationSubscription user={user} />}

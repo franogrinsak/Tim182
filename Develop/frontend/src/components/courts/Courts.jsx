@@ -23,7 +23,7 @@ export default function Courts() {
   let { courts, ownerData } = useLoaderData();
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-10 lg:max-w-7xl lg:px-8">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
         {user?.roleId == USER_ROLES.PLAYER
           ? "Courts owned by " + `${ownerData.firstName} ${ownerData.lastName}`

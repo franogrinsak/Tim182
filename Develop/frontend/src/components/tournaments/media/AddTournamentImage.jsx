@@ -9,15 +9,21 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React from "react";
-import { Form, useNavigation, useParams } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
 import { useUser } from "../../auth/UserContext";
 
 export default function AddTournamentImage() {
   const { user } = useUser();
   const navigation = useNavigation();
+  const error = useActionData();
   const { tournamentId, ownerId } = useParams();
   const [open, setOpen] = React.useState(false);
-  const [imageError, setImageError] = React.useState();
+  const [imageError, setImageError] = React.useState(error);
   const [previewImage, setPreviewImage] = React.useState();
   const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB in bytes
 
@@ -48,9 +54,12 @@ export default function AddTournamentImage() {
 
   return (
     <>
-      <Button className="ml-auto mt-2" onClick={handleOpen}>
-        Upload an image
-      </Button>
+      <div>
+        <Button className="ml-auto mt-2" onClick={handleOpen}>
+          Upload an image
+        </Button>
+      </div>
+
       <Dialog size="sm" open={open} handler={handleOpen} className="p-4">
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4" color="blue-gray">
@@ -71,6 +80,14 @@ export default function AddTournamentImage() {
             role="alert"
           >
             <span className="block sm:inline">{imageError}</span>
+          </div>
+        )}
+        {error && (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
+            role="alert"
+          >
+            <span className="block sm:inline">{error}</span>
           </div>
         )}
         <Form method="post">

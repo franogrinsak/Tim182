@@ -33,7 +33,7 @@ export default function CourtDetail() {
         link={"/app/courts/" + court.user.userId}
         text="Return to courts"
       />
-      <div className="">
+      <div className="mt-2">
         <img
           alt={court?.imageAlt}
           src={court?.image}

@@ -11,7 +11,7 @@ export default function TournamentComments(props) {
   const navigation = useNavigation();
 
   return (
-    <section className="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+    <section className="bg-white dark:bg-gray-900 py-6 lg:py-16 antialiased">
       <div className="max-w-2xl mx-auto px-4">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
@@ -30,6 +30,7 @@ export default function TournamentComments(props) {
             <textarea
               id="comment"
               name="commentText"
+              maxLength="1000"
               rows="6"
               className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
               placeholder="Write a comment..."

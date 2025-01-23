@@ -12,7 +12,7 @@ export default function TabNavigation() {
   const { user } = useUser();
 
   return (
-    <nav aria-label="Tabs" className="flex justify-center">
+    <nav aria-label="Tabs" className="flex justify-center my-2">
       <div className="flex overflow-x-auto overflow-y-hidden border-b border-gray-200 whitespace-nowrap dark:border-gray-700">
         <NavLink
           to="."

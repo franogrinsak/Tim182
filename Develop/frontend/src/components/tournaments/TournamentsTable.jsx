@@ -80,9 +80,9 @@ export default function TournamentsTable(props) {
         <Column
           sortable
           field="registrationFee"
-          header="Registration fee"
+          header="Registration fee (€)"
         ></Column>
-        <Column sortable field="reward" header="Reward"></Column>
+        <Column sortable field="reward" header="Reward (€)"></Column>
         <Column sortable field="playerLevel" header="Player level"></Column>
       </DataTable>
     </div>

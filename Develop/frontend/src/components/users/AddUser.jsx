@@ -18,7 +18,6 @@ export async function action({ request }) {
     await postAddUser(data);
     return redirect(USERS);
   } catch (err) {
-    console.log(err);
     return "Failed to add the user: " + `${err.message}`;
   }
 }
@@ -101,6 +100,7 @@ export default function AddUser() {
               </label>
               <input
                 minLength="1"
+                maxLength="50"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 name="email"

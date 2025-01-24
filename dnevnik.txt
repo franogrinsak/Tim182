@@ -41,7 +41,7 @@ Teme sastanka:
 -Predstavljanje implementacije pregleda terena i administratorskih funkcionalnosti
 -Provjera dokumentacije te raspodjela zadataka za ispravak pogrešaka u dokumentaciji
 
-6. sastanak
+7. sastanak
 Datum: 16. siječnja 2025.
 Prisustvovali: L. Matić, F. Ogrinšak, P. Pašić, Š. Filip
 Teme sastanka:
